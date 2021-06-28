@@ -56,11 +56,18 @@ function Catalog() {
 
     const history = useHistory();
     const dispatch = useDispatch();
+    const movies = useSelector(store => store.movies);
+
+    console.log(movies);
+
+    useEffect(() => {
+        dispatch({ type: 'GET_MOVIES' });
+    }, []);
 
     return (
 
         <div className="catalog">
-            
+            <p>catalog</p>
         </div>
 
     ); // end return

@@ -13,10 +13,6 @@ function Movie(){
 
     console.log(movies);
 
-    useEffect(() => {
-        dispatch({ type: 'GET_MOVIES' });
-    }, []);
-
     return(
 
         <div>
