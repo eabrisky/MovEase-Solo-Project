@@ -5,7 +5,7 @@ function* createMovie(action) {
     try{
         yield axios.post('/api/movie', action.payload);
         //get movies
-        // yield put({ type: 'GET_MOVIES'});
+        yield put({ type: 'GET_MOVIES'});
     }
     catch(err){
         console.error(`Error creating movie: ${err}`);
@@ -28,8 +28,8 @@ function* getMovies() {
 } // end getMovies fn*
 
 function* movieSaga() {
-    yield takeEvery('CREATE_MOVIE', createMovie);
     yield takeEvery('GET_MOVIES', getMovies);
+    yield takeEvery('CREATE_MOVIE', createMovie);
 }
 
 export default movieSaga;
