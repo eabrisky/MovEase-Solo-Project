@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import LogOutButton from '../LogOutButton/LogOutButton';
 import './Nav.css';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
 function Nav() {
   const user = useSelector((store) => store.user);
@@ -27,6 +27,30 @@ function Nav() {
           {loginLinkData.text}
         </Link>
 
+        <Link className="navLink" to="/catalog">
+          Catalog
+        </Link>
+
+        <Link className="navLink" to="/movie">
+          Movie
+        </Link>
+
+        <Link className="navLink" to="/form">
+          Form
+        </Link>
+
+        <Link className="navLink" to="/search">
+          Search
+        </Link>
+
+        <Link className="navLink" to="/dashboard">
+          Dashboard
+        </Link>
+
+        <Link className="navLink" to="/about">
+          About
+        </Link>
+
         {user.id && (
           <>
             <Link className="navLink" to="/info">
@@ -36,9 +60,6 @@ function Nav() {
           </>
         )}
 
-        <Link className="navLink" to="/about">
-          About
-        </Link>
       </div>
     </div>
   );
