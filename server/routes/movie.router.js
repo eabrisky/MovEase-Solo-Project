@@ -27,3 +27,5 @@ router.post('/', (req, res) => {
     }) // end .catch
     
 }); // end router.post
+
+module.exports = router;
