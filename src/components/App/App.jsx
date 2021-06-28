@@ -19,6 +19,11 @@ import InfoPage from '../InfoPage/InfoPage';
 import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
+import Catalog from '../Catalog/Catalog';
+import Movie from '../Movie/Movie';
+import Form from '../Form/Form';
+import Search from '../Search/Search';
+import Dashboard from '../Dashboard/Dashboard';
 
 import './App.css';
 
@@ -64,6 +69,41 @@ function App() {
             path="/info"
           >
             <InfoPage />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/catalog"
+          >
+            <Catalog />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/movie"
+          >
+            <Movie />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/form"
+          >
+            <Form />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/search"
+          >
+            <Search />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/dashboard"
+          >
+            <Dashboard />
           </ProtectedRoute>
 
           {/* When a value is supplied for the authRedirect prop the user will
