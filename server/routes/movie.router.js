@@ -8,7 +8,8 @@ router.get('/', (req, res) => {
     SELECT * FROM "movies" ORDER BY "title" ASC;
     `;
 
-    pool.query(queryText) // end .query
+    pool
+        .query(queryText) // end .query
         .then(result => {
             console.log(`GET result: ${result.rows}`);
             res.send(result.rows);
