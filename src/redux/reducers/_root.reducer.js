@@ -12,7 +12,7 @@ import movie from './movie.reducer';
 const rootReducer = combineReducers({
   errors, // contains registrationMessage and loginMessage
   user, // will have an id and username if someone is logged in
-  movie
+  movies
 });
 
 export default rootReducer;

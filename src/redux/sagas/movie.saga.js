@@ -7,13 +7,29 @@ function* createMovie(action) {
         //get movies
         // yield put({ type: 'GET_MOVIES'});
     }
-    catch(error){
-        console.error(`Error creating movie: ${error}`);
+    catch(err){
+        console.error(`Error creating movie: ${err}`);
     }
-}
+} // end createMovie fn*
+
+function* getMovies() {
+    try{
+        // send request to server & save response
+        const response = yield axios.get('/api/movie');
+        // send response to movie.reducer
+        yield put({
+            type: 'SET_MOVIES',
+            payload: response.data
+        });
+    }
+    catch(err){
+        console.error(`Error getting movies: ${err}`);
+    }
+} // end getMovies fn*
 
 function* movieSaga() {
     yield takeEvery('CREATE_MOVIE', createMovie);
+    yield takeEvery('GET_MOVIES', getMovies);
 }
 
 export default movieSaga;
