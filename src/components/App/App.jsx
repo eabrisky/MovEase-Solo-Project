@@ -27,7 +27,7 @@ function App() {
 
   useEffect(() => {
     dispatch({ type: 'FETCH_USER' });
-  }, [dispatch]);
+  }, [dispatch]);0
 
   return (
     <Router>
