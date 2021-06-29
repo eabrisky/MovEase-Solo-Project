@@ -12,6 +12,7 @@ CREATE TABLE "user" (
 CREATE TABLE "movies" (
 	"id" SERIAL PRIMARY KEY,
 	"title" VARCHAR(255) NOT NULL,
+	"director" VARCHAR(255) NOT NULL,
 	"image" VARCHAR(255) NOT NULL,
 	"description" TEXT NOT NULL,
 	"release_date" DATE,
@@ -95,10 +96,10 @@ VALUES ('War');
 INSERT INTO "genres" ("name")
 VALUES ('Western');
 
-CREATE TABLE "directors" (
-	"id" SERIAL PRIMARY KEY,
-	"name" VARCHAR(255) NOT NULL
-);
+-- CREATE TABLE "directors" (
+-- 	"id" SERIAL PRIMARY KEY,
+-- 	"name" VARCHAR(255) NOT NULL
+-- );
 
 CREATE TABLE "tags" (
 	"id" SERIAL PRIMARY KEY,
@@ -111,11 +112,11 @@ CREATE TABLE "movies_genres" (
 	"genre_id" INT REFERENCES "genres" NOT NULL
 );
 
-CREATE TABLE "movies_directors" (
-	"id" SERIAL PRIMARY KEY,
-	"movie_id" INT REFERENCES "movies" NOT NULL,
-	"director_id" INT REFERENCES "directors" NOT NULL
-);
+-- CREATE TABLE "movies_directors" (
+-- 	"id" SERIAL PRIMARY KEY,
+-- 	"movie_id" INT REFERENCES "movies" NOT NULL,
+-- 	"director_id" INT REFERENCES "directors" NOT NULL
+-- );
 
 CREATE TABLE "movies_tags" (
 	"id" SERIAL PRIMARY KEY,
