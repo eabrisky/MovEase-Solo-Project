@@ -17,6 +17,7 @@ function Movie(){
 
         <div>
             <p>movie</p>
+            <img src="https://api.time.com/wp-content/uploads/2015/10/aladdin-poster.jpg?w=250&quality=85" alt="aladdin" />
         </div>
 
     ); // end return
