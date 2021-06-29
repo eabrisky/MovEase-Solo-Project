@@ -47,6 +47,10 @@ function Nav() {
           Dashboard
         </Link>
 
+        <Link className="navLink" to="/imageupload">
+          Image Upload
+        </Link>
+
         <Link className="navLink" to="/about">
           About
         </Link>
