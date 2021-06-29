@@ -27,6 +27,7 @@ function* getMovies() {
     }
 } // end getMovies fn*
 
+// watcherSaga
 function* movieSaga() {
     yield takeEvery('GET_MOVIES', getMovies);
     yield takeEvery('CREATE_MOVIE', createMovie);

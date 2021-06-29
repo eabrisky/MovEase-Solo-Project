@@ -69,12 +69,14 @@ function Form() {
         director: director,
         release_date: releaseDate,
         synopsis: synopsis,
-        genre: genre,
+        genre_id: genre,
         image: poster
     } // end movie
 
     // dispatch
-    const handleSubmit = () => {
+    const handleSubmit = (event) => {
+
+        event.preventDefault();
 
         console.log(movie);
         // dispatch to movie.saga.js
