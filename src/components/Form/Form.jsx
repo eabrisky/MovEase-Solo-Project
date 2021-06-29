@@ -55,6 +55,7 @@ function Form() {
     } // end handleChangeSynopsis
 
     const handleChangeGenre = (event) => {
+        setAnchorEl(null);
         setGenre(event.target.value);
     } // end handleChangeGenre
 
@@ -190,19 +191,31 @@ function Form() {
                         onClose={handleChange}
                     >
                         {/* MenuItem values correspond to genre_ids in movies_genres table in db */}
-                        <MenuItem onClick={handleChangeGenre} value="1">Adventure</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="2">Animated</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="3">Biographical</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="4">Comedy</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="5">Disaster</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="6">Drama</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="7">Epic</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="8">Fantasy</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="9">Musical</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="10">Romantic</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="11">Science Fiction</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="12">Space-Opera</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="13">Superhero</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="1">Action</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="2">Adventure</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="3">Animation</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="4">Biography</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="5">Comedy</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="6">Crime</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="7">Documentary</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="8">Drama</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="9">Family</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="10">Fantasy</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="11">Film Noir</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="12">History</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="13">Horror</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="14">Music</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="15">Musical</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="16">Mystery</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="17">Romance</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="18">Sci-Fi</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="19">Short Film</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="20">Sport</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="21">Superhero</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="22">Thriller</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="23">War</MenuItem>
+                        <MenuItem onClick={handleChangeGenre} value="24">Western</MenuItem>
+
                     </Menu>
 
                 </div>
