@@ -63,9 +63,21 @@ router.post('/', rejectUnauthenticated, (req, res) => {
                 .query(genreQuery, [createdMovieId, movie.genre_id]) // end .query
                 .then(result => {
 
+                    const usersMoviesQuery = `
+                    INSERT INTO "users_movies" ("user_id", "movie_id")
+                    VALUES ($1, $2);
+                    `;
+
+                    pool
+                        .query(usersMoviesQuery, [req.user.id, createdMovieId]) // end .query
+                        .then(() => console.log(`users_movies table updated successfully!`)) // end .then
+                        .catch((err) => {
+                            console.error(`Ayyy Papiiiiiii! ${err}`);
+                        }) // end .catch
+
                 }) // end .then
                 .catch(err => {
-                    console.error(`Goodness gracious, there's been an issue adding that genre! ${error}`);
+                    console.error(`Goodness gracious, there's been an issue adding that genre! ${err}`);
                 }) // end .catch, end genre_id pool
 
         }) // end .then
@@ -75,5 +87,32 @@ router.post('/', rejectUnauthenticated, (req, res) => {
         }) // end .catch, end pool
 
 }); // end router.post
+
+// router.put('/:id', rejectUnauthenticated, (req, res) => {
+//     const queryText = `
+//     UPDATE ;
+//     `;
+// }); // end router.put
+
+router.delete('/:id/:user_id', rejectUnauthenticated, (req, res) => {
+    console.log(`You've made it to /api/movie/DELETE. req.params: ${req.params}, ${req.user}`);
+    if(req.user.id == req.params.user_id){
+        const queryText = `
+        DELETE FROM "users_movies"
+        WHERE "user_id"=$1
+        `;
+
+        pool
+            .query(queryText, [req.user.id]) // end .query
+            .then(() => res.sendStatus(200)) // end .then
+            .catch((err) => {
+                console.error(`ACK, WE COULDN'T REMOVE THAT FROM YOUR CATALOG!! ${err}`);
+                res.sendStatus(500);
+            }) // end .catch, end pool
+    } else {
+        // forbidden
+        res.sendStatus(403);
+    } // end if else
+}); // end router.delete
 
 module.exports = router;
