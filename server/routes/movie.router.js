@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require('../modules/pool');
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
+// get all movies
 router.get('/', rejectUnauthenticated, (req, res) => {
 
     const queryText = `
@@ -27,15 +28,43 @@ router.get('/', rejectUnauthenticated, (req, res) => {
             res.send(result.rows);
         }) // end .then
         .catch(err => {
-            console.error(`Aw SNAP, there's been a GET error: ${err}`);
             res.sendStatus(500);
+            console.error(`Aw SNAP, there's been a GET error: ${err}`);
         }) // end .catch, end pool
 
-}); // end router.get
+}); // end router.get all
 
+// get featured movie
+router.get('/:id', rejectUnauthenticated, (req, res) => {
+
+    const queryText = `
+    SELECT "movies".*,
+    STRING_AGG("genres".name, ', ')
+    AS genre
+    FROM "movies"
+    JOIN "movies_genres"
+    ON "movies_genres".movie_id = "movies".id
+    JOIN "genres"
+    ON "genres".id = "movies_genres".genre_id
+    WHERE "movies".id = $1
+    GROUP BY 1;
+    `;
+
+    pool
+        .query(queryText, [req.params.id]) // end .query
+        .then(result => {
+            res.send(result.rows);
+        }) // end .then
+        .catch(err => {
+            res.sendStatus(500);
+            console.error(`CLARO QUE NO! We couldn't grab that ${err}`);
+        }) // end .catch, end pool
+
+}); // end router.get featured
+
+// post new movie
 router.post('/', rejectUnauthenticated, (req, res) => {
 
-    // console.log(`Movie to create: ${req.body}`);
     const movie = req.body;
 
     const movieQuery = `
@@ -95,8 +124,11 @@ router.post('/', rejectUnauthenticated, (req, res) => {
 // }); // end router.put
 
 router.delete('/:id/:user_id', rejectUnauthenticated, (req, res) => {
+
     console.log(`You've made it to /api/movie/DELETE. req.params: ${req.params}, ${req.user}`);
+
     if(req.user.id == req.params.user_id){
+
         const queryText = `
         DELETE FROM "users_movies"
         WHERE "user_id"=$1
@@ -109,10 +141,12 @@ router.delete('/:id/:user_id', rejectUnauthenticated, (req, res) => {
                 console.error(`ACK, WE COULDN'T REMOVE THAT FROM YOUR CATALOG!! ${err}`);
                 res.sendStatus(500);
             }) // end .catch, end pool
+
     } else {
         // forbidden
         res.sendStatus(403);
     } // end if else
+
 }); // end router.delete
 
 module.exports = router;
