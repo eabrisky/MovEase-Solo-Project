@@ -16,11 +16,27 @@ function* getMovies() {
     }
 } // end getMovies fn*
 
+function* featureMovie(action){
+    try{
+        const response = yield axios.get(`/api/movie/${action.payload}`);
+        // send response.data to reducer to call on movie page
+        yield put({
+            type: 'SET_MOVIE',
+            payload: response.data
+        });
+
+        yield put({ type: 'GET_MOVIES' })
+    }
+    catch(err){
+        console.error(`Error featuring this movie ${err}`);
+    }
+} // end featureMovie fn*
+
 function* createMovie(action) {
     try{
         yield axios.post('/api/movie', action.payload);
         //get movies
-        yield put({ type: 'GET_MOVIES'});
+        yield put({ type: 'GET_MOVIES' });
     }
     catch(err){
         console.error(`Error creating movie: ${err}`);
@@ -31,7 +47,7 @@ function* removeMovie(action) {
     try{
         yield axios.delete(`api/movie/${action.payload.id}/${action.payload.user_id}`, action.payload);
         //get movies
-        yield put({ type: 'GET_MOVIES'});
+        yield put({ type: 'GET_MOVIES' });
     }
     catch(err){
         console.error(`Error removing movie =( ${err}`);
@@ -41,6 +57,7 @@ function* removeMovie(action) {
 // watcherSaga
 function* movieSaga() {
     yield takeEvery('GET_MOVIES', getMovies);
+    yield takeEvery('FEATURE_MOVIE', featureMovie);
     yield takeEvery('CREATE_MOVIE', createMovie);
     yield takeEvery('REMOVE_MOVIE', removeMovie);
 }

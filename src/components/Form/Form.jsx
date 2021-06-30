@@ -93,9 +93,8 @@ function Form() {
         setGenre(0);
         setPoster('');
 
-        // navigate to movie view
-        // view new movie
-        history.push('/movie');
+        // navigate to catalog view
+        history.push('/catalog');
 
     } // end handleSubmit
 

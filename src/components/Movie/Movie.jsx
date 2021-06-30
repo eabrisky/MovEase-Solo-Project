@@ -5,19 +5,30 @@ import { useDispatch, useSelector } from 'react-redux';
 // css
 import './Movie.css';
 
-function Movie(){
+function Movie() {
 
     const dispatch = useDispatch();
     const history = useHistory();
-    const movies = useSelector(store => store.movies);
+    const movie = useSelector(store => store.featuredMovie);
 
-    console.log(movies);
+    console.log(movie);
 
-    return(
+    return (
 
         <div>
-            <p>movie</p>
-            <img src="https://api.time.com/wp-content/uploads/2015/10/aladdin-poster.jpg?w=250&quality=85" alt="aladdin" />
+
+            {movie?.map(movie => {
+                return (
+                    <div key={movie?.id}>
+                        <h1>{movie?.title}</h1>
+                        <img src={movie?.image} alt={movie?.title} />
+                        <h2>{movie?.director}</h2>
+                        <h3>{movie?.release_date}</h3>
+                        <p>{movie?.synopsis}</p>
+                    </div>
+                )
+            })}
+
         </div>
 
     ); // end return
