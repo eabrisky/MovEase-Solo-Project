@@ -3,32 +3,33 @@ const router = express.Router();
 const pool = require('../modules/pool');
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
-router.get('/:id/:user_id', rejectUnauthenticated, (req, res) => {
+router.get('/', rejectUnauthenticated, (req, res) => {
 
-    if (req.user.id == req.params.user_id) {
+    const queryText = `
+        SELECT "movies".*,
+        STRING_AGG ("genres".name, ', ')
+        AS genre
+        FROM "movies"
+        JOIN "movies_genres"
+        ON "movies_genres".movie_id = "movies".id
+        JOIN "genres"
+        ON "genres".id = "movies_genres".genre_id
+        JOIN "user"
+        ON "user".id = "movies".user_id
+        WHERE "movies".user_id = "user".id
+        GROUP BY "movies".id
+        ORDER BY "title" ASC;
+    `;
 
-        const queryText = `
-            SELECT * FROM "movies"
-            JOIN "user"
-            ON "user".id = "movies".user_id
-            WHERE "movies".user_id = "user".id
-            ORDER BY "title" ASC;
-        `;
-
-        pool
-            .query(queryText) // end .query
-            .then(result => {
-                // console.log(`GET result: ${result.rows}`);
-                res.send(result.rows);
-            }) // end .then
-            .catch(err => {
-                console.error(`Aw SNAP, there's been a GET error: ${err}`);
-                res.sendStatus(500);
-            }) // end .catch, end pool
-    } else {
-        // forbidden
-        res.sendStatus(403);
-    }
+    pool
+        .query(queryText) // end .query
+        .then(result => {                // console.log(`GET result: ${result.rows}`);
+            res.send(result.rows);
+        }) // end .then
+        .catch(err => {
+            console.error(`Aw SNAP, there's been a GET error: ${err}`);
+            res.sendStatus(500);
+        }) // end .catch, end pool
 
 }); // end router.get
 
