@@ -64,10 +64,44 @@ function Catalog() {
         dispatch({ type: 'GET_MOVIES' });
     }, []);
 
+    const handleEdit = () => {
+        console.log(user.id);
+        console.log(`HI`);
+    } // end handleEdit
+
+    const handleRemove = () => {
+
+    } // end handleRemove
+
     return (
 
         <div className="catalog">
-            <p>catalog</p>
+            <h1>Catalog</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Director</th>
+                        <th>Release Date</th>
+                        <th>Genre</th>
+                        <th>Edit</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {movies?.map(movie => (
+                    <tr key={movie?.id}>
+                        <td>{movie?.title}</td>
+                        <td>{movie?.director}</td>
+                        <td>{movie?.release_date}</td>
+                        <td>{movie?.genre}</td>
+                        <td><button onClick={() => handleEdit}>Edit</button></td>
+                        <td><button onClick={() => handleRemove}>Remove</button></td>
+                    </tr>
+                    ))}
+                </tbody>
+            </table>
+                
         </div>
 
     ); // end return
