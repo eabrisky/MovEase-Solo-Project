@@ -8,6 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
+// sweetalert2
+import Swal from 'sweetalert2';
+
 // cards
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -65,11 +68,48 @@ function Catalog() {
     }, []);
 
     const handleEdit = () => {
-        console.log(user.id);
+        // console.log(user.id);
         console.log(`HI`);
+
     } // end handleEdit
 
-    const handleRemove = () => {
+    const handleRemove = (movie) => {
+
+        console.log(`movie: ${movie}`);
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'This will permanently remove this movie from your catalog!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'I HATE THIS MOVIE I NEVER WANNA SEE IT AGAIN!!',
+            cancelButtonText: 'Maybe I should give it a rewatch...'
+          }) // end.fire
+          .then((result) => {
+            if (result.isConfirmed) {
+
+                // dispatch
+                dispatch({
+                    type: 'REMOVE_MOVIE',
+                    payload: movie
+                })
+
+              Swal.fire(
+                'Removed!',
+                'This movie has been removed from your catalog.',
+                'success'
+              )
+            // For more information about handling dismissals please visit
+            // https://sweetalert2.github.io/#handling-dismissals
+            } // end if
+            else if (result.dismiss === Swal.DismissReason.cancel) {
+              Swal.fire(
+                'Cancelled',
+                'Phew That was a CLOSE one!',
+                'error'
+              )
+            } // end else if
+          }) // end .then, end Swal
 
     } // end handleRemove
 
@@ -95,8 +135,8 @@ function Catalog() {
                         <td>{movie?.director}</td>
                         <td>{movie?.release_date}</td>
                         <td>{movie?.genre}</td>
-                        <td><button onClick={() => handleEdit}>Edit</button></td>
-                        <td><button onClick={() => handleRemove}>Remove</button></td>
+                        <td><button onClick={() => handleEdit(movie)}>Edit</button></td>
+                        <td><button onClick={() => handleRemove(movie)}>Remove</button></td>
                     </tr>
                     ))}
                 </tbody>
