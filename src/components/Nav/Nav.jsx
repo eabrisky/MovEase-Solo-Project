@@ -35,9 +35,9 @@ function Nav() {
           Movie
         </Link>
 
-        <Link className="navLInk" to="/edit">
+        {/* <Link className="navLink" to="/edit">
           Edit
-        </Link>
+        </Link> */}
 
         <Link className="navLink" to="/form">
           Form
