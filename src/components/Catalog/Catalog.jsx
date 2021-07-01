@@ -72,21 +72,21 @@ function Catalog() {
         event.preventDefault();
 
         console.log(`event.target.value: ${event.target.value}`);
-        console.log(`movie: ${movie}`);
+        console.log('movie:', movie);
 
-        // dispatch({
-        //     type: 'EDIT_MOVIE',
-        //     payload: event.target.value, 
-        // })
+        dispatch({
+            type: 'EDIT_MOVIE',
+            payload: movie, 
+        })
 
         // // navigate user to edit view
-        // history.push('/edit');
+        history.push('/edit');
 
     } // end handleEdit
 
     const handleRemove = (movie) => {
 
-        console.log(`movie: ${movie}`);
+        console.log('movie: ', movie);
 
         Swal.fire({
             title: 'Are you sure?',
@@ -98,6 +98,8 @@ function Catalog() {
         }) // end.fire
             .then((result) => {
                 if (result.isConfirmed) {
+
+                    console.log(movie);
 
                     // dispatch
                     dispatch({
@@ -154,24 +156,12 @@ function Catalog() {
                             <td>{movie?.director}</td>
                             <td>{movie?.release_date}</td>
                             <td>{movie?.genre}</td>
-                            <td><button value={movie?.id} onClick={(event, movie) => handleEdit(event, movie)}>Edit</button></td>
+                            <td><button value={movie?.id} onClick={(event) => handleEdit(event, movie)}>Edit</button></td>
                             <td><button onClick={() => handleRemove(movie)}>Remove</button></td>
                         </tr>
                     ))}
-
-                    <div>
-                        {movies?.map(movie => {
-                            <div key={movie?.id}>
-                                <button value={movie?.id} onClick={(movie) => handleEdit(movie)}>Edit</button>
-                            </div>
-                        })}
-                    </div>
                 </tbody>
             </table>
-
-            <div className="table">
-
-            </div>
 
         </div>
 
