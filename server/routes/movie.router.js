@@ -9,7 +9,8 @@ router.get('/', rejectUnauthenticated, (req, res) => {
     const queryText = `
         SELECT "movies".*,
         STRING_AGG ("genres".name, ', ')
-        AS genre
+        AS genre,
+        "movies_genres".genre_id
         FROM "movies"
         JOIN "movies_genres"
         ON "movies_genres".movie_id = "movies".id
@@ -17,13 +18,13 @@ router.get('/', rejectUnauthenticated, (req, res) => {
         ON "genres".id = "movies_genres".genre_id
         JOIN "user"
         ON "user".id = "movies".user_id
-        WHERE "movies".user_id = "user".id
-        GROUP BY "movies".id
+        WHERE "movies".user_id = $1
+        GROUP BY "movies".id, "movies_genres".genre_id
         ORDER BY "title" ASC;
     `;
 
     pool
-        .query(queryText) // end .query
+        .query(queryText, [req.user.id]) // end .query
         .then(result => {                // console.log(`GET result: ${result.rows}`);
             res.send(result.rows);
         }) // end .then
@@ -125,17 +126,41 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
     console.log('put req.body: ', req.body);
     console.log('put req.user: ', req.user);
 
-    // let movieId = req.params.id;
-    // let movie = req.body;
+    const movie = req.body;
 
-    // const queryText = `
-    // UPDATE "movies"
-    // SET ("title" = $1, "director" = $2, "image" = $3, "synopsis" = $4, "release_date" = $5, "user_id" = $6)
-    // WHERE "movie".id = $7;
-    // `;
+    const queryText = `
+    UPDATE "movies"
+    SET "title"=$1, "director"=$2, "image"=$3, "synopsis"=$4, "release_date"=$5, "user_id"=$6
+    WHERE "movies".id=$7;
+    `;
 
-    // pool
-    //     .query(queryText, [movie.title, movie.director, movie.image, movie.synopsis, movie.release_date, req.user.id])
+    pool
+        .query(queryText, [movie.title, movie.director, movie.image, movie.synopsis, movie.release_date, req.user.id, movie.id])
+        .then(result => {
+
+            // const genreQuery =`
+            // UPDATE "movies_genres"
+            // SET "genre_id" = $1
+            // WHERE "movie_id" = $2;
+            // `;
+
+            // console.log(result);
+
+            // pool
+            //     .query(genreQuery, [movie.genre, movie.id]) // end .query
+            //     .then(() => res.sendStatus(200)) // end .then
+            //     .catch(err => {
+            //         console.log('put genre error: ', err);
+            //     }) // end catch, end genre pool
+
+            // OK
+            res.sendStatus(200);
+
+        }) // end .then
+        .catch(err => {
+            console.log('put error: ', err);
+            res.sendStatus(500);
+        }) // end .catch, end pool
 }); // end router.put
 
 router.delete('/:id', rejectUnauthenticated, (req, res) => {
