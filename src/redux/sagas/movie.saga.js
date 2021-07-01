@@ -43,6 +43,15 @@ function* createMovie(action) {
     }
 } // end createMovie fn*
 
+function* editMovie(action) {
+    // try{
+        
+    // }
+    // catch(err){
+    //     console.log(`Error editing movie: ${err}`);
+    // }
+} // end editMovie fn*
+
 function* removeMovie(action) {
     try{
         yield axios.delete(`api/movie/${action.payload.id}/${action.payload.user_id}`, action.payload);
@@ -59,6 +68,7 @@ function* movieSaga() {
     yield takeEvery('GET_MOVIES', getMovies);
     yield takeEvery('FEATURE_MOVIE', featureMovie);
     yield takeEvery('CREATE_MOVIE', createMovie);
+    yield takeEvery('EDIT_MOVIE', editMovie);
     yield takeEvery('REMOVE_MOVIE', removeMovie);
 }
 

@@ -3,6 +3,7 @@ import errors from './errors.reducer';
 import user from './user.reducer';
 import movies from './movie.reducer';
 import featuredMovie from './featuredMovie.reducer';
+import edit from './edit.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   errors, // contains registrationMessage and loginMessage
   user, // will have an id and username if someone is logged in
   movies,
+  edit,
   featuredMovie
 });
 
