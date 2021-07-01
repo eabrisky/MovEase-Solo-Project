@@ -24,16 +24,19 @@ function Edit() {
     const dispatch = useDispatch();
     const movieToEdit = useSelector(store => store.edit);
 
+    movieToEdit
+
     // local state
     const [title, setTitle] = useState(movieToEdit.title);
     const [director, setDirector] = useState(movieToEdit.director);
     const [releaseDate, setReleaseDate] = useState(movieToEdit.release_date);
     const [synopsis, setSynopsis] = useState(movieToEdit.synopsis);
-    const [genre, setGenre] = useState(movieToEdit.genre);
+    const [genre, setGenre] = useState(movieToEdit.genre_id);
     const [poster, setPoster] = useState(movieToEdit.image);
 
     // data object
     const movie = {
+        id: movieToEdit.id,
         title: title,
         director: director,
         release_date: releaseDate,

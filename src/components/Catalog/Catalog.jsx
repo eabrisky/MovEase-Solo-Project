@@ -154,7 +154,7 @@ function Catalog() {
                         <tr key={movie?.id}>
                             <td><Link to='/movie' onClick={() => handleClick(movie.id)}>{movie?.title}</Link></td>
                             <td>{movie?.director}</td>
-                            <td>{movie?.release_date}</td>
+                            <td>{movie?.release_date.slice(0, 10)}</td>
                             <td>{movie?.genre}</td>
                             <td><button onClick={(event) => handleEdit(event, movie)}>Edit</button></td>
                             <td><button onClick={() => handleRemove(movie)}>Remove</button></td>
