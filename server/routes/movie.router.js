@@ -25,7 +25,8 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 
     pool
         .query(queryText, [req.user.id]) // end .query
-        .then(result => {                // console.log(`GET result: ${result.rows}`);
+        .then(result => {
+            // console.log('GET result: ', result.rows);
             res.send(result.rows);
         }) // end .then
         .catch(err => {
@@ -100,7 +101,11 @@ router.post('/', rejectUnauthenticated, (req, res) => {
                     VALUES ($1, $2);
                     `;
 
-                    pool
+                    console.log('users_movies query createdMovieId: ', createdMovieId);
+                    
+                    console.log('users_movies query req.user: ', req.user);
+                    
+                    pool // users_movies query
                         .query(usersMoviesQuery, [req.user.id, createdMovieId]) // end .query
                         .then(() => console.log(`users_movies table updated successfully!`)) // end .then
                         .catch((err) => {
@@ -138,20 +143,22 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
         .query(queryText, [movie.title, movie.director, movie.image, movie.synopsis, movie.release_date, req.user.id, movie.id])
         .then(result => {
 
-            // const genreQuery =`
-            // UPDATE "movies_genres"
-            // SET "genre_id" = $1
-            // WHERE "movie_id" = $2;
-            // `;
+            console.log('put route genre query req.body/movie: ', movie);
 
-            // console.log(result);
+            const genreQuery =`
+            UPDATE "movies_genres"
+            SET "genre_id" = $1
+            WHERE "movie_id" = $2;
+            `;
 
-            // pool
-            //     .query(genreQuery, [movie.genre, movie.id]) // end .query
-            //     .then(() => res.sendStatus(200)) // end .then
-            //     .catch(err => {
-            //         console.log('put genre error: ', err);
-            //     }) // end catch, end genre pool
+            console.log(result);
+
+            pool
+                .query(genreQuery, [movie.genre_id, movie.id]) // end .query
+                .then(() => console.log('Genre update successful!')) // end .then
+                .catch(err => {
+                    console.log('put genre error: ', err);
+                }) // end catch, end genre pool
 
             // OK
             res.sendStatus(200);
@@ -165,32 +172,22 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
 
 router.delete('/:id', rejectUnauthenticated, (req, res) => {
 
-    console.log(`
-    You've made it to /api/movie/DELETE.
-    req.params:`, req.params);
+    console.log('req.params (movie id): ', req.params);
 
     console.log('router.delete req.user.id: ', req.user.id);
 
-
-    if (req.user.id == req.params.user_id) {
-
-        const queryText = `
+    const queryText = `
         DELETE FROM "users_movies"
         WHERE "user_id"=$1
-        `;
+    `;
 
-        pool
-            .query(queryText, [req.user.id]) // end .query
-            .then(() => res.sendStatus(200)) // end .then
-            .catch((err) => {
-                console.error(`ACK, WE COULDN'T REMOVE THAT FROM YOUR CATALOG!! ${err}`);
-                res.sendStatus(500);
-            }) // end .catch, end pool
-
-    } else {
-        // forbidden
-        res.sendStatus(403);
-    } // end if else
+    pool
+        .query(queryText, [req.user.id]) // end .query
+        .then(() => res.sendStatus(200)) // end .then
+        .catch((err) => {
+            console.error(`ACK, WE COULDN'T REMOVE THAT FROM YOUR CATALOG!! ${err}`);
+            res.sendStatus(500);
+        }) // end .catch, end pool
 
 }); // end router.delete
 
