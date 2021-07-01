@@ -75,7 +75,7 @@ function Catalog() {
         console.log('movie:', movie);
 
         dispatch({
-            type: 'EDIT_MOVIE',
+            type: 'MOVIE_TO_EDIT',
             payload: movie, 
         })
 
@@ -156,7 +156,7 @@ function Catalog() {
                             <td>{movie?.director}</td>
                             <td>{movie?.release_date}</td>
                             <td>{movie?.genre}</td>
-                            <td><button value={movie?.id} onClick={(event) => handleEdit(event, movie)}>Edit</button></td>
+                            <td><button onClick={(event) => handleEdit(event, movie)}>Edit</button></td>
                             <td><button onClick={() => handleRemove(movie)}>Remove</button></td>
                         </tr>
                     ))}

@@ -53,6 +53,7 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
     pool
         .query(queryText, [req.params.id]) // end .query
         .then(result => {
+            console.log('result.rows: ', result.rows);
             res.send(result.rows);
         }) // end .then
         .catch(err => {
@@ -66,6 +67,7 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
 router.post('/', rejectUnauthenticated, (req, res) => {
 
     const movie = req.body;
+    console.log('movie to create: ', req.body);
 
     const movieQuery = `
         INSERT INTO "movies" ("title", "director", "image", "synopsis", "release_date", "user_id")
@@ -77,7 +79,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
         .query(movieQuery, [movie.title, movie.director, movie.image, movie.synopsis, movie.release_date, req.user.id]) // end .query
         .then(result => {
             res.sendStatus(201);
-            // console.log(`Created movie: ${result.rows}`);
+            console.log('created movie: ', result.rows);
 
             // grab movie id after creating movie in db
             const createdMovieId = result.rows[0].id;
@@ -117,17 +119,35 @@ router.post('/', rejectUnauthenticated, (req, res) => {
 
 }); // end router.post
 
-// router.put('/:id', rejectUnauthenticated, (req, res) => {
-//     const queryText = `
-//     UPDATE ;
-//     `;
-// }); // end router.put
+router.put('/:id', rejectUnauthenticated, (req, res) => {
 
-router.delete('/:id/:user_id', rejectUnauthenticated, (req, res) => {
+    console.log('put req.params: ', req.params);
+    console.log('put req.body: ', req.body);
+    console.log('put req.user: ', req.user);
 
-    console.log(`You've made it to /api/movie/DELETE. req.params: ${req.params}, ${req.user}`);
+    // let movieId = req.params.id;
+    // let movie = req.body;
 
-    if(req.user.id == req.params.user_id){
+    // const queryText = `
+    // UPDATE "movies"
+    // SET ("title" = $1, "director" = $2, "image" = $3, "synopsis" = $4, "release_date" = $5, "user_id" = $6)
+    // WHERE "movie".id = $7;
+    // `;
+
+    // pool
+    //     .query(queryText, [movie.title, movie.director, movie.image, movie.synopsis, movie.release_date, req.user.id])
+}); // end router.put
+
+router.delete('/:id', rejectUnauthenticated, (req, res) => {
+
+    console.log(`
+    You've made it to /api/movie/DELETE.
+    req.params:`, req.params);
+
+    console.log('router.delete req.user.id: ', req.user.id);
+
+
+    if (req.user.id == req.params.user_id) {
 
         const queryText = `
         DELETE FROM "users_movies"
