@@ -67,9 +67,20 @@ function Catalog() {
         dispatch({ type: 'GET_MOVIES' });
     }, []);
 
-    const handleEdit = () => {
-        // console.log(user.id);
-        console.log(`HI`);
+    const handleEdit = (event, movie) => {
+        
+        event.preventDefault();
+
+        console.log(`event.target.value: ${event.target.value}`);
+        console.log(`movie: ${movie}`);
+
+        // dispatch({
+        //     type: 'EDIT_MOVIE',
+        //     payload: event.target.value, 
+        // })
+
+        // // navigate user to edit view
+        // history.push('/edit');
 
     } // end handleEdit
 
@@ -84,32 +95,32 @@ function Catalog() {
             showCancelButton: true,
             confirmButtonText: 'I HATE THIS MOVIE I NEVER WANNA SEE IT AGAIN!!',
             cancelButtonText: 'Maybe I should give it a rewatch...'
-          }) // end.fire
-          .then((result) => {
-            if (result.isConfirmed) {
+        }) // end.fire
+            .then((result) => {
+                if (result.isConfirmed) {
 
-                // dispatch
-                dispatch({
-                    type: 'REMOVE_MOVIE',
-                    payload: movie
-                })
+                    // dispatch
+                    dispatch({
+                        type: 'REMOVE_MOVIE',
+                        payload: movie
+                    })
 
-              Swal.fire(
-                'Removed!',
-                'This movie has been removed from your catalog.',
-                'success'
-              )
-            // For more information about handling dismissals please visit
-            // https://sweetalert2.github.io/#handling-dismissals
-            } // end if
-            else if (result.dismiss === Swal.DismissReason.cancel) {
-              Swal.fire(
-                'Cancelled',
-                'Phew That was a CLOSE one!',
-                'error'
-              )
-            } // end else if
-          }) // end .then, end Swal
+                    Swal.fire(
+                        'Removed!',
+                        'This movie has been removed from your catalog.',
+                        'success'
+                    )
+                    // For more information about handling dismissals please visit
+                    // https://sweetalert2.github.io/#handling-dismissals
+                } // end if
+                else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire(
+                        'Cancelled',
+                        'Phew That was a CLOSE one!',
+                        'error'
+                    )
+                } // end else if
+            }) // end .then, end Swal
 
     } // end handleRemove
 
@@ -137,23 +148,31 @@ function Catalog() {
                     </tr>
                 </thead>
                 <tbody>
-                {movies?.map(movie => (
-                    <tr key={movie?.id}>
-                        <td><Link to='/movie' onClick={() => handleClick(movie.id)}>{movie?.title}</Link></td>
-                        <td>{movie?.director}</td>
-                        <td>{movie?.release_date}</td>
-                        <td>{movie?.genre}</td>
-                        <td><button onClick={() => handleEdit(movie)}>Edit</button></td>
-                        <td><button onClick={() => handleRemove(movie)}>Remove</button></td>
-                    </tr>
+                    {movies?.map(movie => (
+                        <tr key={movie?.id}>
+                            <td><Link to='/movie' onClick={() => handleClick(movie.id)}>{movie?.title}</Link></td>
+                            <td>{movie?.director}</td>
+                            <td>{movie?.release_date}</td>
+                            <td>{movie?.genre}</td>
+                            <td><button value={movie?.id} onClick={(event, movie) => handleEdit(event, movie)}>Edit</button></td>
+                            <td><button onClick={() => handleRemove(movie)}>Remove</button></td>
+                        </tr>
                     ))}
+
+                    <div>
+                        {movies?.map(movie => {
+                            <div key={movie?.id}>
+                                <button value={movie?.id} onClick={(movie) => handleEdit(movie)}>Edit</button>
+                            </div>
+                        })}
+                    </div>
                 </tbody>
             </table>
 
             <div className="table">
 
             </div>
-                
+
         </div>
 
     ); // end return

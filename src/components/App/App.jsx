@@ -21,6 +21,7 @@ import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import Catalog from '../Catalog/Catalog';
 import Movie from '../Movie/Movie';
+import Edit from '../Edit/Edit';
 import Form from '../Form/Form';
 import Search from '../Search/Search';
 import Dashboard from '../Dashboard/Dashboard';
@@ -78,6 +79,13 @@ function App() {
             path="/catalog"
           >
             <Catalog />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/edit"
+          >
+            <Edit />
           </ProtectedRoute>
 
           <ProtectedRoute

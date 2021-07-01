@@ -35,6 +35,10 @@ function Nav() {
           Movie
         </Link>
 
+        <Link className="navLInk" to="/edit">
+          Edit
+        </Link>
+
         <Link className="navLink" to="/form">
           Form
         </Link>
