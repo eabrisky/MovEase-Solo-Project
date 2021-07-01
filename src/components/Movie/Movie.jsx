@@ -24,6 +24,7 @@ function Movie() {
                         <img src={movie?.image} alt={movie?.title} />
                         <h2>{movie?.director}</h2>
                         <h3>{movie?.release_date}</h3>
+                        <h3>{movie?.genre}</h3>
                         <p>{movie?.synopsis}</p>
                     </div>
                 )

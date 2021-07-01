@@ -127,7 +127,7 @@ function Form() {
                 <TextField
                     required={true}
                     id="standard-basic"
-                    label="title"
+                    label="Title"
                     onChange={handleChangeTitle}
                     value={title}
                 />
@@ -136,7 +136,7 @@ function Form() {
                 <TextField
                     required={true}
                     id="standard-basic"
-                    label="director"
+                    label="Director"
                     onChange={handleChangeDirector}
                     value={director}
                 />
@@ -145,7 +145,7 @@ function Form() {
                 <TextField
                     required={true}
                     id="standard-basic"
-                    label="release"
+                    label="Release Date"
                     onChange={handleChangeReleaseDate}
                     value={releaseDate}
                 />
@@ -155,7 +155,7 @@ function Form() {
                 <TextField
                     required={true}
                     id="standard-basic"
-                    label="poster"
+                    label="Poster"
                     onChange={handleChangePoster}
                     value={poster}
                 />
@@ -164,9 +164,9 @@ function Form() {
                 <TextField
                     required={true}
                     id="standard-multiline-flexible"
-                    label="synopsis"
+                    label="Synopsis"
                     multiline
-                    rowsMax={4}
+                    rowsMax={6}
                     onChange={handleChangeSynopsis}
                     value={synopsis}
                 />
