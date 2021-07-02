@@ -1,10 +1,22 @@
 .catalog {
-    background: rgb(255, 255, 255, 0.25);
+    background: rgb(255, 255, 255, 0.3);
+    text-align: center;
+    margin: auto;
+    padding: 20px;
+    width: 50%;
+    border-radius: 4px 4px 4px 4px;
 }
 
 table {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.564);
     border-radius: 4px 4px 4px 4px;
+    margin: auto;
+    padding: 10px;
+    width: 100%;
+}
+
+.thead {
+    border-bottom: solid black;
 }
 
 td:hover {

@@ -64,9 +64,7 @@ function Catalog() {
 
     } // end handleEdit
 
-    const handleRemove = (event, movie) => {
-
-        event.preventDefault();
+    const handleRemove = (movie) => {
 
         console.log('movie: ', movie);
 
@@ -89,11 +87,15 @@ function Catalog() {
                         payload: movie
                     })
 
+                    
+
                     Swal.fire(
                         'Removed!',
                         'This movie has been removed from your catalog.',
                         'success'
                     )
+
+                    dispatch({ type: 'GET_MOVIES' });
                     // For more information about handling dismissals please visit
                     // https://sweetalert2.github.io/#handling-dismissals
                 } // end if
@@ -121,7 +123,7 @@ function Catalog() {
         <div className="catalog">
             <h1>Catalog</h1>
             <table>
-                <thead>
+                <thead className="thead">
                     <tr>
                         <th>Title</th>
                         <th>Director</th>
@@ -139,7 +141,7 @@ function Catalog() {
                             <td>{movie?.release_date.slice(0, 10)}</td>
                             <td>{movie?.genre}</td>
                             <td><button onClick={(event) => handleEdit(event, movie)}>Edit</button></td>
-                            <td><button onClick={(event) => handleRemove(event, movie)}>Remove</button></td>
+                            <td><button onClick={() => handleRemove(movie)}>Remove</button></td>
                         </tr>
                     ))}
                 </tbody>

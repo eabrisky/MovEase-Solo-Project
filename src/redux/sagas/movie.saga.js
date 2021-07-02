@@ -63,7 +63,7 @@ function* removeMovie(action) {
     catch(err){
         console.error(`Error removing movie =( ${err}`);
     }
-}
+} // end removeMovie fn*
 
 // watcherSaga
 function* movieSaga() {

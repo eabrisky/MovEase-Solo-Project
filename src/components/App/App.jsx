@@ -163,7 +163,7 @@ function App() {
             // - else shows LandingPage at "/home"
             exact
             path="/home"
-            authRedirect="/user"
+            authRedirect="/catalog"
           >
             <LandingPage />
           </ProtectedRoute>

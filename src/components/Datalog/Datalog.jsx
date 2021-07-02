@@ -1,8 +1,9 @@
-import './Datalog.css';
-
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
+// css
+import './Datalog.css';
 
 // sweetalert2
 import Swal from 'sweetalert2';
@@ -200,10 +201,12 @@ EnhancedTableToolbar.propTypes = {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: '100%',
+        width: '50%',
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
     paper: {
-        width: '100%',
+        width: 'auto',
         marginBottom: theme.spacing(2),
     },
     table: {
@@ -440,7 +443,9 @@ function Datalog() {
             </Paper>
             <FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense} />}
+            // onChange will be the toggle control for table view and carousel view
                 label="Dense padding"
+                className="toggle"
             />
         </div>
     );
