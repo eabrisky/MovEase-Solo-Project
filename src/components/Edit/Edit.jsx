@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 // inputs
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
 function Edit() {
 
     const dispatch = useDispatch();
+    const history = useHistory();
     const movieToEdit = useSelector(store => store.edit);
 
     movieToEdit
@@ -29,7 +31,7 @@ function Edit() {
     // local state
     const [title, setTitle] = useState(movieToEdit.title);
     const [director, setDirector] = useState(movieToEdit.director);
-    const [releaseDate, setReleaseDate] = useState(movieToEdit.release_date);
+    const [releaseDate, setReleaseDate] = useState(movieToEdit.release_date.slice(0, 10));
     const [synopsis, setSynopsis] = useState(movieToEdit.synopsis);
     const [genre, setGenre] = useState(movieToEdit.genre_id);
     const [poster, setPoster] = useState(movieToEdit.image);
@@ -71,11 +73,31 @@ function Edit() {
         });
 
         // clear inputs
+        setTitle('');
+        setDirector('');
+        setReleaseDate('');
+        setSynopsis('');
+        setGenre(0);
+        setPoster('');
 
-        // navigate user to movie view to see movie
-        // OR to catalog view
+        // navigate to catalog view
+        history.push('/catalog');
 
     } // end handleSubmit
+
+    const handleCancel = () => {
+
+        // clear inputs
+        setTitle('');
+        setDirector('');
+        setReleaseDate('');
+        setSynopsis('');
+        setGenre(0);
+        setPoster('');
+
+        // go back
+        history.goBack();
+    } // end handleCancel
 
     // inputs
     const classes = useStyles();
@@ -195,6 +217,7 @@ function Edit() {
                 </div>
                 
                 <button type="submit">Submit</button>
+                <button onClick={handleCancel}>Cancel</button>
             </form>
         </div>
     ) // end return
