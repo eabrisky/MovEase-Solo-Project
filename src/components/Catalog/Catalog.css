@@ -19,6 +19,10 @@ table {
     border-bottom: solid black;
 }
 
+tr:hover {
+    opacity: .5;
+}
+
 td:hover {
-    opacity: .2;
+    color:white;
 }
