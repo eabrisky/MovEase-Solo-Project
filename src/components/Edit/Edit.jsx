@@ -29,8 +29,6 @@ function Edit() {
     const history = useHistory();
     const movieToEdit = useSelector(store => store.edit);
 
-    movieToEdit
-
     // local state
     const [title, setTitle] = useState(movieToEdit.title);
     const [director, setDirector] = useState(movieToEdit.director);
