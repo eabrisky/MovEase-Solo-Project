@@ -31,23 +31,23 @@ function Movie() {
 
     return (
 
-        <div>
+        <div className="movieContainer">
 
             {movie?.map(movie => {
                 return (
                     <div>
                     <div key={movie?.id}>
-                        <h1>{movie?.title}</h1>
-                        <img src={movie?.image} alt={movie?.title} />
-                        <h2>{movie?.director}</h2>
-                        <h3>{movie?.release_date.slice(0, 10)}</h3>
-                        <h3>{movie?.genre}</h3>
-                        <p>{movie?.synopsis}</p>
+                        <h1 className="textArea">{movie?.title}</h1>
+                        <img src={movie?.image} alt={movie?.title} className="poster"/>
+                        <h2 className="textArea">{movie?.director}</h2>
+                        <h3 className="textArea">{movie?.release_date.slice(0, 10)}</h3>
+                        <h3 className="textArea">{movie?.genre}</h3>
+                        <p className="textArea">{movie?.synopsis}</p>
                     </div>
-                    <button onClick={(event) => handleEdit(event, movie)}>
+                    <button onClick={(event) => handleEdit(event, movie)} className="button">
                         Edit
                     </button>
-                    <button onClick={() => history.push('/catalog')}>Catalog</button>
+                    <button onClick={() => history.push('/catalog')} className="button">Catalog</button>
                     </div>
                 )
             })}
