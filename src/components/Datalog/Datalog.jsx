@@ -1,7 +1,13 @@
 import './Datalog.css';
 
+import React, { useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+// sweetalert2
+import Swal from 'sweetalert2';
+
 // table
-import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -167,7 +173,7 @@ const EnhancedTableToolbar = (props) => {
                 </Typography>
             ) : (
                 <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-                    Nutrition
+                    Catalog
                 </Typography>
             )}
 
@@ -216,14 +222,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Datalog() {
+function Datalog() {
+
+    // table consts
     const classes = useStyles();
-    const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
-    const [selected, setSelected] = React.useState([]);
-    const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [order, setOrder] = useState('asc');
+    const [orderBy, setOrderBy] = useState('calories');
+    const [selected, setSelected] = useState([]);
+    const [page, setPage] = useState(0);
+    const [dense, setDense] = useState(false);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -277,6 +285,88 @@ export default function Datalog() {
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
+
+
+    // movies
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const movies = useSelector(store => store.movies);
+
+    console.log(movies);
+
+    useEffect(() => {
+        dispatch({ type: 'GET_MOVIES' });
+    }, []);
+
+    const handleEdit = (event, movie) => {
+        
+        event.preventDefault();
+
+        console.log(`event.target.value: ${event.target.value}`);
+        console.log('movie:', movie);
+
+        dispatch({
+            type: 'MOVIE_TO_EDIT',
+            payload: movie, 
+        })
+
+        // // navigate user to edit view
+        history.push('/edit');
+
+    } // end handleEdit
+
+    const handleRemove = (event, movie) => {
+
+        event.preventDefault();
+
+        console.log('movie: ', movie);
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `This will permanently remove ${movie.title} from your catalog!`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'I HATE THIS MOVIE I NEVER WANNA SEE IT AGAIN!!',
+            cancelButtonText: 'Maybe I should give it a rewatch...'
+        }) // end.fire
+            .then((result) => {
+                if (result.isConfirmed) {
+
+                    console.log(movie);
+
+                    // dispatch
+                    dispatch({
+                        type: 'REMOVE_MOVIE',
+                        payload: movie
+                    })
+
+                    Swal.fire(
+                        'Removed!',
+                        'This movie has been removed from your catalog.',
+                        'success'
+                    )
+                    // For more information about handling dismissals please visit
+                    // https://sweetalert2.github.io/#handling-dismissals
+                } // end if
+                else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire(
+                        'Cancelled',
+                        'Phew That was a CLOSE one!',
+                        'error'
+                    )
+                } // end else if
+            }) // end .then, end Swal
+
+    } // end handleRemove
+
+    const handleFeature = (movieId) => {
+        console.log(`movie id: ${movieId}`);
+        dispatch({
+            type: 'FEATURE_MOVIE',
+            payload: movieId
+        })
+    }
+
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
@@ -323,8 +413,8 @@ export default function Datalog() {
                                             <TableCell component="th" id={labelId} scope="row" padding="none">
                                                 {row.name}
                                             </TableCell>
-                                            <TableCell align="right">{row.calories}</TableCell>
-                                            <TableCell align="right">{row.fat}</TableCell>
+                                            <TableCell align="right">{movies.title}</TableCell>
+                                            <TableCell align="right">{movies.director}</TableCell>
                                             <TableCell align="right">{row.carbs}</TableCell>
                                             <TableCell align="right">{row.protein}</TableCell>
                                         </TableRow>
@@ -339,7 +429,7 @@ export default function Datalog() {
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
+                    rowsPerPageOptions={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
                     component="div"
                     count={rows.length}
                     rowsPerPage={rowsPerPage}
@@ -355,3 +445,5 @@ export default function Datalog() {
         </div>
     );
 }
+
+export default Datalog;

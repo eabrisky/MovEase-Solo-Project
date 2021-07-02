@@ -108,13 +108,13 @@ function Catalog() {
 
     } // end handleRemove
 
-    const handleClick = (movieId) => {
+    const handleFeature = (movieId) => {
         console.log(`movie id: ${movieId}`);
         dispatch({
             type: 'FEATURE_MOVIE',
             payload: movieId
         })
-    }
+    } // end handleFeature
 
     return (
 
@@ -134,7 +134,7 @@ function Catalog() {
                 <tbody>
                     {movies?.map(movie => (
                         <tr key={movie?.id}>
-                            <td><Link to='/movie' onClick={() => handleClick(movie.id)}>{movie?.title}</Link></td>
+                            <td><Link to='/movie' onClick={() => handleFeature(movie.id)}>{movie?.title}</Link></td>
                             <td>{movie?.director}</td>
                             <td>{movie?.release_date.slice(0, 10)}</td>
                             <td>{movie?.genre}</td>
