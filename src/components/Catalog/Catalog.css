@@ -1,0 +1,12 @@
+.catalog {
+    background: rgb(255, 255, 255, 0.25);
+}
+
+table {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 4px 4px 4px 4px;
+}
+
+td:hover {
+    opacity: .2;
+}
