@@ -84,13 +84,15 @@ function Catalog() {
 
     } // end handleEdit
 
-    const handleRemove = (movie) => {
+    const handleRemove = (event, movie) => {
+
+        event.preventDefault();
 
         console.log('movie: ', movie);
 
         Swal.fire({
             title: 'Are you sure?',
-            text: 'This will permanently remove this movie from your catalog!',
+            text: `This will permanently remove ${movie.title} from your catalog!`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'I HATE THIS MOVIE I NEVER WANNA SEE IT AGAIN!!',
@@ -157,7 +159,7 @@ function Catalog() {
                             <td>{movie?.release_date.slice(0, 10)}</td>
                             <td>{movie?.genre}</td>
                             <td><button onClick={(event) => handleEdit(event, movie)}>Edit</button></td>
-                            <td><button onClick={() => handleRemove(movie)}>Remove</button></td>
+                            <td><button onClick={(event) => handleRemove(event, movie)}>Remove</button></td>
                         </tr>
                     ))}
                 </tbody>
