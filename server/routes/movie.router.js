@@ -39,6 +39,9 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 // get featured movie
 router.get('/:id', rejectUnauthenticated, (req, res) => {
 
+    console.log('req.params.id: ', req.params.id);
+    
+
     const queryText = `
     SELECT "movies".*,
     STRING_AGG("genres".name, ', ')

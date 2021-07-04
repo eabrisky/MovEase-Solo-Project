@@ -10,19 +10,30 @@ function Movie() {
     const dispatch = useDispatch();
     const history = useHistory();
     const movie = useSelector(store => store.featuredMovie);
-    const [hidden, setHidden] = useState(true);
+    const [hidden, setHidden] = useState(false);
+    const [dog, setDog] = useState('dragons');
 
     const inputHandler = () => {
-        if (hidden === false){
+
+        if (hidden === false) {
             return (
-                <p onClick={() => setHidden(!hidden)}>HI</p>
+                <p className="test" onClick={() => setHidden(!hidden)}>{dog}</p>
             )
         } else {
             return (
-                <p onClick={() => setHidden(!hidden)}>BYE</p>
+                <form onSubmit={handleSubmit}>
+                    <input value={dog} onChange={(event) => {setDog(event.target.value)}} />
+                    <button type="submit">Save</button>
+                    <button onClick={() => {setHidden(!hidden)}}>Cancel</button>
+                </form>
             )
         }
+
     } // end inputHandler
+
+    const handleSubmit = () => {
+        setHidden(!hidden);
+    }
 
     console.log(movie);
 
@@ -42,36 +53,40 @@ function Movie() {
 
     } // end handleEdit
 
-        return (
+    return (
 
-            <div className="movieContainer">
+        <div className="movieContainer">
 
+            <div>
                 {movie?.map(movie => {
                     return (
                         <div>
-                            <div key={movie?.id}>
-                                <h1 className="textArea title">{movie?.title}</h1>
-                                <img src={movie?.image} alt={movie?.title} className="poster" />
-                                <h2 className="textArea director">{movie?.director}</h2>
-                                <h3 className="textArea releaseDate">Released {movie?.release_date.slice(0, 10)}</h3>
-                                <h3 className="textArea genre">{movie?.genre}</h3>
-                                <p className="textArea synopsis">{movie?.synopsis}</p>
+                            <div>
+                                <div key={movie?.id}>
+                                    <h1 className="textArea title">{movie?.title}</h1>
+                                    <img src={movie?.image} alt={movie?.title} className="poster" />
+                                    <h2 className="textArea director">{movie?.director}</h2>
+                                    <h3 className="textArea releaseDate">Released {movie?.release_date.slice(0, 10)}</h3>
+                                    <h3 className="textArea genre">{movie?.genre}</h3>
+                                    <p className="textArea synopsis">{movie?.synopsis}</p>
+                                </div>
+                                <button onClick={(event) => handleEdit(event, movie)} className="button">
+                                    Edit
+                                </button>
+                                <button onClick={() => history.push('/catalog')} className="button">Catalog</button>
                             </div>
-                            <button onClick={(event) => handleEdit(event, movie)} className="button">
-                                Edit
-                            </button>
-                            <button onClick={() => history.push('/catalog')} className="button">Catalog</button>
+
+                            <div>
+                                {inputHandler(movie?.id)}
+                            </div>
                         </div>
                     )
                 })}
-
-                <div>
-                    {inputHandler}
-                </div>
-
             </div>
 
-        ); // end return
+        </div>
+
+    ); // end return
 
 } // end return
 export default Movie;
