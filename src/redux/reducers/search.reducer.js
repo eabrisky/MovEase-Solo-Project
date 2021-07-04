@@ -1,7 +1,5 @@
-const movies = (state = [], action) => {
+const allMovies = (state = [], action) => {
     switch(action.type) {
-        case 'SET_MOVIES':
-            return action.payload;
         case 'SET_ALL_MOVIES':
             return action.payload;
         default:
@@ -9,4 +7,4 @@ const movies = (state = [], action) => {
     }
 };
 
-export default movies;
+export default allMovies;

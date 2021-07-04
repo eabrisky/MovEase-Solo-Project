@@ -12,9 +12,36 @@ function* getMovies() {
         });
     }
     catch(err){
-        console.error(`Error getting movies: ${err}`);
+        console.error('Error getting movies: ', err);
     }
 } // end getMovies fn*
+
+function* getAllMovies() {
+    try{
+        const response = yield axios.get('/api/search');
+        yield put({
+            type: 'SET_ALL_MOVIES',
+            payload: response.data
+        });
+    }
+    catch(err){
+        console.log('Error getting all movies: ', err);
+    }
+} // end getAllMovies* fn
+
+function* sendQuery(action){
+    try{
+        const response = yield axios.get('/api/search');
+
+        yield put({
+            type: 'RETURN_SEARCH',
+            payload: response.data
+        });
+    }
+    catch(err){
+        console.error('Error returning search: ', err);
+    }
+} // end sendQuery fn*
 
 function* featureMovie(action){
     try{
@@ -68,6 +95,8 @@ function* removeMovie(action) {
 // watcherSaga
 function* movieSaga() {
     yield takeEvery('GET_MOVIES', getMovies);
+    yield takeEvery('GET_ALL_MOVIES', getAllMovies);
+    yield takeEvery('SEND_QUERY', sendQuery);
     yield takeEvery('FEATURE_MOVIE', featureMovie);
     yield takeEvery('CREATE_MOVIE', createMovie);
     yield takeEvery('UPDATE_MOVIE', updateMovie);
