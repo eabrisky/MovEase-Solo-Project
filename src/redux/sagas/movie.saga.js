@@ -31,7 +31,7 @@ function* getAllMovies() {
 
 function* sendQuery(action){
     try{
-        const response = yield axios.get('/api/search');
+        const response = yield axios.get(`/api/search/?query=${action.payload.search}`);
 
         yield put({
             type: 'RETURN_SEARCH',

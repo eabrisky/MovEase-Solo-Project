@@ -16,9 +16,9 @@ function Search() {
     console.log('movies from store: ', movies);
 
 
-    useEffect(() => {
-        dispatch({ type: 'GET_ALL_MOVIES' })
-    }, []);
+    // useEffect(() => {
+    //     dispatch({ type: 'GET_ALL_MOVIES' })
+    // }, []);
 
     const handleChange = (event) => {
         event.preventDefault();
@@ -33,7 +33,7 @@ function Search() {
 
         dispatch({
             type: 'SEND_QUERY',
-            payload: searchQuery
+            payload: {search: searchQuery}
         })
 
         setSearchQuery('');

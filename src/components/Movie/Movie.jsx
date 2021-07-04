@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,6 +10,19 @@ function Movie() {
     const dispatch = useDispatch();
     const history = useHistory();
     const movie = useSelector(store => store.featuredMovie);
+    const [hidden, setHidden] = useState(true);
+
+    const inputHandler = () => {
+        if (hidden === false){
+            return (
+                <p onClick={() => setHidden(!hidden)}>HI</p>
+            )
+        } else {
+            return (
+                <p onClick={() => setHidden(!hidden)}>BYE</p>
+            )
+        }
+    } // end inputHandler
 
     console.log(movie);
 
@@ -28,9 +41,6 @@ function Movie() {
         history.push('/edit');
 
     } // end handleEdit
-
-
-    if (movie) {
 
         return (
 
@@ -55,24 +65,13 @@ function Movie() {
                     )
                 })}
 
+                <div>
+                    {inputHandler}
+                </div>
+
             </div>
 
         ); // end return
-
-    } else if (!movie) {
-        return (
-            <div className="noMovie">
-                <h2>Nothing showing!</h2>
-                <p>Please go back and select a movie from your catalog to view it here :D</p>
-            </div>
-        ) // end else if return
-    } else {
-        return(
-            <div className="default">
-                <h2>Woah, how did we get here? ...How do we get BACK!?</h2>
-            </div>
-        )
-    }
 
 } // end return
 export default Movie;
