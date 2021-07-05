@@ -6,9 +6,35 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
+    height: 750px;
 }
 
 .textArea {
-    background: rgb(255, 255, 255, .2);
+    background: rgb(255, 255, 255, .3);
     text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 15%;
+    border-radius: 4px 4px 4px 4px;
+}
+
+.director {
+    width: 10%;
+}
+
+.releaseDate {
+    width: 5%;
+}
+
+.genre {
+    width: 4%;
+}
+
+.synopsis {
+    background: rgba(255, 255, 255, 0.5);
+    width: 50%;
+}
+
+.test {
+    background: rgba(255, 255, 255, 0.5);
 }

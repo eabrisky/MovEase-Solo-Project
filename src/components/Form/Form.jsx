@@ -223,20 +223,19 @@ function Form() {
 
                 <div>
                     <Button
-                        variant="outlined"
+                        variant="contained"
+                        color="primary"
+                        type="submit"
+                    >
+                        Save
+                    </Button>
+                    <Button
+                        variant="contained"
                         color="secondary"
                         onClick={handleCancel}
                         type="button"
                     >
                         Cancel
-                    </Button>
-
-                    <Button
-                        variant="outlined"
-                        color="primary"
-                        type="submit"
-                    >
-                        Save
                     </Button>
                 </div>
 

@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+// css
+import './Edit.css';
+
 // inputs
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -26,12 +29,10 @@ function Edit() {
     const history = useHistory();
     const movieToEdit = useSelector(store => store.edit);
 
-    movieToEdit
-
     // local state
     const [title, setTitle] = useState(movieToEdit.title);
     const [director, setDirector] = useState(movieToEdit.director);
-    const [releaseDate, setReleaseDate] = useState(movieToEdit.release_date.slice(0, 10));
+    const [releaseDate, setReleaseDate] = useState(movieToEdit.release_date?.slice(0, 10));
     const [synopsis, setSynopsis] = useState(movieToEdit.synopsis);
     const [genre, setGenre] = useState(movieToEdit.genre_id);
     const [poster, setPoster] = useState(movieToEdit.image);
@@ -114,7 +115,7 @@ function Edit() {
     };
 
     return (
-        <div>
+        <div className="edit">
             <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">
 
                 {/* title */}
@@ -140,7 +141,7 @@ function Edit() {
                     defaultValue={releaseDate}
                     onChange={(event) => setReleaseDate(event.target.value)}
                 />
-                
+
                 {/* poster */}
                 <TextField
                     id="standard-basic"
@@ -148,29 +149,22 @@ function Edit() {
                     defaultValue={poster}
                     onChange={(event) => setPoster(event.target.value)}
                 />
-                
+
                 {/* synopsis */}
                 <TextField
                     id="standard-multiline-flexible"
                     label="Synopsis"
                     multiline
-                    rowsMax={6}
+                    rowsMax={4}
                     defaultValue={synopsis}
                     onChange={(event) => setSynopsis(event.target.value)}
                 />
 
-                {/* genre */}
-                {/* <TextField
-                    id="standard-basic"
-                    label="Genre"
-                    value={genre}
-                /> */}
-                
                 {/* genre selector button*/}
-                <div>
+                <div className="genreButton">
 
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         aria-controls="simple-menu"
                         aria-haspopup="true"
                         onClick={handleClick}
@@ -215,9 +209,12 @@ function Edit() {
                     </Menu>
 
                 </div>
+
+                <div>
+                    <Button className="save" type="submit" variant="contained">Save</Button>     
+                    <Button className="cancel" variant="contained" onClick={handleCancel}>Cancel</Button>
                 
-                <button type="submit">Submit</button>
-                <button onClick={handleCancel}>Cancel</button>
+                </div>
             </form>
         </div>
     ) // end return
