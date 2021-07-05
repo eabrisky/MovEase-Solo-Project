@@ -30,7 +30,7 @@ function Movie() {
     const movie = useSelector(store => store.featuredMovie);
 
     // local state
-    const [title, setTitle] = useState(movie.title);
+    const [title, setTitle] = useState(movie?.title);
     const [director, setDirector] = useState(movie.director);
     const [releaseDate, setReleaseDate] = useState(movie.release_date?.slice(0, 10));
     const [synopsis, setSynopsis] = useState(movie.synopsis);
@@ -49,28 +49,27 @@ function Movie() {
         image: poster
     } // end movie
 
-    const titleHandler = () => {
+    const titleHandler = (movie) => {
 
         if (hidden === false) {
             return (
-                <h1 onClick={() => setHidden(!hidden)}>AYYY</h1>
+                <h1 onClick={() => setHidden(!hidden)}>movie title here pls</h1>
             )
         } else {
             return (
-                // <form onSubmit={() => handleSubmit(movie)}>
-                //     <input value={dog} onChange={(event) => { setDog(event.target.value) }} />
-                //     <button type="submit">Save</button>
-                //     <button onClick={() => { setHidden(!hidden) }}>Cancel</button>
-                // </form>
-
-                <p>WOW</p>
+                <form onSubmit={() => handleSubmit(movie)}>
+                    <input value={title} onChange={(event) => { setTitle(event.target.value) }} />
+                    <button type="submit">Save</button>
+                    <button onClick={() => { setHidden(!hidden) }}>Cancel</button>
+                </form>
             )
         }
 
     } // end inputHandler
 
     const handleSubmit = (event, movie) => {
-        // console.log(movie);
+        event.preventDefault();
+        console.log(movie);
         setHidden(!hidden);
         dispatch({
             type: 'MOVIE_TO_EDIT',
@@ -107,7 +106,7 @@ function Movie() {
 
         <div className="movieContainer">
             <div>
-                {titleHandler}
+                {titleHandler(movie)}
             </div>
 
 
