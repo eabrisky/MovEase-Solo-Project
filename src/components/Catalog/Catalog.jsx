@@ -163,7 +163,7 @@ const EnhancedTableToolbar = (props) => {
 
             {numSelected > 0 ? (
                 <Tooltip title="Delete">
-                    <IconButton aria-label="delete">
+                    <IconButton aria-label="delete" onClick={() => console.log('wow, you pressed the delete button. so impressive...')}>
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
@@ -184,7 +184,7 @@ EnhancedTableToolbar.propTypes = {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: '50%',
+        width: '70%',
         marginLeft: 'auto',
         marginRight: 'auto'
     },
@@ -281,8 +281,12 @@ function Catalog() {
     console.log(movies);
 
     useEffect(() => {
-        dispatch({ type: 'GET_MOVIES' });
+        getMovies();
     }, []);
+
+    const getMovies = () => {
+        dispatch({ type: 'GET_MOVIES' });
+    }
 
     const handleEdit = (event, movie) => {
 
