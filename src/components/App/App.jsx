@@ -28,8 +28,6 @@ import Dashboard from '../Dashboard/Dashboard';
 
 import ImageUpload from '../ImageUpload/ImageUpload';
 
-import Datalog from '../Datalog/Datalog';
-
 import './App.css';
 
 function App() {
@@ -81,13 +79,6 @@ function App() {
             path="/catalog"
           >
             <Catalog />
-          </ProtectedRoute>
-
-          <ProtectedRoute
-            exact
-            path="/datalog"
-          >
-            <Datalog />
           </ProtectedRoute>
 
           <ProtectedRoute
