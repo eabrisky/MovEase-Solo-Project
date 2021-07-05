@@ -5,6 +5,24 @@ import { useDispatch, useSelector } from 'react-redux';
 // css
 import './Movie.css';
 
+// inputs
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+
+// drop-down menu from material-ui
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        '& .MuiTextField-root': {
+            margin: theme.spacing(1),
+            width: '25ch',
+        },
+    },
+}));
+
 function Movie() {
 
     const dispatch = useDispatch();
@@ -21,7 +39,7 @@ function Movie() {
             )
         } else {
             return (
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={() => handleSubmit(movie)}>
                     <input value={dog} onChange={(event) => {setDog(event.target.value)}} />
                     <button type="submit">Save</button>
                     <button onClick={() => {setHidden(!hidden)}}>Cancel</button>
@@ -31,7 +49,8 @@ function Movie() {
 
     } // end inputHandler
 
-    const handleSubmit = () => {
+    const handleSubmit = (event, movie) => {
+        // console.log(movie);
         setHidden(!hidden);
     }
 
