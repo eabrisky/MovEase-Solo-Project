@@ -31,8 +31,8 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-function createData(title, director, releaseDate, genre) {
-    return { title, director, releaseDate, genre };
+function createData(title, director, releaseDate, genre, edit, remove) {
+    return { title, director, releaseDate, genre, edit, remove };
 }
 
 function descendingComparator(a, b, orderBy) {
@@ -66,6 +66,8 @@ const headCells = [
     { id: 'director', numeric: true, disablePadding: false, label: 'Director' },
     { id: 'releaseDate', numeric: true, disablePadding: false, label: 'Release Date' },
     { id: 'genre', numeric: true, disablePadding: false, label: 'Genre' },
+    { id: 'edit', number: true, disablePadding: false, label: 'Edit' },
+    { id: 'remove', number: true, disablePadding: false, label: 'Remove '},
 ];
 
 function EnhancedTableHead(props) {
@@ -305,9 +307,7 @@ function Catalog() {
 
     } // end handleEdit
 
-    const handleRemove = (event, movie) => {
-
-        event.preventDefault();
+    const handleRemove = (movie) => {
 
         console.log('movie: ', movie);
 
@@ -406,6 +406,8 @@ function Catalog() {
                                             <TableCell align="right">{movie?.director}</TableCell>
                                             <TableCell align="right">{movie?.release_date?.slice(0, 10)}</TableCell>
                                             <TableCell align="right">{movie?.genre}</TableCell>
+                                            <TableCell align="right"><button onClick={(event) => handleEdit(event, movie)}>Edit</button></TableCell>
+                                            <TableCell align="right"><button onClick={() => handleRemove(movie)}>Remove</button></TableCell>
                                         </TableRow>
                                     );
                                 })}

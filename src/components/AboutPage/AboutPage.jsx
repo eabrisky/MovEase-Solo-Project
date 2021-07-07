@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
 // css
 import './AboutPage.css';
@@ -32,6 +33,7 @@ const useStyles = makeStyles({
 
 function AboutPage() {
 
+  const history = useHistory();
   const classes = useStyles();
   const [state, setState] = React.useState({
     Menu: false,
@@ -54,22 +56,54 @@ function AboutPage() {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
       <Divider />
       <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+
+        <ListItem button onClick={() => { history.push('/user') }}>
+          <ListItemIcon><InboxIcon /></ListItemIcon>
+          <ListItemText primary='Home' />
+        </ListItem>
+
+        <ListItem button onClick={() => { history.push('/catalog') }}>
+          <ListItemIcon><InboxIcon /></ListItemIcon>
+          <ListItemText primary='Catalog' />
+        </ListItem>
+
+        <ListItem button onClick={() => { history.push('/movie') }}>
+          <ListItemIcon><InboxIcon /></ListItemIcon>
+          <ListItemText primary='Movie' />
+        </ListItem>
+
+        <ListItem button onClick={() => { history.push('/edit') }}>
+          <ListItemIcon><MailIcon /></ListItemIcon>
+          <ListItemText primary='Edit' />
+        </ListItem>
+
+        <ListItem button onClick={() => { history.push('/form') }}>
+          <ListItemIcon><MailIcon /></ListItemIcon>
+          <ListItemText primary='Form' />
+        </ListItem>
+
+        {/* <ListItem button onClick={() => { history.push('/search') }}>
+          <ListItemIcon><MailIcon /></ListItemIcon>
+          <ListItemText primary='Search' />
+        </ListItem>
+
+        <ListItem button onClick={() => { history.push('/dashboard') }}>
+          <ListItemIcon><MailIcon /></ListItemIcon>
+          <ListItemText primary='Dashboard' />
+        </ListItem>
+
+        <ListItem button onClick={() => { history.push('/imageupload') }}>
+          <ListItemIcon><MailIcon /></ListItemIcon>
+          <ListItemText primary='Image Upload' />
+        </ListItem> */}
+
+        <ListItem button onClick={() => { history.push('/about') }}>
+          <ListItemIcon><MailIcon /></ListItemIcon>
+          <ListItemText primary='About' />
+        </ListItem>
+
       </List>
     </div>
   );
@@ -81,7 +115,7 @@ function AboutPage() {
       <div className="container">
         {['Menu'].map((anchor) => (
           <React.Fragment key={anchor}>
-            <div onClick={toggleDrawer(anchor, true)}>{anchor}</div>
+            <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
             <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)} onMouseLeave={toggleDrawer(anchor, false)}>
               {list(anchor)}
             </Drawer>
