@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 // css
 import './AboutPage.css';
@@ -16,6 +17,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import MenuIcon from '@material-ui/icons/Menu';
 
 const useStyles = makeStyles({
   list: {
@@ -33,6 +35,7 @@ const useStyles = makeStyles({
 
 function AboutPage() {
 
+  const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
   const [state, setState] = React.useState({
@@ -104,6 +107,11 @@ function AboutPage() {
           <ListItemText primary='About' />
         </ListItem>
 
+        <ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
+          <ListItemIcon><MailIcon /></ListItemIcon>
+          <ListItemText primary='Log Out' />
+        </ListItem>
+
       </List>
     </div>
   );
@@ -115,7 +123,7 @@ function AboutPage() {
       <div className="container">
         {['Menu'].map((anchor) => (
           <React.Fragment key={anchor}>
-            <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
+            <Button onClick={toggleDrawer(anchor, true)}><MenuIcon fontSize="small"/></Button>
             <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)} onMouseLeave={toggleDrawer(anchor, false)}>
               {list(anchor)}
             </Drawer>

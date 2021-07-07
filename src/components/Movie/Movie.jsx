@@ -9,17 +9,37 @@ import './Movie.css';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
+// drawer
+import clsx from 'clsx';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
+import MenuIcon from '@material-ui/icons/Menu';
+
 // drop-down menu from material-ui
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles((theme) => ({
+    // drop-down menu
     root: {
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
             width: '25ch',
         },
+    },
+    // drawer
+    list: {
+        width: 250,
+    },
+    fullList: {
+        width: 'auto',
     },
 }));
 
@@ -28,6 +48,85 @@ function Movie() {
     const dispatch = useDispatch();
     const history = useHistory();
     const movie = useSelector(store => store.featuredMovie);
+
+    // drawer consts and local state
+    const [state, setState] = React.useState({
+        Menu: false,
+    });
+
+    const toggleDrawer = (anchor, open) => (event) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+
+        setState({ ...state, [anchor]: open });
+    };
+
+    const list = (anchor) => (
+        <div
+            className={clsx(classes.list, {
+                [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+            })}
+            role="presentation"
+            onClick={toggleDrawer(anchor, false)}
+            onKeyDown={toggleDrawer(anchor, false)}
+        >
+            <Divider />
+            <List>
+
+                <ListItem button onClick={() => { history.push('/user') }}>
+                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemText primary='Home' />
+                </ListItem>
+
+                <ListItem button onClick={() => { history.push('/catalog') }}>
+                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemText primary='Catalog' />
+                </ListItem>
+
+                <ListItem button onClick={() => { history.push('/movie') }}>
+                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemText primary='Movie' />
+                </ListItem>
+
+                <ListItem button onClick={() => { history.push('/edit') }}>
+                    <ListItemIcon><MailIcon /></ListItemIcon>
+                    <ListItemText primary='Edit' />
+                </ListItem>
+
+                <ListItem button onClick={() => { history.push('/form') }}>
+                    <ListItemIcon><MailIcon /></ListItemIcon>
+                    <ListItemText primary='Form' />
+                </ListItem>
+
+                {/* <ListItem button onClick={() => { history.push('/search') }}>
+              <ListItemIcon><MailIcon /></ListItemIcon>
+              <ListItemText primary='Search' />
+            </ListItem>
+    
+            <ListItem button onClick={() => { history.push('/dashboard') }}>
+              <ListItemIcon><MailIcon /></ListItemIcon>
+              <ListItemText primary='Dashboard' />
+            </ListItem>
+    
+            <ListItem button onClick={() => { history.push('/imageupload') }}>
+              <ListItemIcon><MailIcon /></ListItemIcon>
+              <ListItemText primary='Image Upload' />
+            </ListItem> */}
+
+                <ListItem button onClick={() => { history.push('/about') }}>
+                    <ListItemIcon><MailIcon /></ListItemIcon>
+                    <ListItemText primary='About' />
+                </ListItem>
+
+                <ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
+                    <ListItemIcon><MailIcon /></ListItemIcon>
+                    <ListItemText primary='Log Out' />
+                </ListItem>
+
+            </List>
+        </div>
+    );
 
     // local state
     const [title, setTitle] = useState(movie?.title);
@@ -105,6 +204,18 @@ function Movie() {
     return (
 
         <div className="movieContainer">
+
+            <div className="container">
+                {['Menu'].map((anchor) => (
+                    <React.Fragment key={anchor}>
+                        <Button onClick={toggleDrawer(anchor, true)}><MenuIcon fontSize="small"/></Button>
+                        <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)} onMouseLeave={toggleDrawer(anchor, false)}>
+                            {list(anchor)}
+                        </Drawer>
+                    </React.Fragment>
+                ))}
+            </div>
+
             <div>
                 {titleHandler(movie)}
             </div>

@@ -5,6 +5,18 @@ import { useHistory } from 'react-router-dom';
 // css
 import './Form.css';
 
+// drawer
+import clsx from 'clsx';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
+import MenuIcon from '@material-ui/icons/Menu';
+
 // inputs
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -15,11 +27,19 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles((theme) => ({
+    // drop-down menu
     root: {
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
             width: '25ch',
         },
+    },
+    // drawer
+    list: {
+        width: 250,
+    },
+    fullList: {
+        width: 'auto',
     },
 }));
 
@@ -27,6 +47,85 @@ function Form() {
 
     const dispatch = useDispatch();
     const history = useHistory();
+
+    // drawer consts and local state
+    const [state, setState] = React.useState({
+        Menu: false,
+    });
+
+    const toggleDrawer = (anchor, open) => (event) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+
+        setState({ ...state, [anchor]: open });
+    };
+
+    const list = (anchor) => (
+        <div
+            className={clsx(classes.list, {
+                [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+            })}
+            role="presentation"
+            onClick={toggleDrawer(anchor, false)}
+            onKeyDown={toggleDrawer(anchor, false)}
+        >
+            <Divider />
+            <List>
+
+                <ListItem button onClick={() => { history.push('/user') }}>
+                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemText primary='Home' />
+                </ListItem>
+
+                <ListItem button onClick={() => { history.push('/catalog') }}>
+                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemText primary='Catalog' />
+                </ListItem>
+
+                <ListItem button onClick={() => { history.push('/movie') }}>
+                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemText primary='Movie' />
+                </ListItem>
+
+                <ListItem button onClick={() => { history.push('/edit') }}>
+                    <ListItemIcon><MailIcon /></ListItemIcon>
+                    <ListItemText primary='Edit' />
+                </ListItem>
+
+                <ListItem button onClick={() => { history.push('/form') }}>
+                    <ListItemIcon><MailIcon /></ListItemIcon>
+                    <ListItemText primary='Form' />
+                </ListItem>
+
+                {/* <ListItem button onClick={() => { history.push('/search') }}>
+              <ListItemIcon><MailIcon /></ListItemIcon>
+              <ListItemText primary='Search' />
+            </ListItem>
+    
+            <ListItem button onClick={() => { history.push('/dashboard') }}>
+              <ListItemIcon><MailIcon /></ListItemIcon>
+              <ListItemText primary='Dashboard' />
+            </ListItem>
+    
+            <ListItem button onClick={() => { history.push('/imageupload') }}>
+              <ListItemIcon><MailIcon /></ListItemIcon>
+              <ListItemText primary='Image Upload' />
+            </ListItem> */}
+
+                <ListItem button onClick={() => { history.push('/about') }}>
+                    <ListItemIcon><MailIcon /></ListItemIcon>
+                    <ListItemText primary='About' />
+                </ListItem>
+
+                <ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
+                    <ListItemIcon><MailIcon /></ListItemIcon>
+                    <ListItemText primary='Log Out' />
+                </ListItem>
+
+            </List>
+        </div>
+    );
 
     // local state variables
     const [title, setTitle] = useState('');
@@ -119,127 +218,142 @@ function Form() {
 
     return (
 
-        <div className="form">
+        <div>
 
-            <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">
+            <div className="container">
+                {['Menu'].map((anchor) => (
+                    <React.Fragment key={anchor}>
+                        <Button onClick={toggleDrawer(anchor, true)}><MenuIcon fontSize="small"/></Button>
+                        <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)} onMouseLeave={toggleDrawer(anchor, false)}>
+                            {list(anchor)}
+                        </Drawer>
+                    </React.Fragment>
+                ))}
+            </div>
 
-                {/* title */}
-                <TextField
-                    required={true}
-                    id="standard-basic"
-                    label="Title"
-                    onChange={handleChangeTitle}
-                    value={title}
-                />
+            <div className="form">
 
-                {/* director */}
-                <TextField
-                    required={true}
-                    id="standard-basic"
-                    label="Director"
-                    onChange={handleChangeDirector}
-                    value={director}
-                />
+                <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">
 
-                {/* release date */}
-                <TextField
-                    required={true}
-                    id="standard-basic"
-                    label="Release Date"
-                    onChange={handleChangeReleaseDate}
-                    value={releaseDate}
-                />
+                    {/* title */}
+                    <TextField
+                        required={true}
+                        id="standard-basic"
+                        label="Title"
+                        onChange={handleChangeTitle}
+                        value={title}
+                    />
 
-                {/* poster */}
-                {/* will later be image upload area */}
-                <TextField
-                    required={true}
-                    id="standard-basic"
-                    label="Poster"
-                    onChange={handleChangePoster}
-                    value={poster}
-                />
+                    {/* director */}
+                    <TextField
+                        required={true}
+                        id="standard-basic"
+                        label="Director"
+                        onChange={handleChangeDirector}
+                        value={director}
+                    />
 
-                {/* synopsis */}
-                <TextField
-                    required={true}
-                    id="standard-multiline-flexible"
-                    label="Synopsis"
-                    multiline
-                    rowsMax={6}
-                    onChange={handleChangeSynopsis}
-                    value={synopsis}
-                />
+                    {/* release date */}
+                    <TextField
+                        required={true}
+                        id="standard-basic"
+                        label="Release Date"
+                        onChange={handleChangeReleaseDate}
+                        value={releaseDate}
+                    />
 
-                {/* genre */}
-                <div>
+                    {/* poster */}
+                    {/* will later be image upload area */}
+                    <TextField
+                        required={true}
+                        id="standard-basic"
+                        label="Poster"
+                        onChange={handleChangePoster}
+                        value={poster}
+                    />
 
-                    <Button
-                        variant="outlined"
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
-                        onClick={handleClick}
-                        type="button"
-                    >
-                        Genre
-                    </Button>
+                    {/* synopsis */}
+                    <TextField
+                        required={true}
+                        id="standard-multiline-flexible"
+                        label="Synopsis"
+                        multiline
+                        rowsMax={6}
+                        onChange={handleChangeSynopsis}
+                        value={synopsis}
+                    />
 
-                    <Menu
-                        id="simple-menu"
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={handleChange}
-                    >
-                        {/* MenuItem values correspond to genre_ids in movies_genres table in db */}
-                        <MenuItem onClick={handleChangeGenre} value="1">Action</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="2">Adventure</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="3">Animation</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="4">Biography</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="5">Comedy</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="6">Crime</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="7">Documentary</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="8">Drama</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="9">Family</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="10">Fantasy</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="11">Film Noir</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="12">History</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="13">Horror</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="14">Music</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="15">Musical</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="16">Mystery</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="17">Romance</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="18">Sci-Fi</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="19">Short Film</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="20">Sport</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="21">Superhero</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="22">Thriller</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="23">War</MenuItem>
-                        <MenuItem onClick={handleChangeGenre} value="24">Western</MenuItem>
+                    {/* genre */}
+                    <div>
 
-                    </Menu>
+                        <Button
+                            variant="outlined"
+                            aria-controls="simple-menu"
+                            aria-haspopup="true"
+                            onClick={handleClick}
+                            type="button"
+                        >
+                            Genre
+                        </Button>
 
-                </div>
+                        <Menu
+                            id="simple-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={Boolean(anchorEl)}
+                            onClose={handleChange}
+                        >
+                            {/* MenuItem values correspond to genre_ids in movies_genres table in db */}
+                            <MenuItem onClick={handleChangeGenre} value="1">Action</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="2">Adventure</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="3">Animation</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="4">Biography</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="5">Comedy</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="6">Crime</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="7">Documentary</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="8">Drama</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="9">Family</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="10">Fantasy</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="11">Film Noir</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="12">History</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="13">Horror</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="14">Music</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="15">Musical</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="16">Mystery</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="17">Romance</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="18">Sci-Fi</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="19">Short Film</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="20">Sport</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="21">Superhero</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="22">Thriller</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="23">War</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="24">Western</MenuItem>
 
-                <div>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                    >
-                        Save
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={handleCancel}
-                        type="button"
-                    >
-                        Cancel
-                    </Button>
-                </div>
+                        </Menu>
 
-            </form>
+                    </div>
+
+                    <div>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                        >
+                            Save
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={handleCancel}
+                            type="button"
+                        >
+                            Cancel
+                        </Button>
+                    </div>
+
+                </form>
+
+            </div>
 
         </div>
 
