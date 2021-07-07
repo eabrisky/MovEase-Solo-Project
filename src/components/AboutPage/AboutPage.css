@@ -1,0 +1,7 @@
+.container {
+    background: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    margin-left: auto;
+    width: 2%;
+    border-radius: 60px 0px 0px 60px;
+}

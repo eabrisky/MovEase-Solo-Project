@@ -1,5 +1,8 @@
 import React from 'react';
 
+// css
+import './AboutPage.css';
+
 // drawer
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,10 +34,7 @@ function AboutPage() {
 
   const classes = useStyles();
   const [state, setState] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
+    Menu: false,
   });
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -72,22 +72,22 @@ function AboutPage() {
         ))}
       </List>
     </div>
-  );  
+  );
 
   return (
 
-    <div className="container">
+    <div>
 
-<div>
-      {['left', 'right', 'top', 'bottom'].map((anchor) => (
-        <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
-          <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)}>
-            {list(anchor)}
-          </Drawer>
-        </React.Fragment>
-      ))}
-    </div>
+      <div className="container">
+        {['Menu'].map((anchor) => (
+          <React.Fragment key={anchor}>
+            <div onClick={toggleDrawer(anchor, true)}>{anchor}</div>
+            <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)} onMouseLeave={toggleDrawer(anchor, false)}>
+              {list(anchor)}
+            </Drawer>
+          </React.Fragment>
+        ))}
+      </div>
 
       <div>
         <p>This about page is for anyone to read!</p>
