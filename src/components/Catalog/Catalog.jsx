@@ -8,6 +8,18 @@ import './Catalog.css';
 // sweetalert2
 import Swal from 'sweetalert2';
 
+//drawer
+import Drawer from '@material-ui/core/Drawer';
+import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
+import MenuIcon from '@material-ui/icons/Menu';
+
 // table
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -67,7 +79,7 @@ const headCells = [
     { id: 'releaseDate', numeric: true, disablePadding: false, label: 'Release Date' },
     { id: 'genre', numeric: true, disablePadding: false, label: 'Genre' },
     { id: 'edit', number: true, disablePadding: false, label: 'Edit' },
-    { id: 'remove', number: true, disablePadding: false, label: 'Remove '},
+    { id: 'remove', number: true, disablePadding: false, label: 'Remove ' },
 ];
 
 function EnhancedTableHead(props) {
@@ -208,11 +220,19 @@ const useStyles = makeStyles((theme) => ({
         top: 20,
         width: 1,
     },
+
+    // drawer
+    list: {
+        width: 250,
+    },
+    fullList: {
+        width: 'auto',
+    },
 }));
 
 function Catalog() {
 
-    // table consts
+    // table consts and local state
     const classes = useStyles();
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('director');
@@ -221,6 +241,87 @@ function Catalog() {
     const [dense, setDense] = useState(false);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
+    // drawer local state
+    const [state, setState] = React.useState({
+        Menu: false,
+    });
+
+    // drawer
+    const toggleDrawer = (anchor, open) => (event) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+
+        setState({ ...state, [anchor]: open });
+    };
+
+    const list = (anchor) => (
+        <div
+            className={clsx(classes.list, {
+                [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+            })}
+            role="presentation"
+            onClick={toggleDrawer(anchor, false)}
+            onKeyDown={toggleDrawer(anchor, false)}
+        >
+            <Divider />
+            <List>
+
+                <ListItem button onClick={() => { history.push('/user') }}>
+                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemText primary='Home' />
+                </ListItem>
+
+                <ListItem button onClick={() => { history.push('/catalog') }}>
+                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemText primary='Catalog' />
+                </ListItem>
+
+                <ListItem button onClick={() => { history.push('/movie') }}>
+                    <ListItemIcon><InboxIcon /></ListItemIcon>
+                    <ListItemText primary='Movie' />
+                </ListItem>
+
+                <ListItem button onClick={() => { history.push('/edit') }}>
+                    <ListItemIcon><MailIcon /></ListItemIcon>
+                    <ListItemText primary='Edit' />
+                </ListItem>
+
+                <ListItem button onClick={() => { history.push('/form') }}>
+                    <ListItemIcon><MailIcon /></ListItemIcon>
+                    <ListItemText primary='Form' />
+                </ListItem>
+
+                {/* <ListItem button onClick={() => { history.push('/search') }}>
+              <ListItemIcon><MailIcon /></ListItemIcon>
+              <ListItemText primary='Search' />
+            </ListItem>
+    
+            <ListItem button onClick={() => { history.push('/dashboard') }}>
+              <ListItemIcon><MailIcon /></ListItemIcon>
+              <ListItemText primary='Dashboard' />
+            </ListItem>
+    
+            <ListItem button onClick={() => { history.push('/imageupload') }}>
+              <ListItemIcon><MailIcon /></ListItemIcon>
+              <ListItemText primary='Image Upload' />
+            </ListItem> */}
+
+                <ListItem button onClick={() => { history.push('/about') }}>
+                    <ListItemIcon><MailIcon /></ListItemIcon>
+                    <ListItemText primary='About' />
+                </ListItem>
+
+                <ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
+                    <ListItemIcon><MailIcon /></ListItemIcon>
+                    <ListItemText primary='Log Out' />
+                </ListItem>
+
+            </List>
+        </div>
+    );
+
+    // table
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -358,83 +459,100 @@ function Catalog() {
     }
 
     return (
-        <div className={classes.root}>
-            <Paper className={classes.paper}>
-                <EnhancedTableToolbar numSelected={selected.length} />
-                <TableContainer>
-                    <Table
-                        className={classes.table}
-                        aria-labelledby="tableTitle"
-                        size={dense ? 'small' : 'medium'}
-                        aria-label="enhanced table"
-                    >
-                        <EnhancedTableHead
-                            classes={classes}
-                            numSelected={selected.length}
-                            order={order}
-                            orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
-                            onRequestSort={handleRequestSort}
-                            rowCount={movies?.length}
-                        />
-                        <TableBody>
-                            {stableSort(movies, getComparator(order, orderBy))
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((movie, index) => {
-                                    const isItemSelected = isSelected(movie?.title);
-                                    const labelId = `enhanced-table-checkbox-${index}`;
+        <div>
 
-                                    return (
-                                        <TableRow
-                                            hover
-                                            onClick={(event) => handleClick(event, movie?.title)}
-                                            role="checkbox"
-                                            aria-checked={isItemSelected}
-                                            tabIndex={-1}
-                                            key={movie?.id}
-                                            selected={isItemSelected}
-                                        >
-                                            <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    checked={isItemSelected}
-                                                    inputProps={{ 'aria-labelledby': labelId }}
-                                                />
-                                            </TableCell>
-                                            <TableCell component="th" id={labelId} scope="row" padding="none">
-                                                <Link to='/movie' onClick={() => handleFeature(movie.id)}>{movie?.title}</Link>
-                                            </TableCell>
-                                            <TableCell align="right">{movie?.director}</TableCell>
-                                            <TableCell align="right">{movie?.release_date?.slice(0, 10)}</TableCell>
-                                            <TableCell align="right">{movie?.genre}</TableCell>
-                                            <TableCell align="right"><button onClick={(event) => handleEdit(event, movie)}>Edit</button></TableCell>
-                                            <TableCell align="right"><button onClick={() => handleRemove(movie)}>Remove</button></TableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                            {emptyRows > 0 && (
-                                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                                    <TableCell colSpan={6} />
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-                    component="div"
-                    count={movies?.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
+            {/* drawer */}
+            <div className="container">
+                {['Menu'].map((anchor) => (
+                    <React.Fragment key={anchor}>
+                        <Button onClick={toggleDrawer(anchor, true)}><MenuIcon fontSize="small"/></Button>
+                        <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)} onMouseLeave={toggleDrawer(anchor, false)}>
+                            {list(anchor)}
+                        </Drawer>
+                    </React.Fragment>
+                ))}
+            </div>
+
+            {/* table */}
+            <div className={classes.root}>
+                <Paper className={classes.paper}>
+                    <EnhancedTableToolbar numSelected={selected.length} />
+                    <TableContainer>
+                        <Table
+                            className={classes.table}
+                            aria-labelledby="tableTitle"
+                            size={dense ? 'small' : 'medium'}
+                            aria-label="enhanced table"
+                        >
+                            <EnhancedTableHead
+                                classes={classes}
+                                numSelected={selected.length}
+                                order={order}
+                                orderBy={orderBy}
+                                onSelectAllClick={handleSelectAllClick}
+                                onRequestSort={handleRequestSort}
+                                rowCount={movies?.length}
+                            />
+                            <TableBody>
+                                {stableSort(movies, getComparator(order, orderBy))
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((movie, index) => {
+                                        const isItemSelected = isSelected(movie?.title);
+                                        const labelId = `enhanced-table-checkbox-${index}`;
+
+                                        return (
+                                            <TableRow
+                                                hover
+                                                onClick={(event) => handleClick(event, movie?.title)}
+                                                role="checkbox"
+                                                aria-checked={isItemSelected}
+                                                tabIndex={-1}
+                                                key={movie?.id}
+                                                selected={isItemSelected}
+                                            >
+                                                <TableCell padding="checkbox">
+                                                    <Checkbox
+                                                        checked={isItemSelected}
+                                                        inputProps={{ 'aria-labelledby': labelId }}
+                                                    />
+                                                </TableCell>
+                                                <TableCell component="th" id={labelId} scope="row" padding="none">
+                                                    <Link to='/movie' onClick={() => handleFeature(movie.id)}>{movie?.title}</Link>
+                                                </TableCell>
+                                                <TableCell align="right">{movie?.director}</TableCell>
+                                                <TableCell align="right">{movie?.release_date?.slice(0, 10)}</TableCell>
+                                                <TableCell align="right">{movie?.genre}</TableCell>
+                                                <TableCell align="right"><Button onClick={(event) => handleEdit(event, movie)}>Edit</Button></TableCell>
+                                                <TableCell align="right"><Button onClick={() => handleRemove(movie)}>Remove</Button></TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                                {emptyRows > 0 && (
+                                    <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                                        <TableCell colSpan={6} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+                        component="div"
+                        count={movies?.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
+                </Paper>
+                <FormControlLabel
+                    control={<Switch checked={dense} onChange={handleChangeDense} />}
+                    // onChange will be the toggle control for table view and carousel view
+                    label="Dense padding"
+                    className="toggle"
                 />
-            </Paper>
-            <FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense} />}
-                // onChange will be the toggle control for table view and carousel view
-                label="Dense padding"
-                className="toggle"
-            />
+            </div>
+
         </div>
 
     ); // end return
