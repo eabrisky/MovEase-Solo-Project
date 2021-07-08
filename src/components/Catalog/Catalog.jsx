@@ -160,7 +160,7 @@ const EnhancedTableToolbar = (props) => {
                 </Typography>
             ) : (
                 <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-                    Catalog
+                    {/* My Movies */}
                 </Typography>
             )}
 
@@ -364,7 +364,10 @@ function Catalog() {
     return (
         <div className="catalog">
 
-            {/* table */}
+            {/* Title */}
+            <h2 className="title">CATALOG</h2>
+
+            {/* Table */}
             <div className={classes.root}>
                 <Paper className={classes.paper}>
                     <EnhancedTableToolbar numSelected={selected.length} />
@@ -407,7 +410,7 @@ function Catalog() {
                                                         inputProps={{ 'aria-labelledby': labelId }}
                                                     />
                                                 </TableCell>
-                                                <TableCell component="th" id={labelId} scope="row" padding="none" onClick={() => handleFeature(movie.id)}>
+                                                <TableCell className="title" component="th" id={labelId} scope="row" padding="none" onClick={() => handleFeature(movie.id)}>
                                                     {movie?.title}
                                                 </TableCell>
                                                 <TableCell align="right">{movie?.director}</TableCell>
@@ -436,12 +439,15 @@ function Catalog() {
                         onChangeRowsPerPage={handleChangeRowsPerPage}
                     />
                 </Paper>
-                <FormControlLabel
+
+                {/* Padding control toggle */}
+                {/* <FormControlLabel
                     control={<Switch checked={dense} onChange={handleChangeDense} />}
                     // onChange will be the toggle control for table view and carousel view
                     label="Dense padding"
                     className="toggle"
-                />
+                /> */}
+
             </div>
 
         </div>
