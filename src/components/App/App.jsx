@@ -13,6 +13,7 @@ import Footer from '../Footer/Footer';
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
+import Menu from '../Menu/Menu';
 import AboutPage from '../AboutPage/AboutPage';
 import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
@@ -40,7 +41,7 @@ function App() {
   return (
     <Router>
       <div>
-        {/* <Nav /> */}
+        <Menu />
         <Switch>
           {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
           <Redirect exact from="/" to="/home" />
@@ -84,13 +85,15 @@ function App() {
           <ProtectedRoute
             exact
             path="/edit"
+            component={Edit}
           >
             <Edit />
           </ProtectedRoute>
 
           <ProtectedRoute
             exact
-            path="/movie"
+            path="/movie/:id"
+            component={Movie}
           >
             <Movie />
           </ProtectedRoute>

@@ -1,21 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 // css
 import './Edit.css';
-
-// drawer
-import clsx from 'clsx';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import MenuIcon from '@material-ui/icons/Menu';
 
 // inputs
 import { makeStyles } from '@material-ui/core/styles';
@@ -34,107 +22,36 @@ const useStyles = makeStyles((theme) => ({
             width: '25ch',
         },
     },
-    // drawer
-    list: {
-        width: 250,
-    },
-    fullList: {
-        width: 'auto',
-    },
 }));
 
+
+
 function Edit() {
+
+    //useParams
+    const params = useParams();
 
     const dispatch = useDispatch();
     const history = useHistory();
     const movieToEdit = useSelector(store => store.edit);
 
-    // drawer consts and local state
-    const [state, setState] = React.useState({
-        Menu: false,
-    });
-
-    const toggleDrawer = (anchor, open) => (event) => {
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
-        }
-
-        setState({ ...state, [anchor]: open });
-    };
-
-    const list = (anchor) => (
-        <div
-            className={clsx(classes.list, {
-                [classes.fullList]: anchor === 'top' || anchor === 'bottom',
-            })}
-            role="presentation"
-            onClick={toggleDrawer(anchor, false)}
-            onKeyDown={toggleDrawer(anchor, false)}
-        >
-            <Divider />
-            <List>
-
-                <ListItem button onClick={() => { history.push('/user') }}>
-                    <ListItemIcon><InboxIcon /></ListItemIcon>
-                    <ListItemText primary='Home' />
-                </ListItem>
-
-                <ListItem button onClick={() => { history.push('/catalog') }}>
-                    <ListItemIcon><InboxIcon /></ListItemIcon>
-                    <ListItemText primary='Catalog' />
-                </ListItem>
-
-                <ListItem button onClick={() => { history.push('/movie') }}>
-                    <ListItemIcon><InboxIcon /></ListItemIcon>
-                    <ListItemText primary='Movie' />
-                </ListItem>
-
-                <ListItem button onClick={() => { history.push('/edit') }}>
-                    <ListItemIcon><MailIcon /></ListItemIcon>
-                    <ListItemText primary='Edit' />
-                </ListItem>
-
-                <ListItem button onClick={() => { history.push('/form') }}>
-                    <ListItemIcon><MailIcon /></ListItemIcon>
-                    <ListItemText primary='Form' />
-                </ListItem>
-
-                {/* <ListItem button onClick={() => { history.push('/search') }}>
-            <ListItemIcon><MailIcon /></ListItemIcon>
-            <ListItemText primary='Search' />
-          </ListItem>
-  
-          <ListItem button onClick={() => { history.push('/dashboard') }}>
-            <ListItemIcon><MailIcon /></ListItemIcon>
-            <ListItemText primary='Dashboard' />
-          </ListItem>
-  
-          <ListItem button onClick={() => { history.push('/imageupload') }}>
-            <ListItemIcon><MailIcon /></ListItemIcon>
-            <ListItemText primary='Image Upload' />
-          </ListItem> */}
-
-                <ListItem button onClick={() => { history.push('/about') }}>
-                    <ListItemIcon><MailIcon /></ListItemIcon>
-                    <ListItemText primary='About' />
-                </ListItem>
-
-                <ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
-                    <ListItemIcon><MailIcon /></ListItemIcon>
-                    <ListItemText primary='Log Out' />
-                </ListItem>
-
-            </List>
-        </div>
-    );
+    // useEffect
+    // useEffect(() => {
+    //     console.log('edit view, params.id: ', params.id);
+    //     dispatch({
+    //         type: 'MOVIE_TO_EDIT',
+    //         payload: params.id,
+    //     })
+    // }, []);
 
     // local state
     const [title, setTitle] = useState(movieToEdit.title);
     const [director, setDirector] = useState(movieToEdit.director);
-    const [releaseDate, setReleaseDate] = useState(movieToEdit.release_date?.slice(0, 10));
+    const [releaseDate, setReleaseDate] = useState(movieToEdit.release_date);
     const [synopsis, setSynopsis] = useState(movieToEdit.synopsis);
     const [genre, setGenre] = useState(movieToEdit.genre_id);
     const [poster, setPoster] = useState(movieToEdit.image);
+    const [tags, setTags] = useState('');
 
     // data object
     const movie = {
@@ -144,17 +61,11 @@ function Edit() {
         release_date: releaseDate,
         synopsis: synopsis,
         genre_id: genre,
-        image: poster
+        image: poster,
+        tags: tags
     } // end movie
 
     console.log(movieToEdit);
-
-    // const handleEdit = (event, movie) => {
-    //     dispatch({
-    //         type: 'EDIT_ON_CHANGE',
-    //         payload: {property: movie, value: event.target.value}
-    //     })
-    // } // end handleEdit
 
     const handleChangeGenre = (event) => {
         setAnchorEl(null);
@@ -179,6 +90,7 @@ function Edit() {
         setSynopsis('');
         setGenre(0);
         setPoster('');
+        setTags('');
 
         // navigate to catalog view
         history.push('/catalog');
@@ -194,6 +106,7 @@ function Edit() {
         setSynopsis('');
         setGenre(0);
         setPoster('');
+        setTags('');
 
         // go back
         history.goBack();
@@ -216,17 +129,6 @@ function Edit() {
     return (
 
         <div>
-
-            <div className="container">
-                {['Menu'].map((anchor) => (
-                    <React.Fragment key={anchor}>
-                        <Button onClick={toggleDrawer(anchor, true)}><MenuIcon fontSize="small"/></Button>
-                        <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)} onMouseLeave={toggleDrawer(anchor, false)}>
-                            {list(anchor)}
-                        </Drawer>
-                    </React.Fragment>
-                ))}
-            </div>
 
             <div className="edit">
 
@@ -252,7 +154,7 @@ function Edit() {
                     <TextField
                         id="standard-basic"
                         label="Release Date"
-                        defaultValue={releaseDate}
+                        defaultValue={releaseDate?.slice(0, 10)}
                         onChange={(event) => setReleaseDate(event.target.value)}
                     />
 
@@ -323,6 +225,15 @@ function Edit() {
                         </Menu>
 
                     </div>
+
+                    <TextField
+                        id="standard-multiline-flexible"
+                        label="Synopsis"
+                        multiline
+                        rowsMax={4}
+                        defaultValue={tags}
+                        onChange={(event) => setTags(event.target.value)}
+                    />
 
                     <div>
                         <Button className="save" type="submit" variant="contained">Save</Button>

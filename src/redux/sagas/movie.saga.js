@@ -83,7 +83,9 @@ function* updateMovie(action) {
 
 function* removeMovie(action) {
     try{
-        yield axios.delete(`api/movie/${action.payload.id}`, action.payload);
+        const response = yield axios.delete(`api/movie/${action.payload.id}`, action.payload);
+        console.log('delete response: ', response.data);
+        
         //get movies
         yield put({ type: 'GET_MOVIES' });
     }

@@ -8,18 +8,6 @@ import './Catalog.css';
 // sweetalert2
 import Swal from 'sweetalert2';
 
-//drawer
-import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import MenuIcon from '@material-ui/icons/Menu';
-
 // table
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -36,6 +24,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -220,14 +209,6 @@ const useStyles = makeStyles((theme) => ({
         top: 20,
         width: 1,
     },
-
-    // drawer
-    list: {
-        width: 250,
-    },
-    fullList: {
-        width: 'auto',
-    },
 }));
 
 function Catalog() {
@@ -240,86 +221,6 @@ function Catalog() {
     const [page, setPage] = useState(0);
     const [dense, setDense] = useState(false);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-
-    // drawer local state
-    const [state, setState] = React.useState({
-        Menu: false,
-    });
-
-    // drawer
-    const toggleDrawer = (anchor, open) => (event) => {
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
-        }
-
-        setState({ ...state, [anchor]: open });
-    };
-
-    const list = (anchor) => (
-        <div
-            className={clsx(classes.list, {
-                [classes.fullList]: anchor === 'top' || anchor === 'bottom',
-            })}
-            role="presentation"
-            onClick={toggleDrawer(anchor, false)}
-            onKeyDown={toggleDrawer(anchor, false)}
-        >
-            <Divider />
-            <List>
-
-                <ListItem button onClick={() => { history.push('/user') }}>
-                    <ListItemIcon><InboxIcon /></ListItemIcon>
-                    <ListItemText primary='Home' />
-                </ListItem>
-
-                <ListItem button onClick={() => { history.push('/catalog') }}>
-                    <ListItemIcon><InboxIcon /></ListItemIcon>
-                    <ListItemText primary='Catalog' />
-                </ListItem>
-
-                <ListItem button onClick={() => { history.push('/movie') }}>
-                    <ListItemIcon><InboxIcon /></ListItemIcon>
-                    <ListItemText primary='Movie' />
-                </ListItem>
-
-                <ListItem button onClick={() => { history.push('/edit') }}>
-                    <ListItemIcon><MailIcon /></ListItemIcon>
-                    <ListItemText primary='Edit' />
-                </ListItem>
-
-                <ListItem button onClick={() => { history.push('/form') }}>
-                    <ListItemIcon><MailIcon /></ListItemIcon>
-                    <ListItemText primary='Form' />
-                </ListItem>
-
-                {/* <ListItem button onClick={() => { history.push('/search') }}>
-              <ListItemIcon><MailIcon /></ListItemIcon>
-              <ListItemText primary='Search' />
-            </ListItem>
-    
-            <ListItem button onClick={() => { history.push('/dashboard') }}>
-              <ListItemIcon><MailIcon /></ListItemIcon>
-              <ListItemText primary='Dashboard' />
-            </ListItem>
-    
-            <ListItem button onClick={() => { history.push('/imageupload') }}>
-              <ListItemIcon><MailIcon /></ListItemIcon>
-              <ListItemText primary='Image Upload' />
-            </ListItem> */}
-
-                <ListItem button onClick={() => { history.push('/about') }}>
-                    <ListItemIcon><MailIcon /></ListItemIcon>
-                    <ListItemText primary='About' />
-                </ListItem>
-
-                <ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
-                    <ListItemIcon><MailIcon /></ListItemIcon>
-                    <ListItemText primary='Log Out' />
-                </ListItem>
-
-            </List>
-        </div>
-    );
 
     // table
     const handleRequestSort = (event, property) => {
@@ -395,7 +296,6 @@ function Catalog() {
 
         event.preventDefault();
 
-        console.log(`event.target.value: ${event.target.value}`);
         console.log('movie:', movie);
 
         dispatch({
@@ -404,7 +304,9 @@ function Catalog() {
         })
 
         // // navigate user to edit view
-        history.push('/edit');
+        const movieId = movie.id;
+        console.log('catalog view, handleEdit movie id: ', movieId);
+        history.push(`/edit/${movieId}`);
 
     } // end handleEdit
 
@@ -456,22 +358,11 @@ function Catalog() {
             type: 'FEATURE_MOVIE',
             payload: movieId
         })
+        history.push(`/movie/${movieId}`);
     }
 
     return (
-        <div>
-
-            {/* drawer */}
-            <div className="container">
-                {['Menu'].map((anchor) => (
-                    <React.Fragment key={anchor}>
-                        <Button onClick={toggleDrawer(anchor, true)}><MenuIcon fontSize="small"/></Button>
-                        <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)} onMouseLeave={toggleDrawer(anchor, false)}>
-                            {list(anchor)}
-                        </Drawer>
-                    </React.Fragment>
-                ))}
-            </div>
+        <div className="catalog">
 
             {/* table */}
             <div className={classes.root}>
@@ -516,8 +407,8 @@ function Catalog() {
                                                         inputProps={{ 'aria-labelledby': labelId }}
                                                     />
                                                 </TableCell>
-                                                <TableCell component="th" id={labelId} scope="row" padding="none">
-                                                    <Link to='/movie' onClick={() => handleFeature(movie.id)}>{movie?.title}</Link>
+                                                <TableCell component="th" id={labelId} scope="row" padding="none" onClick={() => handleFeature(movie.id)}>
+                                                    {movie?.title}
                                                 </TableCell>
                                                 <TableCell align="right">{movie?.director}</TableCell>
                                                 <TableCell align="right">{movie?.release_date?.slice(0, 10)}</TableCell>

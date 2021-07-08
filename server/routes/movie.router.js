@@ -199,6 +199,7 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
                 .query(moviesQuery,[null, req.user.id, req.params.id]) // end .query
                 .then(response => {
                     console.log(`"movies".user_id successfully removed`);
+                    res.sendStatus(200);
                 }) // end .then
                 .catch(err => {
                     console.error(`Balderdash, we just really couldn't remove that user_id from the "movies" table...`, err);

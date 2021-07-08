@@ -7,7 +7,7 @@ body,
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0px;
-  background-image: url(wood.jpg);
+  background-image: url(savior.jpg);
   height: 500px;
   background-position: center;
   background-repeat: no-repeat;
@@ -18,6 +18,7 @@ body {
 img {
   display: inline-block;
   max-width: 100%;
+  
 }
 
 /* --------------------------------------------------------------------------------
