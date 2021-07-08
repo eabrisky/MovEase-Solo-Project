@@ -12,17 +12,20 @@ function Search() {
     const allMovies = useSelector(store => store.allMovies);
     const movies = useSelector(store => store.movies);
 
+    const getAllMovies = () => {
+        dispatch({
+            type: 'GET_ALL_MOVIES',
+        });
+    } // end getAllMovies
+
     useEffect(() => {
         getAllMovies();
     }, []);
 
     const [searchQuery, setSearchQuery] = useState('');
 
-    console.log('movies from store: ', movies);
-
-    const getAllMovies = () => {
-        dispatch({ type: 'GET_ALL_MOVIES' });
-    } // end getAllMovies
+    console.log('allMovies: ', allMovies);
+    console.log('movies from store after search query: ', movies);
 
     const handleChange = (event) => {
         event.preventDefault();
@@ -34,10 +37,16 @@ function Search() {
         console.log(searchQuery);
         dispatch({
             type: 'SEND_QUERY',
-            payload: {search: searchQuery}
+            payload: { search: searchQuery }
         })
         setSearchQuery('');
+        getAllMovies();
     } // end handleSubmit
+
+    const handleSave = (event, movie) => {
+        event.preventDefault();
+        console.log(movie);
+    } // end handleSave
 
     return (
 
@@ -54,19 +63,36 @@ function Search() {
                         <th>Director</th>
                         <th>Release Date</th>
                         <th>Genre</th>
-                        <th>Edit</th>
-                        <th>Remove</th>
+                        <th>Save</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {/* {movies?.map(movie => (
+                    {allMovies?.map(movie => (
                         <tr key={movie?.id}>
                             <td><Link to='/movie' onClick={() => handleFeature(movie?.id)}>{movie?.title}</Link></td>
                             <td>{movie?.director}</td>
                             <td>{movie?.release_date.slice(0, 10)}</td>
                             <td>{movie?.genre}</td>
+                            <td><button onClick={(event) => handleSave(event, movie)}>Save</button></td>
                         </tr>
-                    ))} */}
+                    ))}
+                </tbody>
+            </table>
+
+            <table className="queryResultsTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Director</th>
+                        <th>Release Date</th>
+                        <th>Genre</th>
+                        <th>Save</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                    </tr>
                 </tbody>
             </table>
 
