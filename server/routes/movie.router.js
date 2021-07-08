@@ -125,10 +125,24 @@ router.post('/', rejectUnauthenticated, (req, res) => {
                     
                     pool // users_movies query
                         .query(usersMoviesQuery, [req.user.id, createdMovieId]) // end .query
-                        .then(() => console.log(`users_movies table updated successfully!`)) // end .then
+                        .then((result) => {
+                            console.log(`users_movies table updated successfully!`);
+                            const tagQuery = `
+                            INSERT INTO "movies_tags" ("movie_id", "tag_id")
+                            VALUES ($1, $2);
+                            `;
+                            pool // movies_tags query
+                                .query(tagQuery, [createdMovieId, movie.tag_id]) // end .query
+                                .then(result => {
+                                    console.log('movies_tags table updated successfully!');
+                                }) // end .then
+                                .catch(err => {
+                                    console.error('NOOOOOO WHY COULD I NOT UPDATE THE MOVIES_TAGS TABLE!? ', err);
+                                }) // end .catch, end movies_tags pool
+                        }) // end .then
                         .catch((err) => {
                             console.error(`Ayyy Papiiiiiii! ${err}`);
-                        }) // end .catch
+                        }) // end .catch, end users_movies pool
 
                 }) // end .then
                 .catch(err => {

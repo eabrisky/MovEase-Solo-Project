@@ -4,3 +4,13 @@
     width: 50%;
     border-radius: 4px 4px 4px 4px;
 }
+
+.tagMenu {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.genreMenu {
+    margin-right: auto;
+    margin-left: auto;
+}
