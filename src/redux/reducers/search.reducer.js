@@ -7,6 +7,6 @@ const allMovies = (state = [], action) => {
         default:
             return state;
     }
-};
+}; // end allMovies
 
 export default allMovies;

@@ -36,6 +36,7 @@ function Form() {
     const [synopsis, setSynopsis] = useState('');
     const [genre, setGenre] = useState(0);
     const [poster, setPoster] = useState('');
+    const [tags, setTags] = useState('');
 
     // handle change fns
 
@@ -71,7 +72,8 @@ function Form() {
         release_date: releaseDate,
         synopsis: synopsis,
         genre_id: genre,
-        image: poster
+        image: poster,
+        tags: tags
     } // end movie
 
     // dispatch
@@ -172,6 +174,17 @@ function Form() {
                         rowsMax={6}
                         onChange={handleChangeSynopsis}
                         value={synopsis}
+                    />
+
+                    {/* tags */}
+                    <TextField
+                        required={true}
+                        id="standard-multiline-flexible"
+                        label="Tags"
+                        multiline
+                        rowsMax={6}
+                        onChange={handleChangeTags}
+                        value={tags}
                     />
 
                     {/* genre */}

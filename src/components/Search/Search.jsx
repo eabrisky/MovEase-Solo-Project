@@ -10,7 +10,6 @@ function Search() {
     const dispatch = useDispatch();
     const history = useHistory();
     const allMovies = useSelector(store => store.allMovies);
-    const movies = useSelector(store => store.movies);
 
     const getAllMovies = () => {
         dispatch({
@@ -25,7 +24,7 @@ function Search() {
     const [searchQuery, setSearchQuery] = useState('');
 
     console.log('allMovies: ', allMovies);
-    console.log('movies from store after search query: ', movies);
+    // console.log('movies from store after search query: ', movies);
 
     const handleChange = (event) => {
         event.preventDefault();
@@ -40,7 +39,7 @@ function Search() {
             payload: { search: searchQuery }
         })
         setSearchQuery('');
-        getAllMovies();
+        // getAllMovies();
     } // end handleSubmit
 
     const handleSave = (event, movie) => {
@@ -63,6 +62,7 @@ function Search() {
                         <th>Director</th>
                         <th>Release Date</th>
                         <th>Genre</th>
+                        <th>Tags</th>
                         <th>Save</th>
                     </tr>
                 </thead>
@@ -73,26 +73,10 @@ function Search() {
                             <td>{movie?.director}</td>
                             <td>{movie?.release_date.slice(0, 10)}</td>
                             <td>{movie?.genre}</td>
+                            <td>{movie?.tags}</td>
                             <td><button onClick={(event) => handleSave(event, movie)}>Save</button></td>
                         </tr>
                     ))}
-                </tbody>
-            </table>
-
-            <table className="queryResultsTable">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Director</th>
-                        <th>Release Date</th>
-                        <th>Genre</th>
-                        <th>Save</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td></td>
-                    </tr>
                 </tbody>
             </table>
 

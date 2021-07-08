@@ -10,7 +10,9 @@ router.get('/', rejectUnauthenticated, (req, res) => {
         SELECT "movies".*,
         STRING_AGG ("genres".name, ', ')
         AS genre,
-        "movies_genres".genre_id
+        "movies_genres".genre_id,
+        STRING_AGG("tags".name, ', ')
+        AS tags
         FROM "movies"
         JOIN "movies_genres"
         ON "movies_genres".movie_id = "movies".id
@@ -18,6 +20,10 @@ router.get('/', rejectUnauthenticated, (req, res) => {
         ON "genres".id = "movies_genres".genre_id
         JOIN "user"
         ON "user".id = "movies".user_id
+        JOIN "movies_tags"
+        ON "movies_tags".movie_id = "movies".id
+        JOIN "tags"
+        ON "tags".id = "movies_tags".tag_id
         WHERE "movies".user_id = $1
         GROUP BY "movies".id, "movies_genres".genre_id
         ORDER BY "title" ASC;
@@ -46,14 +52,22 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
     SELECT "movies".*,
     STRING_AGG("genres".name, ', ')
     AS genre,
-    "movies_genres".genre_id
+    "movies_genres".genre_id,
+    STRING_AGG("tags".name, ', ')
+    AS tags
     FROM "movies"
     JOIN "movies_genres"
     ON "movies_genres".movie_id = "movies".id
     JOIN "genres"
     ON "genres".id = "movies_genres".genre_id
+    JOIN "user"
+    ON "user".id = "movies".user_id
+    JOIN "movies_tags"
+    ON "movies_tags".movie_id = "movies".id
+    JOIN "tags"
+    ON "tags".id = "movies_tags".tag_id
     WHERE "movies".id = $1
-    GROUP BY 1, "movies_genres".genre_id;
+    GROUP BY 1, "movies".id, "movies_genres".genre_id;
     `;
 
     pool // movies & genres query
