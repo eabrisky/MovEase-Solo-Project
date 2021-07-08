@@ -13,7 +13,7 @@ function UserPage() {
     <div className="userPage">
 
       <h2>Welcome, {user.username}!</h2>
-      <p>Your ID is: {user.id}</p>
+      <p className="id">Your ID is: {user.id}</p>
       <LogOutButton className="btn" />
 
     </div>

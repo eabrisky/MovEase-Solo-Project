@@ -9,16 +9,20 @@ function Search() {
 
     const dispatch = useDispatch();
     const history = useHistory();
+    const allMovies = useSelector(store => store.allMovies);
     const movies = useSelector(store => store.movies);
+
+    useEffect(() => {
+        getAllMovies();
+    }, []);
 
     const [searchQuery, setSearchQuery] = useState('');
 
     console.log('movies from store: ', movies);
 
-
-    // useEffect(() => {
-    //     dispatch({ type: 'GET_ALL_MOVIES' })
-    // }, []);
+    const getAllMovies = () => {
+        dispatch({ type: 'GET_ALL_MOVIES' });
+    } // end getAllMovies
 
     const handleChange = (event) => {
         event.preventDefault();
@@ -26,23 +30,18 @@ function Search() {
     } // end handleChange
 
     const handleSubmit = (event) => {
-
         event.preventDefault();
-
         console.log(searchQuery);
-
         dispatch({
             type: 'SEND_QUERY',
             payload: {search: searchQuery}
         })
-
         setSearchQuery('');
-
     } // end handleSubmit
 
     return (
 
-        <div>
+        <div className="search">
             <form onSubmit={handleSubmit}>
                 <input onChange={() => handleChange(event)} value={searchQuery} />
                 <button type="submit">Search</button>

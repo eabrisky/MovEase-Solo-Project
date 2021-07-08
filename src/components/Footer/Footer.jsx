@@ -9,7 +9,7 @@ import './Footer.css';
 function Footer() {
 
   return <footer>
-    {/* &copy; Emry Brisky */}
+    &copy; Emry Brisky
         </footer>;
 
 }
