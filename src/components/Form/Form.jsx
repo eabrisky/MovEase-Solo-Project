@@ -36,7 +36,7 @@ function Form() {
     const [synopsis, setSynopsis] = useState('');
     const [genre, setGenre] = useState(0);
     const [poster, setPoster] = useState('');
-    const [tags, setTags] = useState('');
+    const [tag, setTag] = useState('');
 
     // handle change fns
 
@@ -52,18 +52,23 @@ function Form() {
         setReleaseDate(event.target.value);
     } // end handleChangeReleaseDate
 
+    const handleChangePoster = (event) => {
+        setPoster(event.target.value);
+    } // end handleChangePoster
+
     const handleChangeSynopsis = (event) => {
         setSynopsis(event.target.value);
     } // end handleChangeSynopsis
 
+    const handleChangeTag = (event) => {
+        setAnchorElTag(null);
+        setTag(event.target.value);
+    } // end handleChangeTag
+
     const handleChangeGenre = (event) => {
-        setAnchorEl(null);
+        setAnchorElGenre(null);
         setGenre(event.target.value);
     } // end handleChangeGenre
-
-    const handleChangePoster = (event) => {
-        setPoster(event.target.value);
-    } // end handleChangePoster
 
     // data object
     const movie = {
@@ -73,7 +78,7 @@ function Form() {
         synopsis: synopsis,
         genre_id: genre,
         image: poster,
-        tags: tags
+        tag_id: tag
     } // end movie
 
     // dispatch
@@ -92,9 +97,10 @@ function Form() {
         setTitle('');
         setDirector('');
         setReleaseDate('');
-        setSynopsis('');
-        setGenre(0);
         setPoster('');
+        setSynopsis('');
+        setTag(0);
+        setGenre(0);
 
         // navigate to catalog view
         history.push('/catalog');
@@ -109,15 +115,29 @@ function Form() {
     // inputs
     const classes = useStyles();
 
-    // DROP-DOWN MENU
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    // TAG DROP-DOWN MENU
+    const [anchorElTag, setAnchorElTag] = React.useState(null);
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
+     // GENRE DROP-DOWN MENU
+     const [anchorElGenre, setAnchorElGenre] = React.useState(null);
+
+
+    // tag
+    const handleClickTag = (event) => {
+        setAnchorElTag(event.currentTarget);
     };
 
-    const handleChange = () => {
-        setAnchorEl(null);
+    const handleChangeT = () => {
+        setAnchorElTag(null);
+    };
+
+    //genre
+    const handleClickGenre = (event) => {
+        setAnchorElGenre(event.currentTarget);
+    };
+
+    const handleChangeG = () => {
+        setAnchorElGenre(null);
     };
 
     return (
@@ -176,16 +196,56 @@ function Form() {
                         value={synopsis}
                     />
 
-                    {/* tags */}
-                    <TextField
-                        required={true}
-                        id="standard-multiline-flexible"
-                        label="Tags"
-                        multiline
-                        rowsMax={6}
-                        onChange={handleChangeTags}
-                        value={tags}
-                    />
+                    {/* tag */}
+                    <div>
+
+                        <Button
+                            variant="outlined"
+                            aria-controls="simple-menu"
+                            aria-haspopup="true"
+                            onClick={handleClickTag}
+                            type="button"
+                        >
+                            Tag
+                        </Button>
+
+                        <Menu
+                            id="simple-menu"
+                            anchorElTag={anchorElTag}
+                            keepMounted
+                            open={Boolean(anchorElTag)}
+                            onClose={handleChangeT}
+                            className="tagMenu"
+                        >
+                            {/* MenuItem values correspond to genre_ids in movies_genres table in db */}
+                            <MenuItem onClick={handleChangeTag} value="1">Film</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="2">Digital</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="3">35mm</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="4">70mm</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="5">B&W</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="6">Animated</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="7">Happy</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="8">Sad</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="9">Hard to Watch</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="10">Cerebral</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="11">Arri</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="12">Panavision</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="13">RED</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="14">Blackmagic</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="15">Canon</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="16">One Shot</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="17">Grunge</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="18">Dogma 95</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="19">French New Wave</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="20">Gritty</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="21">International</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="22">Epic</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="23">Slice of Life</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="24">Period Piece</MenuItem>
+
+                        </Menu>
+
+                    </div>
 
                     {/* genre */}
                     <div>
@@ -194,7 +254,7 @@ function Form() {
                             variant="outlined"
                             aria-controls="simple-menu"
                             aria-haspopup="true"
-                            onClick={handleClick}
+                            onClick={handleClickGenre}
                             type="button"
                         >
                             Genre
@@ -202,14 +262,15 @@ function Form() {
 
                         <Menu
                             id="simple-menu"
-                            anchorEl={anchorEl}
+                            anchorElGenre={anchorElGenre}
                             keepMounted
-                            open={Boolean(anchorEl)}
-                            onClose={handleChange}
+                            open={Boolean(anchorElGenre)}
+                            onClose={handleChangeG}
+                            className="genreMenu"
                         >
                             {/* MenuItem values correspond to genre_ids in movies_genres table in db */}
-                            <MenuItem onClick={handleChangeGenre} value="1">Action</MenuItem>
                             <MenuItem onClick={handleChangeGenre} value="2">Adventure</MenuItem>
+                            <MenuItem onClick={handleChangeGenre} value="1">Action</MenuItem>
                             <MenuItem onClick={handleChangeGenre} value="3">Animation</MenuItem>
                             <MenuItem onClick={handleChangeGenre} value="4">Biography</MenuItem>
                             <MenuItem onClick={handleChangeGenre} value="5">Comedy</MenuItem>
