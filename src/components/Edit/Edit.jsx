@@ -137,7 +137,7 @@ function Edit() {
 
         <div>
 
-            <h2>EDIT</h2>
+            <h2 className="componentTitle">EDIT</h2>
 
             <div className="edit">
 

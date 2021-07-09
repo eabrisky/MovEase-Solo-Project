@@ -316,8 +316,8 @@ function Catalog() {
         console.log('movie: ', movie);
 
         Swal.fire({
-            title: 'Really?',
-            text: `This will permanently remove ${movie.title} from your catalog!`,
+            title: 'Remove?',
+            text: `This will permanently delete ${movie.title} from your catalog!`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: `I've never been more certain in my life!`,
@@ -366,7 +366,7 @@ function Catalog() {
         <div className="catalog">
 
             {/* Title */}
-            <h2>CATALOG</h2>
+            <h2 className="componentTitle">CATALOG</h2>
 
             {/* Table */}
             <div className={classes.root}>

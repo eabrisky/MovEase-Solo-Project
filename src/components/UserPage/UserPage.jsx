@@ -12,7 +12,7 @@ function UserPage() {
   return (
     <div className="userPage">
 
-      <h2>Welcome, {user.username}!</h2>
+      <h2 className="componentTitle">Welcome, {user.username}!</h2>
       <p className="id">Your ID is: {user.id}</p>
       <LogOutButton className="btn" />
 

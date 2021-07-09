@@ -12,8 +12,8 @@ function AboutPage() {
 
   return (
 
-      <div>
-        <h2>ABOUT</h2>
+      <div className="movieContainer">
+        <h2 className="componentTitle">ABOUT</h2>
         <p>This about page is for anyone to read!</p>
       </div>
 

@@ -112,7 +112,7 @@ function Search() {
 
         <div className="searchPage">
 
-            <h2>SEARCH</h2>
+            <h2 className="componentTitle">SEARCH</h2>
 
             <div className="search">
                 <form onSubmit={handleSubmit}>

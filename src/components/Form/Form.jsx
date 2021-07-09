@@ -144,7 +144,7 @@ function Form() {
 
         <div>
 
-            <h2>ADD MOVIE</h2>
+            <h2 className="componentTitle">ADD MOVIE</h2>
 
             <div className="form">
 
