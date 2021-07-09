@@ -110,7 +110,7 @@ function Form() {
     // cancel
     const handleCancel = () => {
         history.goBack();
-    }
+    } // end handleCancel
 
     // inputs
     const classes = useStyles();

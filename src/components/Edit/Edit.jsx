@@ -51,7 +51,7 @@ function Edit() {
     const [synopsis, setSynopsis] = useState(movieToEdit.synopsis);
     const [genre, setGenre] = useState(movieToEdit.genre_id);
     const [poster, setPoster] = useState(movieToEdit.image);
-    const [tags, setTags] = useState('');
+    const [tag, setTag] = useState('');
 
     // data object
     const movie = {
@@ -62,7 +62,7 @@ function Edit() {
         synopsis: synopsis,
         genre_id: genre,
         image: poster,
-        tags: tags
+        tag_id: tag
     } // end movie
 
     console.log(movieToEdit);
@@ -90,7 +90,7 @@ function Edit() {
         setSynopsis('');
         setGenre(0);
         setPoster('');
-        setTags('');
+        setTag(0);
 
         // navigate to catalog view
         history.push('/catalog');
@@ -98,17 +98,6 @@ function Edit() {
     } // end handleSubmit
 
     const handleCancel = () => {
-
-        // clear inputs
-        setTitle('');
-        setDirector('');
-        setReleaseDate('');
-        setSynopsis('');
-        setGenre(0);
-        setPoster('');
-        setTags('');
-
-        // go back
         history.goBack();
     } // end handleCancel
 
