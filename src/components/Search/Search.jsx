@@ -1,11 +1,123 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+// css
 import './Search.css';
 
-function Search(){
-    return(
-        <div>
-            <p>search</p>
+function Search() {
+
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const allMovies = useSelector(store => store.allMovies);
+
+    const getAllMovies = () => {
+        dispatch({
+            type: 'GET_ALL_MOVIES',
+        });
+    } // end getAllMovies
+
+    useEffect(() => {
+        getAllMovies();
+    }, []);
+
+    const [searchQuery, setSearchQuery] = useState('');
+
+    console.log('allMovies: ', allMovies);
+    // console.log('movies from store after search query: ', movies);
+
+    const handleChange = (event) => {
+        event.preventDefault();
+        setSearchQuery(event.target.value);
+    } // end handleChange
+
+    const handleFeature = (movieId) => {
+        console.log(`movie id: ${movieId}`);
+        dispatch({
+            type: 'FEATURE_MOVIE',
+            payload: movieId
+        })
+        history.push(`/movie/${movieId}`);
+    } // end handleFeature
+
+    const handleSubmit = (event) => {
+
+        event.preventDefault();
+
+        console.log(searchQuery);
+
+        if (searchQuery === '') {
+
+            getAllMovies();
+
+        } else {
+
+            dispatch({
+                type: 'SEND_QUERY',
+                payload: { search: searchQuery }
+            })
+
+            setSearchQuery('');
+
+        } // end if else
+
+    } // end handleSubmit
+
+    const handleSave = (event, movie) => {
+
+        event.preventDefault();
+
+        console.log(movie);
+
+        dispatch({
+            type: 'ADD_TO_CATALOG',
+            payload: movie
+        })
+
+    } // end handleSave
+
+    return (
+
+        <div className="searchPage">
+
+            <h2>SEARCH</h2>
+
+            <div className="search">
+                <form onSubmit={handleSubmit}>
+                    <input onChange={() => handleChange(event)} value={searchQuery} />
+                    <button type="submit">Search</button>
+                </form>
+
+                <table className="allMovies">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Director</th>
+                            <th>Release Date</th>
+                            <th>Genre</th>
+                            <th>Tags</th>
+                            <th>Save</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {allMovies?.map(movie => (
+                            <tr key={movie?.id}>
+                                <td className="title" onClick={() => handleFeature(movie?.id)}>{movie?.title}</td>
+                                <td>{movie?.director}</td>
+                                <td>{movie?.release_date.slice(0, 10)}</td>
+                                <td>{movie?.genre}</td>
+                                <td className="center">{movie?.tags}</td>
+                                <td><button onClick={(event) => handleSave(event, movie)}>Save</button></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+
+            </div>
+
         </div>
-    )
-}
+
+    ) // end return
+} // end Search fn
 
 export default Search;

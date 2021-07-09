@@ -1,0 +1,10 @@
+.menu {
+    background: rgba(255, 255, 255, 0.4);
+    text-align: left;
+    padding: 10px;
+    margin-top: 2%;
+    width: 2%;
+    position: absolute;
+    float: left;
+    border-radius: 0px 4px 4px 0px;
+  }

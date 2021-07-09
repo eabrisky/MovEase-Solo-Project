@@ -6,11 +6,15 @@ import React from 'react';
 // or even care what the redux state is
 
 function InfoPage() {
+
   return (
-    <div className="container">
+
+    <div>
       <p>Info Page</p>
     </div>
-  );
-}
+
+  ); // end return
+
+} // end InfoPage fn
 
 export default InfoPage;

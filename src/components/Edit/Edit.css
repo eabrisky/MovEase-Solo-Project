@@ -1,0 +1,14 @@
+.edit {
+    background: rgba(255, 255, 255, 0.3);
+    margin: auto;
+    width: 50%;
+    border-radius: 4px;
+}
+
+.genreButton {
+    display: inline-block;
+}
+
+.noMovie {
+    background: rgba(255, 255, 255, 0.3);
+}

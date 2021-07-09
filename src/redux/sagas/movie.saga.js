@@ -12,9 +12,47 @@ function* getMovies() {
         });
     }
     catch(err){
-        console.error(`Error getting movies: ${err}`);
+        console.error('Error getting movies: ', err);
     }
 } // end getMovies fn*
+
+function* getAllMovies() {
+    try{
+        const response = yield axios.get(`/api/search/all`);
+        yield put({
+            type: 'SET_ALL_MOVIES',
+            payload: response.data
+        });
+    }
+    catch(err){
+        console.log('Error getting all movies: ', err);
+    }
+} // end getAllMovies* fn
+
+function* sendQuery(action){
+    try{
+        const response = yield axios.get(`/api/search/${action.payload.search}`, action.payload);
+
+        yield put({
+            type: 'RETURN_SEARCH',
+            payload: response.data
+        });
+    }
+    catch(err){
+        console.error('Error returning search: ', err);
+    }
+} // end sendQuery fn*
+
+function* addToCatalog(action){
+    try{
+        yield axios.post('api/search', action.payload);
+        // get movies
+        yield put({ type: 'GET_MOVIES' });
+    }
+    catch(err){
+        console.log('Error adding to catalog: ', err);
+    }
+} // end addToCatalog fn*
 
 function* featureMovie(action){
     try{
@@ -56,18 +94,23 @@ function* updateMovie(action) {
 
 function* removeMovie(action) {
     try{
-        yield axios.delete(`api/movie/${action.payload.id}`, action.payload);
+        const response = yield axios.delete(`api/movie/${action.payload.id}`, action.payload);
+        console.log('delete response: ', response.data);
+        
         //get movies
         yield put({ type: 'GET_MOVIES' });
     }
     catch(err){
         console.error(`Error removing movie =( ${err}`);
     }
-}
+} // end removeMovie fn*
 
 // watcherSaga
 function* movieSaga() {
     yield takeEvery('GET_MOVIES', getMovies);
+    yield takeEvery('GET_ALL_MOVIES', getAllMovies);
+    yield takeEvery('SEND_QUERY', sendQuery);
+    yield takeEvery('ADD_TO_CATALOG', addToCatalog);
     yield takeEvery('FEATURE_MOVIE', featureMovie);
     yield takeEvery('CREATE_MOVIE', createMovie);
     yield takeEvery('UPDATE_MOVIE', updateMovie);

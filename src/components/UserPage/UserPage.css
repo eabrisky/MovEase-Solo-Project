@@ -1,0 +1,14 @@
+.userPage {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.id {
+    background: rgba(255, 255, 255, 0.5);
+    margin-right: auto;
+    margin-left: auto;
+    padding: 10px;
+    text-align: center;
+    width: 7%;
+    border-radius: 4px;
+}
+
