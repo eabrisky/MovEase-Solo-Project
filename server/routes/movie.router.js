@@ -49,11 +49,12 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
 
     const queryText = `
     SELECT "movies".*,
-    STRING_AGG("genres".name, ', ')
+    "genres".name
     AS genre,
     "movies_genres".genre_id,
-    STRING_AGG("tags".name, ', ')
-    AS tags
+    "tags".name
+    AS tags,
+    "movies_tags".tag_id
     FROM "movies"
     JOIN "movies_genres"
     ON "movies_genres".movie_id = "movies".id
@@ -66,7 +67,7 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
     JOIN "tags"
     ON "tags".id = "movies_tags".tag_id
     WHERE "movies".id = $1
-    GROUP BY 1, "movies".id, "movies_genres".genre_id;
+    GROUP BY "movies".id, "genres".name, "movies_genres".genre_id, "tags".name, "movies_tags".tag_id;
     `;
 
     pool // movies & genres query
@@ -184,10 +185,26 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
 
             pool // movies_genres query
                 .query(genreQuery, [movie.genre_id, movie.id]) // end .query
-                .then(() => console.log('Genre update successful!')) // end .then
+                .then(result => {
+
+                    console.log('Genre update successful!');
+
+                    const tagQuery = `
+                    UPDATE "movies_tags"
+                    SET "tag_id" = $1
+                    WHERE "movie_id" = $2;
+                    `;
+
+                    pool // movies_tags query
+                        .query(tagQuery, [movie.tag_id, movie.id]) // end .query
+                        .then(() => console.log('Tag update successful!')) // end .then
+                        .catch(err => {console.log('put tag error: ', err);
+                        }) // end .catch, end tag pool
+
+                }) // end .then
                 .catch(err => {
                     console.log('put genre error: ', err);
-                }) // end catch, end genre pool
+                }) // end .catch, end genre pool
 
             // OK
             res.sendStatus(200);

@@ -136,11 +136,10 @@ function Movie() {
                                 <h2 className="textArea director">{movie?.director}</h2>
                                 <h3 className="textArea releaseDate">Released {movie?.release_date?.slice(0, 10)}</h3>
                                 <h3 className="textArea genre">{movie?.genre}</h3>
+                                <h3 className="textArea tags">{movie?.tags}</h3>
                                 <p className="textArea synopsis">{movie?.synopsis}</p>
                             </div>
-                            <div>
-                                <p>{movie?.tag}</p>
-                            </div>
+                            
                             <button onClick={(event) => handleEdit(event, movie)} className="button">
                                 Edit
                             </button>

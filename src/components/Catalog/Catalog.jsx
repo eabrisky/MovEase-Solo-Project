@@ -316,12 +316,12 @@ function Catalog() {
         console.log('movie: ', movie);
 
         Swal.fire({
-            title: 'Are you sure?',
+            title: 'Really?',
             text: `This will permanently remove ${movie.title} from your catalog!`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'I HATE THIS MOVIE I NEVER WANNA SEE IT AGAIN!!',
-            cancelButtonText: 'Maybe I should give it a rewatch...'
+            confirmButtonText: `I've never been more certain in my life!`,
+            cancelButtonText: 'On second thought...'
         }) // end.fire
             .then((result) => {
                 if (result.isConfirmed) {
