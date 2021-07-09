@@ -1,5 +1,5 @@
 .movieContainer {
-    background: rgb(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7);
     border-radius: 8px;
 }
 
@@ -11,7 +11,7 @@
 }
 
 .textArea {
-    background: rgb(255, 255, 255, .3);
+    background: rgb(255, 255, 255, .5);
     text-align: center;
     margin-left: auto;
     margin-right: auto;
