@@ -28,7 +28,7 @@
 }
 
 .genre {
-    width: 4%;
+    width: flex;
 }
 
 .tags {

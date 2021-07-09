@@ -72,7 +72,9 @@ function* featureMovie(action){
 
 function* createMovie(action) {
     try{
-        yield axios.post('/api/movie', action.payload);
+         const response = yield axios.post('/api/movie', action.payload);
+         console.log('created movie response: ', response.data);
+         
         //get movies
         yield put({ type: 'GET_MOVIES' });
     }
