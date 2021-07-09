@@ -189,7 +189,7 @@ function Edit() {
                     <div>
 
                         <Button
-                            variant="outlined"
+                            variant="contained"
                             aria-controls="simple-menu"
                             aria-haspopup="true"
                             onClick={handleClickTag}
@@ -289,8 +289,8 @@ function Edit() {
                     </div>
 
                     <div>
-                        <Button className="save" type="submit" variant="contained">Save</Button>
-                        <Button className="cancel" variant="contained" onClick={handleCancel}>Cancel</Button>
+                        <Button className="save" color="primary" type="submit" variant="contained">Save</Button>
+                        <Button className="cancel" color="secondary" variant="contained" onClick={handleCancel}>Cancel</Button>
 
                     </div>
 
