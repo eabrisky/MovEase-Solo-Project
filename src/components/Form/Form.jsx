@@ -245,6 +245,7 @@ function Form() {
                             <MenuItem onClick={handleChangeTag} value="23">Slice of Life</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="24">Period Piece</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="25">Classic</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="26">Stop-Motion</MenuItem>
 
                         </Menu>
 

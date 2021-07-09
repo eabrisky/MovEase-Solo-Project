@@ -306,7 +306,8 @@ function Catalog() {
         // // navigate user to edit view
         const movieId = movie.id;
         console.log('catalog view, handleEdit movie id: ', movieId);
-        history.push(`/edit/${movieId}`);
+        history.push('/edit');
+        // history.push(`/edit/${movieId}`);
 
     } // end handleEdit
 
@@ -359,7 +360,7 @@ function Catalog() {
             payload: movieId
         })
         history.push(`/movie/${movieId}`);
-    }
+    } // end handleFeature
 
     return (
         <div className="catalog">
@@ -410,7 +411,7 @@ function Catalog() {
                                                         inputProps={{ 'aria-labelledby': labelId }}
                                                     />
                                                 </TableCell>
-                                                <TableCell className="title" component="th" id={labelId} scope="row" padding="none" onClick={() => handleFeature(movie.id)}>
+                                                <TableCell className="title" component="th" id={labelId} scope="row" padding="none" onClick={() => handleFeature(movie?.id)}>
                                                     {movie?.title}
                                                 </TableCell>
                                                 <TableCell align="right">{movie?.director}</TableCell>

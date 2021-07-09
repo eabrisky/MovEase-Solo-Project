@@ -73,7 +73,7 @@ function Menu() {
 
                 <ListItem button onClick={() => { history.push('/catalog') }}>
                     <ListItemIcon><LocalMoviesIcon /></ListItemIcon>
-                    <ListItemText primary='My Movie Catalog' />
+                    <ListItemText primary='Catalog' />
                 </ListItem>
 
                 <ListItem button onClick={() => { history.push('/movie') }}>

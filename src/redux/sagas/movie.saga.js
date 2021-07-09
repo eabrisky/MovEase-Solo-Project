@@ -43,6 +43,17 @@ function* sendQuery(action){
     }
 } // end sendQuery fn*
 
+function* addToCatalog(action){
+    try{
+        yield axios.post('api/search', action.payload);
+        // get movies
+        yield put({ type: 'GET_MOVIES' });
+    }
+    catch(err){
+        console.log('Error adding to catalog: ', err);
+    }
+} // end addToCatalog fn*
+
 function* featureMovie(action){
     try{
         const response = yield axios.get(`/api/movie/${action.payload}`);
@@ -99,6 +110,7 @@ function* movieSaga() {
     yield takeEvery('GET_MOVIES', getMovies);
     yield takeEvery('GET_ALL_MOVIES', getAllMovies);
     yield takeEvery('SEND_QUERY', sendQuery);
+    yield takeEvery('ADD_TO_CATALOG', addToCatalog);
     yield takeEvery('FEATURE_MOVIE', featureMovie);
     yield takeEvery('CREATE_MOVIE', createMovie);
     yield takeEvery('UPDATE_MOVIE', updateMovie);

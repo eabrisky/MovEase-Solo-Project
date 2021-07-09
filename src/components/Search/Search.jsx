@@ -31,20 +31,49 @@ function Search() {
         setSearchQuery(event.target.value);
     } // end handleChange
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log(searchQuery);
+    const handleFeature = (movieId) => {
+        console.log(`movie id: ${movieId}`);
         dispatch({
-            type: 'SEND_QUERY',
-            payload: { search: searchQuery }
+            type: 'FEATURE_MOVIE',
+            payload: movieId
         })
-        setSearchQuery('');
-        // getAllMovies();
+        history.push(`/movie/${movieId}`);
+    } // end handleFeature
+
+    const handleSubmit = (event) => {
+
+        event.preventDefault();
+
+        console.log(searchQuery);
+
+        if (searchQuery === '') {
+
+            getAllMovies();
+
+        } else {
+
+            dispatch({
+                type: 'SEND_QUERY',
+                payload: { search: searchQuery }
+            })
+
+            setSearchQuery('');
+
+        } // end if else
+
     } // end handleSubmit
 
     const handleSave = (event, movie) => {
+
         event.preventDefault();
+
         console.log(movie);
+
+        dispatch({
+            type: 'ADD_TO_CATALOG',
+            payload: movie
+        })
+
     } // end handleSave
 
     return (
@@ -53,38 +82,38 @@ function Search() {
 
             <h2>SEARCH</h2>
 
-        <div className="search">
-            <form onSubmit={handleSubmit}>
-                <input onChange={() => handleChange(event)} value={searchQuery} />
-                <button type="submit">Search</button>
-            </form>
+            <div className="search">
+                <form onSubmit={handleSubmit}>
+                    <input onChange={() => handleChange(event)} value={searchQuery} />
+                    <button type="submit">Search</button>
+                </form>
 
-            <table className="allMovies">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Director</th>
-                        <th>Release Date</th>
-                        <th>Genre</th>
-                        <th>Tags</th>
-                        <th>Save</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {allMovies?.map(movie => (
-                        <tr key={movie?.id}>
-                            <td><Link to='/movie' onClick={() => handleFeature(movie?.id)}>{movie?.title}</Link></td>
-                            <td>{movie?.director}</td>
-                            <td>{movie?.release_date.slice(0, 10)}</td>
-                            <td>{movie?.genre}</td>
-                            <td>{movie?.tags}</td>
-                            <td><button onClick={(event) => handleSave(event, movie)}>Save</button></td>
+                <table className="allMovies">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Director</th>
+                            <th>Release Date</th>
+                            <th>Genre</th>
+                            <th>Tags</th>
+                            <th>Save</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {allMovies?.map(movie => (
+                            <tr key={movie?.id}>
+                                <td className="title" onClick={() => handleFeature(movie?.id)}>{movie?.title}</td>
+                                <td>{movie?.director}</td>
+                                <td>{movie?.release_date.slice(0, 10)}</td>
+                                <td>{movie?.genre}</td>
+                                <td className="center">{movie?.tags}</td>
+                                <td><button onClick={(event) => handleSave(event, movie)}>Save</button></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
 
-        </div>
+            </div>
 
         </div>
 
