@@ -31,6 +31,10 @@
     width: 4%;
 }
 
+.tags {
+    width: 10%;
+}
+
 .synopsis {
     background: rgba(255, 255, 255, 0.5);
     width: 50%;

@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 // css
 import './Search.css';
 
+// sweetalert2
+import Swal from 'sweetalert2'
+
 function Search() {
 
     const dispatch = useDispatch();
@@ -67,11 +70,40 @@ function Search() {
 
         event.preventDefault();
 
-        console.log(movie);
 
-        dispatch({
-            type: 'ADD_TO_CATALOG',
-            payload: movie
+
+
+        Swal.fire({
+            title: `Save ${movie.title} to your catalog?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'I simply must have it for my collection!',
+            cancelButtonText: 'No, no... perhaps not today...'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                console.log(movie);
+
+                // dispatch
+                dispatch({
+                    type: 'ADD_TO_CATALOG',
+                    payload: movie
+                })
+
+                Swal.fire(
+                    'Saved!',
+                    `${movie.title} has been added to your catalog.`,
+                    'success'
+                )
+                // For more information about handling dismissals please visit
+                // https://sweetalert2.github.io/#handling-dismissals
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire(
+                    'Cancelled',
+                    'Maybe you meant to save a different movie...?',
+                    'error'
+                )
+            }
         })
 
     } // end handleSave
