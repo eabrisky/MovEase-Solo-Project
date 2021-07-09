@@ -93,7 +93,7 @@ function Menu() {
 
                 <ListItem button onClick={() => { history.push('/form') }}>
                     <ListItemIcon><LibraryAddIcon /></ListItemIcon>
-                    <ListItemText primary='Form' />
+                    <ListItemText primary='Add Movie' />
                 </ListItem>
 
                 <ListItem button onClick={() => { history.push('/about') }}>

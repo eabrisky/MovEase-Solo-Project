@@ -144,6 +144,8 @@ function Form() {
 
         <div>
 
+            <h2>ADD MOVIE</h2>
+
             <div className="form">
 
                 <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">
@@ -242,6 +244,7 @@ function Form() {
                             <MenuItem onClick={handleChangeTag} value="22">Epic</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="23">Slice of Life</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="24">Period Piece</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="25">Classic</MenuItem>
 
                         </Menu>
 

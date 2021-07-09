@@ -130,6 +130,8 @@ function Edit() {
 
         <div>
 
+            <h2>EDIT</h2>
+
             <div className="edit">
 
                 <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">

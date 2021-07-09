@@ -365,7 +365,7 @@ function Catalog() {
         <div className="catalog">
 
             {/* Title */}
-            <h2 className="title">CATALOG</h2>
+            <h2>CATALOG</h2>
 
             {/* Table */}
             <div className={classes.root}>

@@ -47,6 +47,7 @@ function Movie() {
     const [director, setDirector] = useState(movie.director);
     const [releaseDate, setReleaseDate] = useState(movie.release_date?.slice(0, 10));
     const [synopsis, setSynopsis] = useState(movie.synopsis);
+    const [tag, setTag] = useState(1);
     const [genre, setGenre] = useState(movie.genre_id);
     const [poster, setPoster] = useState(movie.image);
     const [hidden, setHidden] = useState(false);
@@ -58,6 +59,7 @@ function Movie() {
         director: director,
         release_date: releaseDate,
         synopsis: synopsis,
+        tag_id: tag,
         genre_id: genre,
         image: poster
     } // end movie
@@ -119,22 +121,25 @@ function Movie() {
 
         <div className="movieContainer">
 
-            <div>
+            {/* <div>
                 {titleHandler(movie)}
-            </div>
+            </div> */}
 
 
             <div>
                 {movie.map(movie => {
                     return (
-                        <div>
-                            <div key={movie?.id}>
+                        <div key={movie?.id}>
+                            <div>
                                 <h1 className="textArea">{movie?.title}</h1>
                                 <img src={movie?.image} alt={movie?.title} className="poster" />
                                 <h2 className="textArea director">{movie?.director}</h2>
                                 <h3 className="textArea releaseDate">Released {movie?.release_date?.slice(0, 10)}</h3>
                                 <h3 className="textArea genre">{movie?.genre}</h3>
                                 <p className="textArea synopsis">{movie?.synopsis}</p>
+                            </div>
+                            <div>
+                                <p>{movie?.tag}</p>
                             </div>
                             <button onClick={(event) => handleEdit(event, movie)} className="button">
                                 Edit

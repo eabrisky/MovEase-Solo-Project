@@ -49,6 +49,10 @@ function Search() {
 
     return (
 
+        <div className="searchPage">
+
+            <h2>SEARCH</h2>
+
         <div className="search">
             <form onSubmit={handleSubmit}>
                 <input onChange={() => handleChange(event)} value={searchQuery} />
@@ -79,6 +83,8 @@ function Search() {
                     ))}
                 </tbody>
             </table>
+
+        </div>
 
         </div>
 
