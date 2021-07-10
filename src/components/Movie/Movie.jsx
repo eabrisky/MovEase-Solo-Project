@@ -9,7 +9,6 @@ import './Movie.css';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
-
 // drop-down menu from material-ui
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
