@@ -1,5 +1,6 @@
 .movieContainer {
-    background: rgb(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
 }
 
 .poster {
@@ -10,12 +11,12 @@
 }
 
 .textArea {
-    background: rgb(255, 255, 255, .3);
+    background: rgb(255, 255, 255, .5);
     text-align: center;
     margin-left: auto;
     margin-right: auto;
     width: 15%;
-    border-radius: 4px 4px 4px 4px;
+    border-radius: 4px;
 }
 
 .director {
@@ -27,7 +28,11 @@
 }
 
 .genre {
-    width: 4%;
+    width: flex;
+}
+
+.tags {
+    width: 10%;
 }
 
 .synopsis {

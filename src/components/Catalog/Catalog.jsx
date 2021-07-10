@@ -24,6 +24,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -31,8 +32,8 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-function createData(title, director, releaseDate, genre) {
-    return { title, director, releaseDate, genre };
+function createData(title, director, releaseDate, genre, edit, remove) {
+    return { title, director, releaseDate, genre, edit, remove };
 }
 
 function descendingComparator(a, b, orderBy) {
@@ -66,6 +67,8 @@ const headCells = [
     { id: 'director', numeric: true, disablePadding: false, label: 'Director' },
     { id: 'releaseDate', numeric: true, disablePadding: false, label: 'Release Date' },
     { id: 'genre', numeric: true, disablePadding: false, label: 'Genre' },
+    { id: 'edit', number: true, disablePadding: false, label: 'Edit' },
+    { id: 'remove', number: true, disablePadding: false, label: 'Remove ' },
 ];
 
 function EnhancedTableHead(props) {
@@ -157,13 +160,13 @@ const EnhancedTableToolbar = (props) => {
                 </Typography>
             ) : (
                 <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-                    Catalog
+                    {/* My Movies */}
                 </Typography>
             )}
 
             {numSelected > 0 ? (
                 <Tooltip title="Delete">
-                    <IconButton aria-label="delete">
+                    <IconButton aria-label="delete" onClick={() => console.log('wow, you pressed the delete button. so impressive...')}>
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
@@ -184,7 +187,7 @@ EnhancedTableToolbar.propTypes = {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: '50%',
+        width: '70%',
         marginLeft: 'auto',
         marginRight: 'auto'
     },
@@ -210,7 +213,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Catalog() {
 
-    // table consts
+    // table consts and local state
     const classes = useStyles();
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('director');
@@ -219,6 +222,7 @@ function Catalog() {
     const [dense, setDense] = useState(false);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
+    // table
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -281,14 +285,17 @@ function Catalog() {
     console.log(movies);
 
     useEffect(() => {
-        dispatch({ type: 'GET_MOVIES' });
+        getMovies();
     }, []);
+
+    const getMovies = () => {
+        dispatch({ type: 'GET_MOVIES' });
+    }
 
     const handleEdit = (event, movie) => {
 
         event.preventDefault();
 
-        console.log(`event.target.value: ${event.target.value}`);
         console.log('movie:', movie);
 
         dispatch({
@@ -297,23 +304,24 @@ function Catalog() {
         })
 
         // // navigate user to edit view
+        const movieId = movie.id;
+        console.log('catalog view, handleEdit movie id: ', movieId);
         history.push('/edit');
+        // history.push(`/edit/${movieId}`);
 
     } // end handleEdit
 
-    const handleRemove = (event, movie) => {
-
-        event.preventDefault();
+    const handleRemove = (movie) => {
 
         console.log('movie: ', movie);
 
         Swal.fire({
-            title: 'Are you sure?',
-            text: `This will permanently remove ${movie.title} from your catalog!`,
+            title: 'Remove?',
+            text: `This will permanently delete ${movie.title} from your catalog!`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'I HATE THIS MOVIE I NEVER WANNA SEE IT AGAIN!!',
-            cancelButtonText: 'Maybe I should give it a rewatch...'
+            confirmButtonText: `I've never been more certain in my life!`,
+            cancelButtonText: 'On second thought...'
         }) // end.fire
             .then((result) => {
                 if (result.isConfirmed) {
@@ -351,84 +359,98 @@ function Catalog() {
             type: 'FEATURE_MOVIE',
             payload: movieId
         })
-    }
+        history.push(`/movie/${movieId}`);
+    } // end handleFeature
 
     return (
-        <div className={classes.root}>
-            <Paper className={classes.paper}>
-                <EnhancedTableToolbar numSelected={selected.length} />
-                <TableContainer>
-                    <Table
-                        className={classes.table}
-                        aria-labelledby="tableTitle"
-                        size={dense ? 'small' : 'medium'}
-                        aria-label="enhanced table"
-                    >
-                        <EnhancedTableHead
-                            classes={classes}
-                            numSelected={selected.length}
-                            order={order}
-                            orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
-                            onRequestSort={handleRequestSort}
-                            rowCount={movies?.length}
-                        />
-                        <TableBody>
-                            {stableSort(movies, getComparator(order, orderBy))
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((movie, index) => {
-                                    const isItemSelected = isSelected(movie?.title);
-                                    const labelId = `enhanced-table-checkbox-${index}`;
+        <div className="catalog">
 
-                                    return (
-                                        <TableRow
-                                            hover
-                                            onClick={(event) => handleClick(event, movie?.title)}
-                                            role="checkbox"
-                                            aria-checked={isItemSelected}
-                                            tabIndex={-1}
-                                            key={movie?.id}
-                                            selected={isItemSelected}
-                                        >
-                                            <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    checked={isItemSelected}
-                                                    inputProps={{ 'aria-labelledby': labelId }}
-                                                />
-                                            </TableCell>
-                                            <TableCell component="th" id={labelId} scope="row" padding="none">
-                                                <Link to='/movie' onClick={() => handleFeature(movie.id)}>{movie?.title}</Link>
-                                            </TableCell>
-                                            <TableCell align="right">{movie?.director}</TableCell>
-                                            <TableCell align="right">{movie?.release_date?.slice(0, 10)}</TableCell>
-                                            <TableCell align="right">{movie?.genre}</TableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                            {emptyRows > 0 && (
-                                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                                    <TableCell colSpan={6} />
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-                    component="div"
-                    count={movies?.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
-            </Paper>
-            <FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense} />}
-                // onChange will be the toggle control for table view and carousel view
-                label="Dense padding"
-                className="toggle"
-            />
+            {/* Title */}
+            <h2 className="componentTitle">CATALOG</h2>
+
+            {/* Table */}
+            <div className={classes.root}>
+                <Paper className={classes.paper}>
+                    <EnhancedTableToolbar numSelected={selected.length} />
+                    <TableContainer>
+                        <Table
+                            className={classes.table}
+                            aria-labelledby="tableTitle"
+                            size={dense ? 'small' : 'medium'}
+                            aria-label="enhanced table"
+                        >
+                            <EnhancedTableHead
+                                classes={classes}
+                                numSelected={selected.length}
+                                order={order}
+                                orderBy={orderBy}
+                                onSelectAllClick={handleSelectAllClick}
+                                onRequestSort={handleRequestSort}
+                                rowCount={movies?.length}
+                            />
+                            <TableBody>
+                                {stableSort(movies, getComparator(order, orderBy))
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((movie, index) => {
+                                        const isItemSelected = isSelected(movie?.title);
+                                        const labelId = `enhanced-table-checkbox-${index}`;
+
+                                        return (
+                                            <TableRow
+                                                hover
+                                                onClick={(event) => handleClick(event, movie?.title)}
+                                                role="checkbox"
+                                                aria-checked={isItemSelected}
+                                                tabIndex={-1}
+                                                key={movie?.id}
+                                                selected={isItemSelected}
+                                            >
+                                                <TableCell padding="checkbox">
+                                                    <Checkbox
+                                                        checked={isItemSelected}
+                                                        inputProps={{ 'aria-labelledby': labelId }}
+                                                    />
+                                                </TableCell>
+                                                <TableCell className="title" component="th" id={labelId} scope="row" padding="none" onClick={() => handleFeature(movie?.id)}>
+                                                    {movie?.title}
+                                                </TableCell>
+                                                <TableCell align="right">{movie?.director}</TableCell>
+                                                <TableCell align="right">{movie?.release_date?.slice(0, 10)}</TableCell>
+                                                <TableCell align="right">{movie?.genre}</TableCell>
+                                                <TableCell align="right"><Button onClick={(event) => handleEdit(event, movie)}>Edit</Button></TableCell>
+                                                <TableCell align="right"><Button onClick={() => handleRemove(movie)}>Remove</Button></TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                                {emptyRows > 0 && (
+                                    <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                                        <TableCell colSpan={6} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+                        component="div"
+                        count={movies?.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
+                </Paper>
+
+                {/* Padding control toggle */}
+                {/* <FormControlLabel
+                    control={<Switch checked={dense} onChange={handleChangeDense} />}
+                    // onChange will be the toggle control for table view and carousel view
+                    label="Dense padding"
+                    className="toggle"
+                /> */}
+
+            </div>
+
         </div>
 
     ); // end return

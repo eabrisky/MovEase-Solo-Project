@@ -18,7 +18,7 @@ function* getMovies() {
 
 function* getAllMovies() {
     try{
-        const response = yield axios.get('/api/search');
+        const response = yield axios.get(`/api/search/all`);
         yield put({
             type: 'SET_ALL_MOVIES',
             payload: response.data
@@ -31,7 +31,7 @@ function* getAllMovies() {
 
 function* sendQuery(action){
     try{
-        const response = yield axios.get(`/api/search/?query=${action.payload.search}`);
+        const response = yield axios.get(`/api/search/${action.payload.search}`, action.payload);
 
         yield put({
             type: 'RETURN_SEARCH',
@@ -42,6 +42,17 @@ function* sendQuery(action){
         console.error('Error returning search: ', err);
     }
 } // end sendQuery fn*
+
+function* addToCatalog(action){
+    try{
+        yield axios.post('api/search', action.payload);
+        // get movies
+        yield put({ type: 'GET_MOVIES' });
+    }
+    catch(err){
+        console.log('Error adding to catalog: ', err);
+    }
+} // end addToCatalog fn*
 
 function* featureMovie(action){
     try{
@@ -61,7 +72,9 @@ function* featureMovie(action){
 
 function* createMovie(action) {
     try{
-        yield axios.post('/api/movie', action.payload);
+         const response = yield axios.post('/api/movie', action.payload);
+         console.log('created movie response: ', response.data);
+         
         //get movies
         yield put({ type: 'GET_MOVIES' });
     }
@@ -83,7 +96,9 @@ function* updateMovie(action) {
 
 function* removeMovie(action) {
     try{
-        yield axios.delete(`api/movie/${action.payload.id}`, action.payload);
+        const response = yield axios.delete(`api/movie/${action.payload.id}`, action.payload);
+        console.log('delete response: ', response.data);
+        
         //get movies
         yield put({ type: 'GET_MOVIES' });
     }
@@ -97,6 +112,7 @@ function* movieSaga() {
     yield takeEvery('GET_MOVIES', getMovies);
     yield takeEvery('GET_ALL_MOVIES', getAllMovies);
     yield takeEvery('SEND_QUERY', sendQuery);
+    yield takeEvery('ADD_TO_CATALOG', addToCatalog);
     yield takeEvery('FEATURE_MOVIE', featureMovie);
     yield takeEvery('CREATE_MOVIE', createMovie);
     yield takeEvery('UPDATE_MOVIE', updateMovie);

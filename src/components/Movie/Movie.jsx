@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // css
@@ -15,6 +15,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles((theme) => ({
+    // drop-down menu
     root: {
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
@@ -29,11 +30,24 @@ function Movie() {
     const history = useHistory();
     const movie = useSelector(store => store.featuredMovie);
 
+    const params = useParams();
+
+    // useEffect
+    useEffect(() => {
+
+        dispatch({
+            type: 'FEATURE_MOVIE',
+            payload: params.id
+        })
+
+    }, []);
+
     // local state
     const [title, setTitle] = useState(movie?.title);
     const [director, setDirector] = useState(movie.director);
     const [releaseDate, setReleaseDate] = useState(movie.release_date?.slice(0, 10));
     const [synopsis, setSynopsis] = useState(movie.synopsis);
+    const [tag, setTag] = useState(1);
     const [genre, setGenre] = useState(movie.genre_id);
     const [poster, setPoster] = useState(movie.image);
     const [hidden, setHidden] = useState(false);
@@ -45,6 +59,7 @@ function Movie() {
         director: director,
         release_date: releaseDate,
         synopsis: synopsis,
+        tag_id: tag,
         genre_id: genre,
         image: poster
     } // end movie
@@ -53,7 +68,7 @@ function Movie() {
 
         if (hidden === false) {
             return (
-                <h1 onClick={() => setHidden(!hidden)}>movie title here pls</h1>
+                <h1 onClick={() => setHidden(!hidden)}>movie title goes here, pls</h1>
             )
         } else {
             return (
@@ -63,7 +78,7 @@ function Movie() {
                     <button onClick={() => { setHidden(!hidden) }}>Cancel</button>
                 </form>
             )
-        }
+        } // end if else
 
     } // end inputHandler
 
@@ -77,16 +92,16 @@ function Movie() {
         })
     }
 
-    // const handleEdit = (event, movie) => {
-    //     event.preventDefault();
-    //     console.log('movie view movie to edit: ', movie);
-    //     dispatch({
-    //         type: 'MOVIE_TO_EDIT',
-    //         payload: movie
-    //     })
-    //     // navigate user to edit page
-    //     history.push('/edit');
-    // } // end handleEdit
+    const handleEdit = (event, movie) => {
+        event.preventDefault();
+        console.log('movie view movie to edit: ', movie);
+        dispatch({
+            type: 'MOVIE_TO_EDIT',
+            payload: movie
+        })
+        // navigate user back to movie page
+        history.push('/edit');
+    } // end handleEdit
 
     // inputs
     const classes = useStyles();
@@ -105,23 +120,26 @@ function Movie() {
     return (
 
         <div className="movieContainer">
-            <div>
+
+            {/* <div>
                 {titleHandler(movie)}
-            </div>
+            </div> */}
 
 
             <div>
                 {movie.map(movie => {
                     return (
-                        <div>
-                            <div key={movie?.id}>
+                        <div key={movie?.id}>
+                            <div>
                                 <h1 className="textArea">{movie?.title}</h1>
                                 <img src={movie?.image} alt={movie?.title} className="poster" />
                                 <h2 className="textArea director">{movie?.director}</h2>
                                 <h3 className="textArea releaseDate">Released {movie?.release_date?.slice(0, 10)}</h3>
                                 <h3 className="textArea genre">{movie?.genre}</h3>
+                                <h3 className="textArea tags">{movie?.tags}</h3>
                                 <p className="textArea synopsis">{movie?.synopsis}</p>
                             </div>
+                            
                             <button onClick={(event) => handleEdit(event, movie)} className="button">
                                 Edit
                             </button>

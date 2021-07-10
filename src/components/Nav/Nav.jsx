@@ -43,7 +43,7 @@ function Nav() {
           Form
         </Link>
 
-        <Link className="navLink" to="/search">
+        {/* <Link className="navLink" to="/search">
           Search
         </Link>
 
@@ -53,7 +53,7 @@ function Nav() {
 
         <Link className="navLink" to="/imageupload">
           Image Upload
-        </Link>
+        </Link> */}
 
         <Link className="navLink" to="/about">
           About
