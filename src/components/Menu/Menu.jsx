@@ -71,40 +71,56 @@ function Menu() {
                     <ListItemText primary='Home' />
                 </ListItem>
 
+                <Divider />
+
                 <ListItem button onClick={() => { history.push('/catalog') }}>
                     <ListItemIcon><LocalMoviesIcon /></ListItemIcon>
                     <ListItemText primary='Catalog' />
                 </ListItem>
+
+                <Divider />
 
                 <ListItem button onClick={() => { history.push('/movie') }}>
                     <ListItemIcon><LocalMoviesOutlinedIcon /></ListItemIcon>
                     <ListItemText primary='Featured Movie' />
                 </ListItem>
 
+                <Divider />
+
                 <ListItem button onClick={() => { history.push('/edit') }}>
                     <ListItemIcon><EditIcon /></ListItemIcon>
                     <ListItemText primary='Edit Movie' />
                 </ListItem>
+
+                <Divider />
 
                 <ListItem button onClick={() => { history.push('/search') }}>
                     <ListItemIcon><SearchIcon /></ListItemIcon>
                     <ListItemText primary='Search' />
                 </ListItem>
 
+                <Divider />
+
                 <ListItem button onClick={() => { history.push('/form') }}>
                     <ListItemIcon><LibraryAddIcon /></ListItemIcon>
                     <ListItemText primary='Add Movie' />
                 </ListItem>
+
+                <Divider />
 
                 <ListItem button onClick={() => { history.push('/about') }}>
                     <ListItemIcon><InfoIcon /></ListItemIcon>
                     <ListItemText primary='About' />
                 </ListItem>
 
+                <Divider />
+
                 <ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
                     <ListItemIcon><ExitToAppIcon /></ListItemIcon>
                     <ListItemText primary='Log Out' />
                 </ListItem>
+
+                <Divider />
 
             </List>
         </div>
