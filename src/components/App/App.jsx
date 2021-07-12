@@ -143,7 +143,7 @@ function App() {
             // - else shows LoginPage at /login
             exact
             path="/login"
-            authRedirect="/user"
+            authRedirect="/catalog"
           >
             <LoginPage />
           </ProtectedRoute>

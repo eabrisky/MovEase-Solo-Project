@@ -1,6 +1,7 @@
 .movieContainer {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.7);
     border-radius: 8px;
+    padding: 1px;
 }
 
 .poster {
@@ -24,7 +25,7 @@
 }
 
 .releaseDate {
-    width: 5%;
+    width: 19%;
 }
 
 .genre {

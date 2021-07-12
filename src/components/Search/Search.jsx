@@ -6,7 +6,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import './Search.css';
 
 // sweetalert2
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+
+// button
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+
+const useStyles = makeStyles((theme) => ({
+    // drop-down menu
+    root: {
+        '& .MuiTextField-root': {
+            margin: theme.spacing(1),
+            width: '25ch',
+        },
+    },
+}));
 
 function Search() {
 
@@ -117,7 +131,13 @@ function Search() {
             <div className="search">
                 <form onSubmit={handleSubmit}>
                     <input onChange={() => handleChange(event)} value={searchQuery} />
-                    <button type="submit">Search</button>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        type="submit"
+                    >
+                        Search
+                    </Button>
                 </form>
 
                 <table className="allMovies">
@@ -139,7 +159,11 @@ function Search() {
                                 <td>{movie?.release_date.slice(0, 10)}</td>
                                 <td>{movie?.genre}</td>
                                 <td className="center">{movie?.tags}</td>
-                                <td><button onClick={(event) => handleSave(event, movie)}>Save</button></td>
+                                <td><Button
+                                 onClick={(event) => handleSave(event, movie)}
+                                 >
+                                     Save
+                                 </Button></td>
                             </tr>
                         ))}
                     </tbody>

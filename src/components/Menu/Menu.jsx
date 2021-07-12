@@ -81,7 +81,7 @@ function Menu() {
 
                 <Divider />
 
-                <ListItem button onClick={() => { history.push('/movie') }}>
+                <ListItem button onClick={() => { history.push('/movie/:id') }}>
                     <ListItemIcon><LocalMoviesOutlinedIcon /></ListItemIcon>
                     <ListItemText primary='Featured Movie' />
                 </ListItem>
