@@ -14,6 +14,9 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
+// chip
+import Chip from '@material-ui/core/Chip';
+
 const useStyles = makeStyles((theme) => ({
     // drop-down menu
     root: {
