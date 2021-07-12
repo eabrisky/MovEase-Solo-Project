@@ -103,14 +103,14 @@ function Menu() {
                 <Divider />
 
                 <ListItem button onClick={() => { history.push('/form') }}>
-                    <ListItemIcon><MoreIcon /></ListItemIcon>
+                    <ListItemIcon><LibraryAddIcon /></ListItemIcon>
                     <ListItemText primary='Add Movie' />
                 </ListItem>
 
                 <Divider />
 
                 <ListItem button onClick={() => { history.push('/tags') }}>
-                    <ListItemIcon><InfoIcon /></ListItemIcon>
+                    <ListItemIcon><MoreIcon /></ListItemIcon>
                     <ListItemText primary='Tags' />
                 </ListItem>
 
