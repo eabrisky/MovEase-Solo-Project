@@ -1,9 +1,24 @@
 .arri {
     width: 11%;
+    margin-bottom: 5%;
 }
 
 .tagInfo{
     margin-right: auto;
     margin-left: auto;
     width: 80%;
+}
+
+.subHead {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+    margin: auto;
+    text-align: center;
+    width: 25%;
+}
+
+.tagDescription {
+    width: 50%;
+    margin: auto;
+    padding: 10px;
 }

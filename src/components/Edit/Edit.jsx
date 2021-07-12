@@ -106,8 +106,8 @@ function Edit() {
         setPoster('');
         setTag(0);
 
-        // navigate to catalog view
-        history.push('/catalog');
+        // navigate to catalog or movie view
+        history.goBack();
 
     } // end handleSubmit
 
