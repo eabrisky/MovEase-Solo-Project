@@ -29,18 +29,32 @@ function Movie() {
     const dispatch = useDispatch();
     const history = useHistory();
     const movie = useSelector(store => store.featuredMovie);
+    const tags = useSelector(store => store.tags);
 
     const params = useParams();
 
     // useEffect
     useEffect(() => {
+        getMovies();
+        getTags();
+    }, []);
 
+    const getMovies = () => {
         dispatch({
             type: 'FEATURE_MOVIE',
             payload: params.id
         })
+    } // end getMovies
 
-    }, []);
+    const getTags = () => {
+        console.log('getTags params.id: ', params.id);
+        dispatch({
+            type: 'GET_TAGS',
+            payload: Number(params.id)
+        })
+    } // end getTags
+
+    console.log('tags: ', tags);
 
     // local state
     const [title, setTitle] = useState(movie?.title);
@@ -136,7 +150,7 @@ function Movie() {
                                 <h2 className="textArea director">{movie?.director}</h2>
                                 <h3 className="textArea releaseDate">Released {movie?.release_date?.slice(0, 10)}</h3>
                                 <h3 className="textArea genre">{movie?.genre}</h3>
-                                <h3 className="textArea tags">{movie?.tags}</h3>
+                                <h3 className="textArea tags" onClick={() => history.push('/tags')}>{movie?.tags}</h3>
                                 <p className="textArea synopsis">{movie?.synopsis}</p>
                             </div>
                             

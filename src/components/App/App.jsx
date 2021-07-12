@@ -26,6 +26,7 @@ import Edit from '../Edit/Edit';
 import Form from '../Form/Form';
 import Search from '../Search/Search';
 import Dashboard from '../Dashboard/Dashboard';
+import Tags from '../Tags/Tags';
 
 import ImageUpload from '../ImageUpload/ImageUpload';
 
@@ -124,6 +125,13 @@ function App() {
             path="/imageupload"
           >
             <ImageUpload />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/tags"
+          >
+            <Tags />
           </ProtectedRoute>
 
           {/* When a value is supplied for the authRedirect prop the user will

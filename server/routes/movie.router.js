@@ -44,7 +44,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 // get featured movie
 router.get('/:id', rejectUnauthenticated, (req, res) => {
 
-    console.log('req.params.id: ', req.params.id);
+    console.log(' featured movie req.params.id: ', req.params.id);
 
 
     const queryText = `
