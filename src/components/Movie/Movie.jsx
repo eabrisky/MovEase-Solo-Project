@@ -160,8 +160,16 @@ function Movie() {
                                 <h2 className="textArea director">{movie?.director}</h2>
                                 <h3 className="textArea releaseDate">Released {movie?.release_date?.slice(0, 10)}</h3>
                                 <h3 className="textArea genre">{movie?.genre}</h3>
-                                <h3 className="textArea tags" onClick={() => history.push('/tags')}>{movie?.tags}</h3>
                                 <p className="textArea synopsis">{movie?.synopsis}</p>
+                            </div>
+
+                            <div className="tagsContainer">
+                                <h3 className="tagsTitle">Tags</h3>
+                                <Chip
+                                    label={movie?.tags}
+                                    onClick={() => history.push('/tags')}
+                                    onDelete={() => handleDelete(movie?.tags)}
+                                />
                             </div>
                             
                             <button onClick={(event) => handleEdit(event, movie)} className="button">
