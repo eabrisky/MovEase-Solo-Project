@@ -14,12 +14,22 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
+// chip
+import Chip from '@material-ui/core/Chip';
+
 const useStyles = makeStyles((theme) => ({
     // drop-down menu
     root: {
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
             width: '25ch',
+        },
+        // chip
+        display: 'flex',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        '& > *': {
+            margin: theme.spacing(0.5),
         },
     },
 }));
@@ -29,18 +39,32 @@ function Movie() {
     const dispatch = useDispatch();
     const history = useHistory();
     const movie = useSelector(store => store.featuredMovie);
+    const tags = useSelector(store => store.tags);
 
     const params = useParams();
 
     // useEffect
     useEffect(() => {
+        getMovies();
+        getTags();
+    }, []);
 
+    const getMovies = () => {
         dispatch({
             type: 'FEATURE_MOVIE',
             payload: params.id
         })
+    } // end getMovies
 
-    }, []);
+    const getTags = () => {
+        console.log('getTags params.id: ', params.id);
+        dispatch({
+            type: 'GET_TAGS',
+            payload: Number(params.id)
+        })
+    } // end getTags
+
+    console.log('tags: ', tags);
 
     // local state
     const [title, setTitle] = useState(movie?.title);
@@ -136,8 +160,16 @@ function Movie() {
                                 <h2 className="textArea director">{movie?.director}</h2>
                                 <h3 className="textArea releaseDate">Released {movie?.release_date?.slice(0, 10)}</h3>
                                 <h3 className="textArea genre">{movie?.genre}</h3>
-                                <h3 className="textArea tags">{movie?.tags}</h3>
                                 <p className="textArea synopsis">{movie?.synopsis}</p>
+                            </div>
+
+                            <div className="tagsContainer">
+                                <h3 className="tagsTitle">Tags</h3>
+                                <Chip
+                                    label={movie?.tags}
+                                    onClick={() => history.push('/tags')}
+                                    onDelete={() => handleDelete(movie?.tags)}
+                                />
                             </div>
                             
                             <button onClick={(event) => handleEdit(event, movie)} className="button">

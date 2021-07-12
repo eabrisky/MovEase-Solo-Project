@@ -43,3 +43,14 @@
 .test {
     background: rgba(255, 255, 255, 0.5);
 }
+
+.tagsContainer {
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 4px;
+    margin: auto;
+    width: 75%;
+}
+
+.tagsTitle {
+    text-align: center;
+}

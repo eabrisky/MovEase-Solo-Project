@@ -230,7 +230,7 @@ function Form() {
                             <MenuItem onClick={handleChangeTag} value="8">Sad</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="9">Hard to Watch</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="10">Cerebral</MenuItem>
-                            <MenuItem onClick={handleChangeTag} value="11">Arri</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="11">Arri Alexa XT M</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="12">Panavision</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="13">RED</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="14">Blackmagic</MenuItem>

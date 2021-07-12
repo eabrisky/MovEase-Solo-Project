@@ -22,6 +22,7 @@ import LocalMoviesOutlinedIcon from '@material-ui/icons/LocalMoviesOutlined';
 import EditIcon from '@material-ui/icons/Edit';
 import SearchIcon from '@material-ui/icons/Search';
 import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
+import MoreIcon from '@material-ui/icons/More';
 import InfoIcon from '@material-ui/icons/Info';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
@@ -102,8 +103,15 @@ function Menu() {
                 <Divider />
 
                 <ListItem button onClick={() => { history.push('/form') }}>
-                    <ListItemIcon><LibraryAddIcon /></ListItemIcon>
+                    <ListItemIcon><MoreIcon /></ListItemIcon>
                     <ListItemText primary='Add Movie' />
+                </ListItem>
+
+                <Divider />
+
+                <ListItem button onClick={() => { history.push('/tags') }}>
+                    <ListItemIcon><InfoIcon /></ListItemIcon>
+                    <ListItemText primary='Tags' />
                 </ListItem>
 
                 <Divider />
