@@ -31,7 +31,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
     pool // 
         .query(queryText, [req.user.id]) // end .query
         .then(result => {
-            // console.log('GET result: ', result.rows);
+            console.log('GET result: ', result.rows);
             res.send(result.rows);
         }) // end .then
         .catch(err => {
@@ -135,6 +135,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
                                 .query(tagQuery, [createdMovieId, movie.tag_id]) // end .query
                                 .then(result => {
                                     console.log('movies_tags table updated successfully!');
+                                    res.sendStatus(200);
                                 }) // end .then
                                 .catch(err => {
                                     console.error('NOOOOOO WHY COULD I NOT UPDATE THE MOVIES_TAGS TABLE!? ', err);

@@ -40,3 +40,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
 });
+
+// makes server available (somehow??) to start in a test box with supertest
+// will be importing it into tests in routes folder
+module.exports = app;
