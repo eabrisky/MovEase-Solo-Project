@@ -26,6 +26,7 @@ import Edit from '../Edit/Edit';
 import Form from '../Form/Form';
 import Search from '../Search/Search';
 import Dashboard from '../Dashboard/Dashboard';
+import Tags from '../Tags/Tags';
 
 import ImageUpload from '../ImageUpload/ImageUpload';
 
@@ -126,6 +127,13 @@ function App() {
             <ImageUpload />
           </ProtectedRoute>
 
+          <ProtectedRoute
+            exact
+            path="/tags"
+          >
+            <Tags />
+          </ProtectedRoute>
+
           {/* When a value is supplied for the authRedirect prop the user will
             be redirected to the path supplied when logged in, otherwise they will
             be taken to the component and path supplied. */}
@@ -135,7 +143,7 @@ function App() {
             // - else shows LoginPage at /login
             exact
             path="/login"
-            authRedirect="/user"
+            authRedirect="/catalog"
           >
             <LoginPage />
           </ProtectedRoute>
@@ -156,7 +164,7 @@ function App() {
             // - if logged in, redirects to "/user"
             // - else shows LandingPage at "/home"
             exact
-            path="/home"
+            path="/catalog"
             authRedirect="/catalog"
           >
             <LandingPage />

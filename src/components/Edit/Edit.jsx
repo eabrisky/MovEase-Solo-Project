@@ -51,7 +51,7 @@ function Edit() {
     const [synopsis, setSynopsis] = useState(movieToEdit.synopsis);
     const [genre, setGenre] = useState(movieToEdit.genre_id);
     const [poster, setPoster] = useState(movieToEdit.image);
-    const [tags, setTags] = useState('');
+    const [tag, setTag] = useState('');
 
     // data object
     const movie = {
@@ -62,10 +62,24 @@ function Edit() {
         synopsis: synopsis,
         genre_id: genre,
         image: poster,
-        tags: tags
+        tag_id: tag
     } // end movie
 
     console.log(movieToEdit);
+
+    // inputs
+    const classes = useStyles();
+
+    // TAG DROP-DOWN MENU
+    const [anchorElTag, setAnchorElTag] = React.useState(null);
+
+    // GENRE DROP-DOWN MENU
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleChangeTag = (event) => {
+        setAnchorElTag(null);
+        setTag(event.target.value);
+    } // end handleChangeTag
 
     const handleChangeGenre = (event) => {
         setAnchorEl(null);
@@ -90,34 +104,27 @@ function Edit() {
         setSynopsis('');
         setGenre(0);
         setPoster('');
-        setTags('');
+        setTag(0);
 
-        // navigate to catalog view
-        history.push('/catalog');
+        // navigate to catalog or movie view
+        history.goBack();
 
     } // end handleSubmit
 
     const handleCancel = () => {
-
-        // clear inputs
-        setTitle('');
-        setDirector('');
-        setReleaseDate('');
-        setSynopsis('');
-        setGenre(0);
-        setPoster('');
-        setTags('');
-
-        // go back
         history.goBack();
     } // end handleCancel
 
-    // inputs
-    const classes = useStyles();
+    // tag
+    const handleClickTag = (event) => {
+        setAnchorElTag(event.currentTarget);
+    };
 
-    // DROP-DOWN MENU
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const handleChangeT = () => {
+        setAnchorElTag(null);
+    };
 
+    // genre
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -129,6 +136,8 @@ function Edit() {
     return (
 
         <div>
+
+            <h2 className="componentTitle">EDIT</h2>
 
             <div className="edit">
 
@@ -175,6 +184,59 @@ function Edit() {
                         defaultValue={synopsis}
                         onChange={(event) => setSynopsis(event.target.value)}
                     />
+
+                    {/* tag */}
+                    <div>
+
+                        <Button
+                            variant="contained"
+                            aria-controls="simple-menu"
+                            aria-haspopup="true"
+                            onClick={handleClickTag}
+                            type="button"
+                        >
+                            Tag
+                        </Button>
+
+                        <Menu
+                            id="simple-menu"
+                            anchorElTag={anchorElTag}
+                            keepMounted
+                            open={Boolean(anchorElTag)}
+                            onClose={handleChangeT}
+                            className="tagMenu"
+                        >
+                            {/* MenuItem values correspond to genre_ids in movies_genres table in db */}
+                            <MenuItem onClick={handleChangeTag} value="1">Film</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="2">Digital</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="3">35mm</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="4">70mm</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="5">B&W</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="6">Animated</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="7">Happy</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="8">Sad</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="9">Hard to Watch</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="10">Cerebral</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="11">Arri Alexa XT M</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="12">Panavision</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="13">RED</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="14">Blackmagic</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="15">Canon</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="16">One Shot</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="17">Grunge</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="18">Dogma 95</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="19">French New Wave</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="20">Gritty</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="21">International</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="22">Epic</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="23">Slice of Life</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="24">Period Piece</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="25">Classic</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="26">Stop-Motion</MenuItem>
+
+                        </Menu>
+
+                    </div>
 
                     {/* genre selector button*/}
                     <div className="genreButton">
@@ -226,18 +288,9 @@ function Edit() {
 
                     </div>
 
-                    <TextField
-                        id="standard-multiline-flexible"
-                        label="Synopsis"
-                        multiline
-                        rowsMax={4}
-                        defaultValue={tags}
-                        onChange={(event) => setTags(event.target.value)}
-                    />
-
                     <div>
-                        <Button className="save" type="submit" variant="contained">Save</Button>
-                        <Button className="cancel" variant="contained" onClick={handleCancel}>Cancel</Button>
+                        <Button className="save" color="primary" type="submit" variant="contained">Save</Button>
+                        <Button className="cancel" color="secondary" variant="contained" onClick={handleCancel}>Cancel</Button>
 
                     </div>
 

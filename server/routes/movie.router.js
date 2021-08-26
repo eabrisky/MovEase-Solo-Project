@@ -7,32 +7,31 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 router.get('/', rejectUnauthenticated, (req, res) => {
 
     const queryText = `
-        SELECT "movies".*,
-        STRING_AGG ("genres".name, ', ')
-        AS genre,
-        "movies_genres".genre_id,
-        STRING_AGG("tags".name, ', ')
-        AS tags
-        FROM "movies"
-        JOIN "movies_genres"
-        ON "movies_genres".movie_id = "movies".id
-        JOIN "genres"
-        ON "genres".id = "movies_genres".genre_id
-        JOIN "user"
-        ON "user".id = "movies".user_id
-        JOIN "movies_tags"
-        ON "movies_tags".movie_id = "movies".id
-        JOIN "tags"
-        ON "tags".id = "movies_tags".tag_id
-        WHERE "movies".user_id = $1
-        GROUP BY "movies".id, "movies_genres".genre_id
-        ORDER BY "title" ASC;
+    SELECT "movies".*,
+    "genres".name
+    AS genre,
+    "movies_genres".genre_id,
+    "tags".name
+    AS tags
+    FROM "movies"
+    JOIN "users_movies"
+    ON "users_movies".movie_id = "movies".id
+    JOIN "movies_genres"
+    ON "movies_genres".movie_id = "movies".id
+    JOIN "genres"
+    ON "genres".id = "movies_genres".genre_id
+    JOIN "movies_tags"
+    ON "movies_tags".movie_id = "movies".id
+    JOIN "tags"
+    ON "tags".id = "movies_tags".tag_id
+    WHERE "users_movies".user_id = $1
+    ORDER BY "title" ASC;
     `;
 
     pool // 
         .query(queryText, [req.user.id]) // end .query
         .then(result => {
-            // console.log('GET result: ', result.rows);
+            console.log('GET result: ', result.rows);
             res.send(result.rows);
         }) // end .then
         .catch(err => {
@@ -45,16 +44,17 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 // get featured movie
 router.get('/:id', rejectUnauthenticated, (req, res) => {
 
-    console.log('req.params.id: ', req.params.id);
-    
+    console.log(' featured movie req.params.id: ', req.params.id);
+
 
     const queryText = `
     SELECT "movies".*,
-    STRING_AGG("genres".name, ', ')
+    "genres".name
     AS genre,
     "movies_genres".genre_id,
-    STRING_AGG("tags".name, ', ')
-    AS tags
+    "tags".name
+    AS tags,
+    "movies_tags".tag_id
     FROM "movies"
     JOIN "movies_genres"
     ON "movies_genres".movie_id = "movies".id
@@ -67,7 +67,7 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
     JOIN "tags"
     ON "tags".id = "movies_tags".tag_id
     WHERE "movies".id = $1
-    GROUP BY 1, "movies".id, "movies_genres".genre_id;
+    GROUP BY "movies".id, "genres".name, "movies_genres".genre_id, "tags".name, "movies_tags".tag_id;
     `;
 
     pool // movies & genres query
@@ -120,9 +120,9 @@ router.post('/', rejectUnauthenticated, (req, res) => {
                     `;
 
                     console.log('users_movies query createdMovieId: ', createdMovieId);
-                    
+
                     console.log('users_movies query req.user: ', req.user);
-                    
+
                     pool // users_movies query
                         .query(usersMoviesQuery, [req.user.id, createdMovieId]) // end .query
                         .then((result) => {
@@ -135,6 +135,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
                                 .query(tagQuery, [createdMovieId, movie.tag_id]) // end .query
                                 .then(result => {
                                     console.log('movies_tags table updated successfully!');
+                                    res.sendStatus(200);
                                 }) // end .then
                                 .catch(err => {
                                     console.error('NOOOOOO WHY COULD I NOT UPDATE THE MOVIES_TAGS TABLE!? ', err);
@@ -177,7 +178,7 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
 
             console.log('put route genre query req.body/movie: ', movie);
 
-            const genreQuery =`
+            const genreQuery = `
             UPDATE "movies_genres"
             SET "genre_id" = $1
             WHERE "movie_id" = $2;
@@ -185,10 +186,26 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
 
             pool // movies_genres query
                 .query(genreQuery, [movie.genre_id, movie.id]) // end .query
-                .then(() => console.log('Genre update successful!')) // end .then
+                .then(result => {
+
+                    console.log('Genre update successful!');
+
+                    const tagQuery = `
+                    UPDATE "movies_tags"
+                    SET "tag_id" = $1
+                    WHERE "movie_id" = $2;
+                    `;
+
+                    pool // movies_tags query
+                        .query(tagQuery, [movie.tag_id, movie.id]) // end .query
+                        .then(() => console.log('Tag update successful!')) // end .then
+                        .catch(err => {console.log('put tag error: ', err);
+                        }) // end .catch, end tag pool
+
+                }) // end .then
                 .catch(err => {
                     console.log('put genre error: ', err);
-                }) // end catch, end genre pool
+                }) // end .catch, end genre pool
 
             // OK
             res.sendStatus(200);
@@ -215,24 +232,8 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
     pool // users_movies query
         .query(queryText, [req.user.id, req.params.id]) // end .query
         .then(result => {
-
-            const moviesQuery = `
-            UPDATE "movies"
-            SET "user_id"=$1
-            WHERE "user_id"=$2
-            AND "id"=$3;
-            `;
-
-            pool // movies query
-                .query(moviesQuery,[null, req.user.id, req.params.id]) // end .query
-                .then(response => {
-                    console.log(`"movies".user_id successfully removed`);
-                    res.sendStatus(200);
-                }) // end .then
-                .catch(err => {
-                    console.error(`Balderdash, we just really couldn't remove that user_id from the "movies" table...`, err);
-                }) // end .catch, end movies pool
-
+            console.log('Movie successfully removed from catalog!');           
+            res.sendStatus(200);
         }) // end .then
         .catch((err) => {
             console.error(`ACK, WE COULDN'T REMOVE THAT FROM YOUR CATALOG!! `, err);

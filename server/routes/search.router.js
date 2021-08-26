@@ -7,15 +7,26 @@ router.get(`/all`, rejectUnauthenticated, (req, res) => {
 
     const queryText = `
     SELECT "movies".*,
-    STRING_AGG("genres".name, ', ')
+    "genres".name
     AS genre,
-    "movies_genres".genre_id
+    "movies_genres".genre_id,
+    "tags".name
+    AS tags
     FROM "movies"
     JOIN "movies_genres"
     ON "movies_genres".movie_id = "movies".id
     JOIN "genres"
     ON "genres".id = "movies_genres".genre_id
-    GROUP BY 1, "movies_genres".genre_id;
+    JOIN "user"
+    ON "user".id = "movies".user_id
+    JOIN "users_movies"
+    ON "users_movies".user_id = "movies".user_id
+    JOIN "movies_tags"
+    ON "movies_tags".movie_id = "movies".id
+    JOIN "tags"
+    ON "tags".id = "movies_tags".tag_id
+    GROUP BY "movies".id, "movies_genres".genre_id, "genres".name, "tags".name
+    ORDER BY "title" ASC;
     `;
 
     pool
@@ -64,5 +75,26 @@ router.get('/:search', rejectUnauthenticated, (req, res) => {
         }) // end .catch, end pool
 
 }) // end .get search query
+
+router.post('/', rejectUnauthenticated, (req, res) => {
+
+    const movie = req.body;
+    console.log('movie to add to catalog: ', req.body);
+
+    const movieQuery = `
+    INSERT INTO "users_movies" ("user_id", "movie_id")
+    VALUES ($1, $2)
+    RETURNING "id";
+    `;
+
+    pool // movie query
+        .query(movieQuery, [req.user.id, movie.id]) // end .query
+        .then(() => {res.sendStatus(201)}) // end .then
+        .catch((err) => {
+            console.error('AW BRUSSEL SPROUTS, error encountered while posting to users_movies: ', err);
+            res.sendStatus(500);
+        }) // end .catch, end movie query pool
+    
+}) // end .post
 
 module.exports = router;

@@ -22,6 +22,7 @@ import LocalMoviesOutlinedIcon from '@material-ui/icons/LocalMoviesOutlined';
 import EditIcon from '@material-ui/icons/Edit';
 import SearchIcon from '@material-ui/icons/Search';
 import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
+import MoreIcon from '@material-ui/icons/More';
 import InfoIcon from '@material-ui/icons/Info';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
@@ -71,40 +72,63 @@ function Menu() {
                     <ListItemText primary='Home' />
                 </ListItem>
 
+                <Divider />
+
                 <ListItem button onClick={() => { history.push('/catalog') }}>
                     <ListItemIcon><LocalMoviesIcon /></ListItemIcon>
-                    <ListItemText primary='My Movie Catalog' />
+                    <ListItemText primary='Catalog' />
                 </ListItem>
 
-                <ListItem button onClick={() => { history.push('/movie') }}>
+                <Divider />
+
+                <ListItem button onClick={() => { history.push('/movie/:id') }}>
                     <ListItemIcon><LocalMoviesOutlinedIcon /></ListItemIcon>
                     <ListItemText primary='Featured Movie' />
                 </ListItem>
+
+                <Divider />
 
                 <ListItem button onClick={() => { history.push('/edit') }}>
                     <ListItemIcon><EditIcon /></ListItemIcon>
                     <ListItemText primary='Edit Movie' />
                 </ListItem>
 
+                <Divider />
+
                 <ListItem button onClick={() => { history.push('/search') }}>
                     <ListItemIcon><SearchIcon /></ListItemIcon>
                     <ListItemText primary='Search' />
                 </ListItem>
 
+                <Divider />
+
                 <ListItem button onClick={() => { history.push('/form') }}>
                     <ListItemIcon><LibraryAddIcon /></ListItemIcon>
-                    <ListItemText primary='Form' />
+                    <ListItemText primary='Add Movie' />
                 </ListItem>
+
+                <Divider />
+
+                <ListItem button onClick={() => { history.push('/tags') }}>
+                    <ListItemIcon><MoreIcon /></ListItemIcon>
+                    <ListItemText primary='Tags' />
+                </ListItem>
+
+                <Divider />
 
                 <ListItem button onClick={() => { history.push('/about') }}>
                     <ListItemIcon><InfoIcon /></ListItemIcon>
                     <ListItemText primary='About' />
                 </ListItem>
 
+                <Divider />
+
                 <ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
                     <ListItemIcon><ExitToAppIcon /></ListItemIcon>
                     <ListItemText primary='Log Out' />
                 </ListItem>
+
+                <Divider />
 
             </List>
         </div>

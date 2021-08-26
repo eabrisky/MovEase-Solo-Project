@@ -7,7 +7,7 @@ body,
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0px;
-  background-image: url(savior.jpg);
+  background-image: url(br.jpeg);
   height: 500px;
   background-position: center;
   background-repeat: no-repeat;
@@ -19,6 +19,16 @@ img {
   display: inline-block;
   max-width: 100%;
   
+}
+
+.componentTitle {
+  margin-right: auto;
+  margin-left: auto;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  width: 10%;
+  text-align: center;
 }
 
 /* --------------------------------------------------------------------------------
@@ -36,11 +46,11 @@ Button
 .btn {
   display: inline-block;
   padding: 10px 20px;
-  border-color: #014041;
+  border-color: white;
   border-width: 1px 1px 3px;
   border-radius: 4px;
-  background-color: #00acb0;
-  color: #f8f8f8;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
   font-size: 1.1rem;
   outline: 0;
   cursor: pointer;
@@ -62,25 +72,25 @@ Button
 }
 
 .btn:hover {
-  background-color: #008183;
+  background-color: gray;
   text-decoration: none;
 }
 
 /* This line makes the "Register" and "Login" buttons look like links */
 .btn_asLink {
-  padding: 0;
-  border-width: 0;
+  padding: 10px;
   border-bottom: 1px solid #444;
-  border-radius: 0;
-  background: none;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.75);
   font: inherit;
   color: #444;
 }
 
 .btn_asLink:hover {
   background-color: transparent;
-  border-color: #008183;
-  color: #008183;
+  border-color: #000000;
+  border-width: 1px;
+  color: #999999;
 }
 
 /* --------------------------------------------------------------------------------
@@ -108,12 +118,31 @@ Form Treatment
   max-width: 100%;
   padding: 25px;
   margin: 0 auto 20px;
-  background-color: #efefef;
-  border-radius: 3px;
-  box-shadow: 0 1px 2px rgb(0, 0, 0, 0.4);
+  background-color: rgba(255, 255, 255, 0.0);
+  color: #CC9800;
+  border-radius: 4px;
+  box-shadow: 4px 4px 4px 4px rgb(0, 0, 0, 0.4);
+  margin-top: 10%;
 }
 
 input {
   margin: 5px;
   margin-bottom: 10px;
+}
+
+/* --------------------------------------------------------------------------------
+Login
+-------------------------------------------------------------------------------- */
+
+.login {
+  padding: 5px;
+  width: 30%;
+}
+
+/* --------------------------------------------------------------------------------
+Center
+-------------------------------------------------------------------------------- */
+
+.center {
+  text-align: center;
 }

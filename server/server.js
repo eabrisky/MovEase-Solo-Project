@@ -10,6 +10,7 @@ const passport = require('./strategies/user.strategy');
 // Route includes
 const userRouter = require('./routes/user.router');
 const movieRouter = require('./routes/movie.router');
+const tagsRouter = require('./routes/tags.router');
 const searchRouter = require('./routes/search.router.js');
 
 // Body parser middleware
@@ -26,6 +27,7 @@ app.use(passport.session());
 /* Routes */
 app.use('/api/user', userRouter);
 app.use('/api/movie', movieRouter);
+app.use('/api/tags', tagsRouter);
 app.use('/api/search', searchRouter);
 
 // Serve static files
@@ -38,3 +40,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
 });
+
+// makes server available (somehow??) to start in a test box with supertest
+// will be importing it into tests in routes folder
+module.exports = app;

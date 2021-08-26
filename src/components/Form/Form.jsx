@@ -110,7 +110,7 @@ function Form() {
     // cancel
     const handleCancel = () => {
         history.goBack();
-    }
+    } // end handleCancel
 
     // inputs
     const classes = useStyles();
@@ -143,6 +143,8 @@ function Form() {
     return (
 
         <div>
+
+            <h2 className="componentTitle">ADD MOVIE</h2>
 
             <div className="form">
 
@@ -228,7 +230,7 @@ function Form() {
                             <MenuItem onClick={handleChangeTag} value="8">Sad</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="9">Hard to Watch</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="10">Cerebral</MenuItem>
-                            <MenuItem onClick={handleChangeTag} value="11">Arri</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="11">Arri Alexa XT M</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="12">Panavision</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="13">RED</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="14">Blackmagic</MenuItem>
@@ -242,6 +244,8 @@ function Form() {
                             <MenuItem onClick={handleChangeTag} value="22">Epic</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="23">Slice of Life</MenuItem>
                             <MenuItem onClick={handleChangeTag} value="24">Period Piece</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="25">Classic</MenuItem>
+                            <MenuItem onClick={handleChangeTag} value="26">Stop-Motion</MenuItem>
 
                         </Menu>
 

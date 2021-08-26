@@ -306,7 +306,8 @@ function Catalog() {
         // // navigate user to edit view
         const movieId = movie.id;
         console.log('catalog view, handleEdit movie id: ', movieId);
-        history.push(`/edit/${movieId}`);
+        history.push('/edit');
+        // history.push(`/edit/${movieId}`);
 
     } // end handleEdit
 
@@ -315,12 +316,12 @@ function Catalog() {
         console.log('movie: ', movie);
 
         Swal.fire({
-            title: 'Are you sure?',
-            text: `This will permanently remove ${movie.title} from your catalog!`,
+            title: 'Remove?',
+            text: `This will permanently delete ${movie.title} from your catalog!`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'I HATE THIS MOVIE I NEVER WANNA SEE IT AGAIN!!',
-            cancelButtonText: 'Maybe I should give it a rewatch...'
+            confirmButtonText: `I've never been more certain in my life!`,
+            cancelButtonText: 'On second thought...'
         }) // end.fire
             .then((result) => {
                 if (result.isConfirmed) {
@@ -359,13 +360,13 @@ function Catalog() {
             payload: movieId
         })
         history.push(`/movie/${movieId}`);
-    }
+    } // end handleFeature
 
     return (
         <div className="catalog">
 
             {/* Title */}
-            <h2 className="title">CATALOG</h2>
+            <h2 className="componentTitle">CATALOG</h2>
 
             {/* Table */}
             <div className={classes.root}>
@@ -410,7 +411,7 @@ function Catalog() {
                                                         inputProps={{ 'aria-labelledby': labelId }}
                                                     />
                                                 </TableCell>
-                                                <TableCell className="title" component="th" id={labelId} scope="row" padding="none" onClick={() => handleFeature(movie.id)}>
+                                                <TableCell className="title" component="th" id={labelId} scope="row" padding="none" onClick={() => handleFeature(movie?.id)}>
                                                     {movie?.title}
                                                 </TableCell>
                                                 <TableCell align="right">{movie?.director}</TableCell>

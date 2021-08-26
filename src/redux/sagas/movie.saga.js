@@ -16,6 +16,21 @@ function* getMovies() {
     }
 } // end getMovies fn*
 
+function* getTags(action) {
+    try{       
+        // send request to server & save response
+        const response = yield axios.get('/api/tags', action.payload);
+        // send response to tag.reducer
+        // yield put({
+        //     type: 'SET_TAGS',
+        //     payload: response.data
+        // });
+    }
+    catch(err){
+        console.error('Error getting tags: ', err);
+    }
+} // end getTags
+
 function* getAllMovies() {
     try{
         const response = yield axios.get(`/api/search/all`);
@@ -43,6 +58,17 @@ function* sendQuery(action){
     }
 } // end sendQuery fn*
 
+function* addToCatalog(action){
+    try{
+        yield axios.post('api/search', action.payload);
+        // get movies
+        yield put({ type: 'GET_MOVIES' });
+    }
+    catch(err){
+        console.log('Error adding to catalog: ', err);
+    }
+} // end addToCatalog fn*
+
 function* featureMovie(action){
     try{
         const response = yield axios.get(`/api/movie/${action.payload}`);
@@ -61,7 +87,9 @@ function* featureMovie(action){
 
 function* createMovie(action) {
     try{
-        yield axios.post('/api/movie', action.payload);
+         const response = yield axios.post('/api/movie', action.payload);
+         console.log('created movie response: ', response.data);
+         
         //get movies
         yield put({ type: 'GET_MOVIES' });
     }
@@ -97,8 +125,10 @@ function* removeMovie(action) {
 // watcherSaga
 function* movieSaga() {
     yield takeEvery('GET_MOVIES', getMovies);
+    yield takeEvery('GET_TAGS', getTags);
     yield takeEvery('GET_ALL_MOVIES', getAllMovies);
     yield takeEvery('SEND_QUERY', sendQuery);
+    yield takeEvery('ADD_TO_CATALOG', addToCatalog);
     yield takeEvery('FEATURE_MOVIE', featureMovie);
     yield takeEvery('CREATE_MOVIE', createMovie);
     yield takeEvery('UPDATE_MOVIE', updateMovie);
