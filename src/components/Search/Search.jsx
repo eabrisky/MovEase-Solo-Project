@@ -9,28 +9,23 @@ import "./Search.css";
 import Swal from "sweetalert2";
 
 // mui
-import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from "@material-ui/icons/Search";
 
-const useStyles = makeStyles((theme) => ({
-  // drop-down menu
-  root: {
-    "& > *": {
-      margin: theme.spacing(1),
-      width: "25ch",
-    },
-  },
-}));
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
 
 function Search() {
   const dispatch = useDispatch();
   const history = useHistory();
   const allMovies = useSelector((store) => store.allMovies);
-
-  // mui
-  const classes = useStyles();
 
   const getAllMovies = () => {
     dispatch({
@@ -43,6 +38,17 @@ function Search() {
   }, []);
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   console.log("allMovies: ", allMovies);
   // console.log('movies from store after search query: ', movies);
@@ -96,87 +102,107 @@ function Search() {
     <div className="searchPage">
       <h2 className="componentTitle">SEARCH</h2>
 
-      <div className="search-container">
-      <h2 className="">Search by Title, Director, Release Date, Genre, or Tags</h2>
-        <div className="search-wrapper">
-          <TextField
-            id="filled-basic"
-            label={<SearchIcon />}
-            variant="filled"
-            onChange={(event) => setSearchQuery(event.target.value)}
-          />
+      <Paper className="search-paper">
+
+        <div className="search-container">
+          <h3 className="">
+            Search by Title, Director, Release Date, Genre, or Tags
+          </h3>
+          <div className="search-wrapper">
+            <TextField
+              id="filled-basic"
+              label={<SearchIcon />}
+              variant="filled"
+              onChange={(event) => setSearchQuery(event.target.value)}
+            />
+          </div>
         </div>
 
-        <table className="allMovies">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Director</th>
-              <th>Release Date</th>
-              <th>Genre</th>
-              <th>Tags</th>
-              <th>Save</th>
-            </tr>
-          </thead>
-          <tbody>
-            {allMovies
-              ?.filter((movie) => {
-                if (searchQuery == "") {
-                  return movie;
-                } else if (
-                  movie?.title
-                    .toLowerCase()
-                    .includes(searchQuery?.toLowerCase())
-                ) {
-                  return movie;
-                } else if (
-                  movie?.director
-                    .toLowerCase()
-                    .includes(searchQuery?.toLowerCase())
-                ) {
-                  return movie;
-                } else if (
-                  movie?.release_date
-                    .toLowerCase()
-                    .includes(searchQuery?.toLowerCase())
-                ) {
-                  return movie;
-                } else if (
-                  movie?.genre
-                    .toLowerCase()
-                    .includes(searchQuery?.toLowerCase())
-                ) {
-                  return movie;
-                } else if (
-                  movie?.tags.toLowerCase().includes(searchQuery?.toLowerCase())
-                ) {
-                  return movie;
-                }
-              })
-              .map((movie) => {
-                return (
-                  <tr key={movie?.id}>
-                    <td
-                      className="title"
-                      onClick={() => handleFeature(movie?.id)}
-                    >
-                      {movie?.title}
-                    </td>
-                    <td>{movie?.director}</td>
-                    <td>{movie?.release_date.slice(0, 10)}</td>
-                    <td>{movie?.genre}</td>
-                    <td className="center">{movie?.tags}</td>
-                    <td>
-                      <Button onClick={(event) => handleSave(event, movie)}>
-                        Save
-                      </Button>
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
-      </div>
+        <TableContainer className="search-paper-container">
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Title</TableCell>
+                <TableCell>Director</TableCell>
+                <TableCell>Release Date</TableCell>
+                <TableCell>Genre</TableCell>
+                <TableCell>Tags</TableCell>
+                <TableCell>Save</TableCell>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {allMovies
+                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .filter((movie) => {
+                  if (searchQuery == "") {
+                    return movie;
+                  } else if (
+                    movie?.title
+                      .toLowerCase()
+                      .includes(searchQuery?.toLowerCase())
+                  ) {
+                    return movie;
+                  } else if (
+                    movie?.director
+                      .toLowerCase()
+                      .includes(searchQuery?.toLowerCase())
+                  ) {
+                    return movie;
+                  } else if (
+                    movie?.release_date
+                      .toLowerCase()
+                      .includes(searchQuery?.toLowerCase())
+                  ) {
+                    return movie;
+                  } else if (
+                    movie?.genre
+                      .toLowerCase()
+                      .includes(searchQuery?.toLowerCase())
+                  ) {
+                    return movie;
+                  } else if (
+                    movie?.tags
+                      .toLowerCase()
+                      .includes(searchQuery?.toLowerCase())
+                  ) {
+                    return movie;
+                  }
+                })
+                .map((movie) => {
+                  return (
+                    <TableRow key={movie?.id}>
+                      <TableCell
+                        className="title"
+                        onClick={() => handleFeature(movie?.id)}
+                      >
+                        {movie?.title}
+                      </TableCell>
+                      <TableCell>{movie?.director}</TableCell>
+                      <TableCell>{movie?.release_date.slice(0, 10)}</TableCell>
+                      <TableCell>{movie?.genre}</TableCell>
+                      <TableCell className="center">{movie?.tags}</TableCell>
+                      <TableCell>
+                        <Button onClick={(event) => handleSave(event, movie)}>
+                          Save
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={allMovies?.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
     </div>
   ); // end return
 } // end Search fn

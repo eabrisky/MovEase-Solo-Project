@@ -13,8 +13,7 @@
 }
 
 .search-wrapper {
-    margin-left: auto;
-    margin-right: auto;
+    width: 50%;
 }
 
 .allMovies{
@@ -22,7 +21,11 @@
     padding: 10px;
 }
 
-input{
-    display: inline-block;
-    width: 25%;
+.search-paper {
+    width: 85%;
+    margin: auto;
+}
+
+.search-paper-container {
+    max-height: 440;
 }
