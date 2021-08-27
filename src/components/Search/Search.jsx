@@ -102,21 +102,19 @@ function Search() {
     <div className="searchPage">
       <h2 className="componentTitle">SEARCH</h2>
 
-      <Paper className="search-paper">
-
-        <div className="search-container">
-          <h3 className="">
-            Search by Title, Director, Release Date, Genre, or Tags
-          </h3>
+      <div className="search-paper">
+          <p className="search-conditions">
+            *Search by Title, Director, Release Date, Genre, or Tags*
+          </p>
           <div className="search-wrapper">
             <TextField
-              id="filled-basic"
-              label={<SearchIcon />}
-              variant="filled"
+              className="search-wrapper"
+              id="standard-basic"
+              label={<SearchIcon fontSize="large"/>}
               onChange={(event) => setSearchQuery(event.target.value)}
             />
           </div>
-        </div>
+
 
         <TableContainer className="search-paper-container">
           <Table stickyHeader aria-label="sticky table">
@@ -202,7 +200,7 @@ function Search() {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-      </Paper>
+      </div>
     </div>
   ); // end return
 } // end Search fn

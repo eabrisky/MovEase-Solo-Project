@@ -1,29 +1,32 @@
+/* whole page */
 .searchPage {
-    background: (0, 0, 0, 0.5);
-}
-
-.search-container {
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.7);
     padding: 20px;
-    margin-left: auto;
     margin-right: auto;
-    margin-top: 50px;
-    width: 75%;
-}
-
-.search-wrapper {
-    width: 50%;
-}
-
-.allMovies{
-    margin: auto;
-    padding: 10px;
+    margin-left: auto;
+    text-align: center;
 }
 
 .search-paper {
     width: 85%;
     margin: auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 4px;
+}
+
+/* textfield */
+.search-wrapper {
+    padding: 20px;
+    margin-top: 50px;
+    margin: auto;
+    width: 85%;
+}
+
+/* "search by title, director, release date, genre, or tags" */
+.search-conditions {
+    text-align: center;
+    margin-top: 5%;
+    padding: 20px;
 }
 
 .search-paper-container {
